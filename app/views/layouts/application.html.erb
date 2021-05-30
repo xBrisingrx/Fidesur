@@ -5,15 +5,21 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= favicon_link_tag 'favicon.ico' %>
-
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
   </head>
 
   <body>
-    <main>
-      <%= render('layouts/navbar') %>
-      <%= yield %>
+    <%= render('layouts/navbar') %>
+    <%= render('layouts/sidebar') %>
+    <div class="col g-ml-45 g-ml-0--lg g-pb-65--md">
+      <div class="g-pa-20">
+        <%= yield %>
+      </div>
+    </div>
+      <%= render('layouts/footer') %>
+        </div>
+      </div>
     </main>
   </body>
 </html>
