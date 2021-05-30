@@ -63,7 +63,7 @@ class SectorsController < ApplicationController
     if @sector.update(active:false)
       render json: { status: 'success', msg: 'Sector eliminado' }, status: :ok
     else
-      render json: { status: :unprocessable_entity, msg: 'Ocurrio un error al realizar la operacion' } 
+      render json: { status: 'error', msg: 'Ocurrio un error al realizar la operación' }, status: :unprocessable_entity
     end
 
     rescue => e

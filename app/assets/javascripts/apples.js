@@ -20,17 +20,13 @@ $(document).ready(function(){
 	})
 
   $("#form-disable-apple").on("ajax:success", function(event) {
-    apple_table.ajax.reload(null,false)
-    let msj = JSON.parse(event.detail[2].response)
-    noty_alert(msj.status, msj.msg)
+    apples_table.ajax.reload(null,false)
+    let msg = JSON.parse(event.detail[2].response)
+    noty_alert(msg.status, msg.msg)
     $("#modal-disable-apple").modal('hide')
   }).on("ajax:error", function(event) {
-    let msj = JSON.parse( event.detail[2].response )
-    console.log(event.detail[2].response)
-    $.each( msj, function( key, value ) {
-      $(`#form-apple #apple_${key}`).addClass('is-invalid')
-      $(`#form-apple .apple_${key}`).text( value ).show('slow')
-    })
+    let msg = JSON.parse( event.detail[2].response )
+    noty_alert(msg.status, msg.msg)
   })
 
 }) // End $(document).ready()

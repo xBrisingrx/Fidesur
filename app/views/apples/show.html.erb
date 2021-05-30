@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Heactares:</strong>
+  <%= @apple.hectares %>
+</p>
+
+<p>
+  <strong>Location:</strong>
+  <%= @apple.location %>
+</p>
+
+<p>
+  <strong>Value:</strong>
+  <%= @apple.value %>
+</p>
+
+<p>
+  <strong>Code:</strong>
+  <%= @apple.code %>
+</p>
+
+<p>
+  <strong>Sector:</strong>
+  <%= @apple.sector %>
+</p>
+
+<%= link_to 'Edit', edit_apple_path(@apple) %> |
+<%= link_to 'Back', apples_path %>
