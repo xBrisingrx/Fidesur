@@ -27,6 +27,7 @@
 // JS de mis paginas
 //= require sectors
 //= require apples
+//= require clients
 
 // require_tree .
 

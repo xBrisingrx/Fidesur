@@ -5,4 +5,6 @@ Rails.application.routes.draw do
     post '/sectors/disable'
   resources :apples
     post '/apples/disable'
+  resources :clients
+    post '/clients/disable'
 end

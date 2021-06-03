@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_26_033736) do
+ActiveRecord::Schema.define(version: 2021_05_31_002847) do
 
   create_table "apples", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "code"
@@ -22,6 +22,19 @@ ActiveRecord::Schema.define(version: 2021_05_26_033736) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["sector_id"], name: "index_apples_on_sector_id"
+  end
+
+  create_table "clients", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "code", comment: "Legajo"
+    t.string "name"
+    t.string "last_name"
+    t.integer "dni"
+    t.string "cuil"
+    t.string "email"
+    t.string "phone"
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "sectors", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
