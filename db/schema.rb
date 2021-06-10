@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_31_002847) do
+ActiveRecord::Schema.define(version: 2021_06_08_231658) do
 
   create_table "apples", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "code"
@@ -37,6 +37,20 @@ ActiveRecord::Schema.define(version: 2021_05_31_002847) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "fields", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "code"
+    t.string "measures"
+    t.decimal "surface", precision: 15, scale: 2, default: "0.0"
+    t.string "ubication"
+    t.decimal "price", precision: 15, scale: 2, default: "0.0"
+    t.integer "status", default: 0
+    t.bigint "apple_id"
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["apple_id"], name: "index_fields_on_apple_id"
+  end
+
   create_table "sectors", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.integer "size"
@@ -46,4 +60,5 @@ ActiveRecord::Schema.define(version: 2021_05_31_002847) do
   end
 
   add_foreign_key "apples", "sectors"
+  add_foreign_key "fields", "apples"
 end

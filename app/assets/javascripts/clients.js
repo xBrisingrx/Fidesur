@@ -23,13 +23,13 @@ $(document).ready(function(){
 
   $("#form-disable-client").on("ajax:success", function(event) {
     clients_table.ajax.reload(null,false)
-    let msj = JSON.parse(event.detail[2].response)
-    noty_alert(msj.status, msj.msg)
+    let msg = JSON.parse(event.detail[2].response)
+    noty_alert(msg.status, msg.msg)
     $("#modal-disable-client").modal('hide')
   }).on("ajax:error", function(event) {
-    let msj = JSON.parse( event.detail[2].response )
+    let msg = JSON.parse( event.detail[2].response )
     console.log(event.detail[2].response)
-    $.each( msj, function( key, value ) {
+    $.each( msg, function( key, value ) {
       $(`#form-client #client_${key}`).addClass('is-invalid')
       $(`#form-client .client_${key}`).text( value ).show('slow')
     })

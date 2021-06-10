@@ -28,6 +28,7 @@
 //= require sectors
 //= require apples
 //= require clients
+//= require fields
 
 // require_tree .
 

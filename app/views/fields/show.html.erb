@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Measures:</strong>
+  <%= @field.measures %>
+</p>
+
+<p>
+  <strong>Surface:</strong>
+  <%= @field.surface %>
+</p>
+
+<p>
+  <strong>Ubication:</strong>
+  <%= @field.ubication %>
+</p>
+
+<p>
+  <strong>Price:</strong>
+  <%= @field.price %>
+</p>
+
+<p>
+  <strong>Code:</strong>
+  <%= @field.code %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @field.status %>
+</p>
+
+<%= link_to 'Edit', edit_field_path(@field) %> |
+<%= link_to 'Back', fields_path %>
