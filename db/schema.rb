@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_08_231658) do
+ActiveRecord::Schema.define(version: 2021_06_15_000341) do
 
-  create_table "apples", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "apples", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "code"
     t.integer "hectares"
     t.string "location"
@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 2021_06_08_231658) do
     t.index ["sector_id"], name: "index_apples_on_sector_id"
   end
 
-  create_table "clients", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "clients", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "code", comment: "Legajo"
     t.string "name"
     t.string "last_name"
@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 2021_06_08_231658) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "fields", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "fields", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "code"
     t.string "measures"
     t.decimal "surface", precision: 15, scale: 2, default: "0.0"
@@ -48,10 +48,13 @@ ActiveRecord::Schema.define(version: 2021_06_08_231658) do
     t.boolean "active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "field_type", default: 0
+    t.boolean "is_green_space", default: false
+    t.decimal "space_not_available", precision: 15, scale: 2, default: "0.0", comment: "Espacio de el lote que no puede ser utilizado"
     t.index ["apple_id"], name: "index_fields_on_apple_id"
   end
 
-  create_table "sectors", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "sectors", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.integer "size"
     t.boolean "active", default: true

@@ -28,8 +28,11 @@
       <%= form.label :sector_id, 'Sector (*)' %>
     </div>
     <div class="col-8 col-sm col-lg-9">
-      <%= form.select(:sector_id, @sectors.collect {|s| ["#{s.name}", s.id]}, 
-                      {:include_blank => "Seleccione sector"}, class: 'form-control select-2-apple', required: :true) %>
+      <select id="apple_sector_id" name="apple[sector_id]" class='form-control select-2-apple' required>
+        <% @sectors.each do |sector| %>
+          <option value="<%= sector.id %>" > <%= sector.name %></option>
+        <% end %>
+      </select>
     </div>
   </div>
 

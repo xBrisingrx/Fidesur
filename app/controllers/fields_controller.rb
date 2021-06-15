@@ -1,6 +1,7 @@
 class FieldsController < ApplicationController
   before_action :set_field, only: %i[ show edit update destroy ]
   before_action :set_apple, only: %i[ index new create edit ]
+  before_action :set_name_enums, only: %i[ index new edit ]
 
   # GET /fields or /fields.json
   def index
@@ -25,14 +26,13 @@ class FieldsController < ApplicationController
   def create
     @apple = Apple.find(params[:apple_id])
     @field = @apple.fields.create(field_params)
-    puts "=========> price #{@field.price} surface #{helpers.format_number(@field.surface)}"
-    # respond_to do |format|
-    #   if @field.save
-    #     format.json { render json: {status: 'success', msg: 'Lote registrado'} , status: :created }
-    #   else
-    #     format.json { render json: @field.errors, status: :unprocessable_entity }
-    #   end
-    # end
+    respond_to do |format|
+      if @field.save
+        format.json { render json: {status: 'success', msg: 'Lote registrado'} , status: :created }
+      else
+        format.json { render json: @field.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # PATCH/PUT /fields/1 or /fields/1.json
@@ -80,8 +80,14 @@ class FieldsController < ApplicationController
       @apple = Apple.find(params[:apple_id])
     end
 
+    # Paso a :es mis enumarados
+    def set_name_enums
+      @status = { 'free' => 'Libre', 'bought' => 'Comprado', 'canceled' => 'Cancelado'}
+      @field_type = { 'habitable' => 'Habitable', 'no_habitable' => 'No habitable', 'green_space' => 'Espacio verde' }
+    end
+
     # Only allow a list of trusted parameters through.
     def field_params
-      params.require(:field).permit(:measures, :surface, :ubication, :price, :code, :status)
+      params.require(:field).permit(:measures, :surface, :ubication, :price, :code, :status, :is_green_space, :space_not_available)
     end
 end

@@ -12,8 +12,10 @@ $(document).ready(function(){
     {'data': 'code'},
     {'data': 'measures'},
     {'data': 'surface'},
+    {'data': 'space_not_available'},
     {'data': 'ubication'},
     {'data': 'price'},
+    {'data': 'is_green_space'},
     {'data': 'status'},
     {'data': 'actions'}
     ],
