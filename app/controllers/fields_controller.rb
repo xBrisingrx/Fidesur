@@ -20,6 +20,7 @@ class FieldsController < ApplicationController
   # GET /fields/1/edit
   def edit
     @title_modal = 'Editar lote'
+    @blueprint = (@field.blueprint.attached?) ? 'Actualizar plano' : 'Adjuntar plano'
   end
 
   # POST /fields or /fields.json
