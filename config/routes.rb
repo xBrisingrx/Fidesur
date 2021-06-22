@@ -3,14 +3,13 @@
 #                    Prefix Verb   URI Pattern                                                                              Controller#Action
 #                      root GET    /                                                                                        apples#index
 #                 main_home GET    /main/home(.:format)                                                                     main#home
-#                   sectors GET    /sectors(.:format)                                                                       sectors#index
+#                   sectors GET    /sectores(.:format)                                                                      sectors#index
+#                    sector GET    /sector/:id(.:format)                                                                    sectors#show
 #                           POST   /sectors(.:format)                                                                       sectors#create
 #                new_sector GET    /sectors/new(.:format)                                                                   sectors#new
 #               edit_sector GET    /sectors/:id/edit(.:format)                                                              sectors#edit
-#                    sector GET    /sectors/:id(.:format)                                                                   sectors#show
 #                           PATCH  /sectors/:id(.:format)                                                                   sectors#update
 #                           PUT    /sectors/:id(.:format)                                                                   sectors#update
-#                           DELETE /sectors/:id(.:format)                                                                   sectors#destroy
 #           sectors_disable POST   /sectors/disable(.:format)                                                               sectors#disable
 #              apple_fields GET    /apples/:apple_id/fields(.:format)                                                       fields#index
 #                           POST   /apples/:apple_id/fields(.:format)                                                       fields#create
@@ -48,14 +47,31 @@
 Rails.application.routes.draw do
   
   root 'apples#index'
-  get 'main/home'
-  resources :sectors
+  
+  resources :sessions, only: [:new, :create, :destroy]  
+  get 'signup', to: 'users#new', as: 'signup'
+  get 'login', to: 'sessions#new', as: 'login'
+  get 'logout', to: 'sessions#destroy', as: 'logout'
+  resources :users
+  resources :client_fields
+  # scope '(:locale)', locale: /es/ do
+    # Sectores
+    # get '/sectores', to:'sectors#index', as: 'sectors'
+    # get '/sector/:id', to: 'sectors#show', as: 'sector'
+    resources :sectors #, only: [:new, :create, :edit, :update]
     post '/sectors/disable'
-  resources :apples do
-    resources :fields
-  end
-    post '/apples/disable'
-    post '/fields/disable'
-  resources :clients
-    post '/clients/disable'
+    
+    resources :apples do
+      resources :fields
+    end
+      post '/apples/disable'
+      post '/fields/disable'
+    resources :clients
+      post '/clients/disable'
+  # end
+
+  
+  # get 'signup', to: 'users#new', as: 'signup'
+  # get 'login', to: 'sessions#new', as: 'login'
+  # get 'logout', to: 'sessions#destroy', as: 'logout'
 end
