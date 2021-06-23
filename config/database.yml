@@ -50,5 +50,5 @@ test:
 production:
   <<: *default
   database: Fidesur_production
-  username: Fidesur
+  username: <%= ENV['DB_USERNAME'] %>
   password: <%= ENV['DB_PASSWORD'] %>
