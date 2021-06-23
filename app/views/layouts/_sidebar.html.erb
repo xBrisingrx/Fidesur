@@ -33,14 +33,14 @@
               <!-- End Dashboards v2 -->
 
               <!-- Dashboards v3 -->
-              <li class="u-sidebar-navigation-v1-menu-item u-side-nav--second-level-menu-item">
+             <!--  <li class="u-sidebar-navigation-v1-menu-item u-side-nav--second-level-menu-item">
                 <a class="media u-side-nav--second-level-menu-link g-px-15 g-py-12" href="dashboards/dashboard-v3.html">
                   <span class="d-flex align-self-center g-mr-15 g-mt-minus-1">
           <i class="hs-admin-harddrive"></i>
         </span>
                   <span class="media-body align-self-center">Lotes</span>
                 </a>
-              </li>
+              </li> -->
               <!-- End Dashboards v3 -->
 
               <!-- Dashboards v4 -->
@@ -59,117 +59,10 @@
           <!-- End Dashboards -->
           <!-- Clientes -->
           <li class="u-sidebar-navigation-v1-menu-item u-side-nav--top-level-menu-item">
-            <a class="media u-side-nav--top-level-menu-link u-side-nav--hide-on-hidden g-px-15 g-py-12 active" href="/clients">
-              <span class="d-flex align-self-center g-font-size-18 g-mr-18">
-                <i class="hs-admin-user"></i>
-              </span>
-              <span class="media-body align-self-center">Clientes</span>
-            </a>
+            <%= link_to '<span class="d-flex align-self-center g-font-size-18 g-mr-18"><i class="hs-admin-user"></i></span><span class="media-body align-self-center">Clientes</span>'.html_safe, clients_path, 
+                class: "media u-side-nav--top-level-menu-link u-side-nav--hide-on-hidden g-px-15 g-py-12 active"%>
           </li>
           <!-- End Clientes -->
-          <!-- Menu Leveles -->
-          <li class="u-sidebar-navigation-v1-menu-item u-side-nav--has-sub-menu u-side-nav--top-level-menu-item">
-            <a class="media u-side-nav--top-level-menu-link u-side-nav--hide-on-hidden g-px-15 g-py-12" href="#" data-hssm-target="#subMenuLevels1">
-              <span class="d-flex align-self-center g-pos-rel g-font-size-18 g-mr-18">
-      <i class="hs-admin-list-ol"></i>
-    </span>
-              <span class="media-body align-self-center">Menu Levels</span>
-              <span class="d-flex align-self-center u-side-nav--control-icon">
-      <i class="hs-admin-angle-right"></i>
-    </span>
-              <span class="u-side-nav--has-sub-menu__indicator"></span>
-            </a>
-
-            <!-- Menu Leveles: Submenu-1 -->
-            <ul id="subMenuLevels1" class="u-sidebar-navigation-v1-menu u-side-nav--second-level-menu mb-0">
-              <!-- Sub Level 2 -->
-              <li class="u-sidebar-navigation-v1-menu-item u-side-nav--second-level-menu-item">
-                <a class="media u-side-nav--second-level-menu-link g-px-15 g-py-12" href="#">
-                  <span class="d-flex align-self-center g-mr-15 g-mt-minus-1">
-          <i class="hs-admin-list"></i>
-        </span>
-                  <span class="media-body align-self-center">Sub Level 2</span>
-                </a>
-              </li>
-              <!-- End Sub Level 2 -->
-
-              <!-- Sub Level 2 -->
-              <li class="u-sidebar-navigation-v1-menu-item u-side-nav--has-sub-menu u-side-nav--second-level-menu-item">
-                <a class="media u-side-nav--second-level-menu-link g-px-15 g-py-12" href="#" data-hssm-target="#subMenuLevels2">
-                  <span class="d-flex align-self-center g-mr-15 g-mt-minus-1">
-          <i class="hs-admin-list"></i>
-        </span>
-                  <span class="media-body align-self-center">Sub Level 2</span>
-                  <span class="d-flex align-self-center u-side-nav--control-icon">
-          <i class="hs-admin-angle-right"></i>
-        </span>
-                </a>
-
-                <!-- Menu Leveles: Submenu-2 -->
-                <ul id="subMenuLevels2" class="u-side-nav--third-level-menu">
-                  <!-- Sub Level 3 -->
-                  <li class="u-side-nav--third-level-menu-item u-side-nav--has-sub-menu">
-                    <a class="media d-flex u-side-nav--third-level-menu-link u-side-nav--hide-on-hidden g-pl-8 g-pr-15 g-py-6" href="#" data-hssm-target="#subMenuLevels3">
-                      <span class="media-body align-self-center">Sub Level 3</span>
-                      <span class="d-flex align-self-center u-side-nav--control-icon">
-              <i class="hs-admin-angle-right"></i>
-            </span>
-                    </a>
-
-                    <!-- Menu Leveles: Submenu-3 -->
-                    <ul id="subMenuLevels3" class="u-side-nav--fourth-level-menu">
-                      <!-- Sub Level 4 -->
-                      <li class="u-side-nav--fourth-level-menu-item">
-                        <a class="u-side-nav--fourth-level-menu-link g-px-15 g-py-6" href="#">
-                          <span class="media-body align-self-center">Sub Level 4</span>
-                        </a>
-                      </li>
-                      <!-- End Sub Level 4 -->
-
-                      <!-- Sub Level 4 -->
-                      <li class="u-side-nav--fourth-level-menu-item">
-                        <a class="u-side-nav--fourth-level-menu-link g-px-15 g-py-6" href="#">
-                          <span class="media-body align-self-center">Sub Level 4</span>
-                        </a>
-                      </li>
-                      <!-- End Sub Level 4 -->
-
-                      <!-- Sub Level 4 -->
-                      <li class="u-side-nav--fourth-level-menu-item">
-                        <a class="u-side-nav--fourth-level-menu-link g-px-15 g-py-6" href="#">
-                          <span class="media-body align-self-center">Sub Level 4</span>
-                        </a>
-                      </li>
-                      <!-- End Sub Level 4 -->
-                    </ul>
-                    <!-- End Menu Leveles: Submenu-3 -->
-                  </li>
-                  <!-- End Sub Level 3 -->
-
-                  <!-- Sub Level 3 -->
-                  <li class="u-side-nav--third-level-menu-item">
-                    <a class="u-side-nav--third-level-menu-link u-side-nav--hide-on-hidden g-pl-8 g-pr-15 g-py-6" href="#">Sub Level 3</a>
-                  </li>
-                  <!-- End Sub Level 3 -->
-                </ul>
-                <!-- End Menu Leveles: Submenu-2 -->
-              </li>
-              <!-- End Sub Level 2 -->
-
-              <!-- Sub Level 2 -->
-              <li class="u-sidebar-navigation-v1-menu-item u-side-nav--second-level-menu-item">
-                <a class="media u-side-nav--second-level-menu-link g-px-15 g-py-12" href="#">
-                  <span class="d-flex align-self-center g-mr-15 g-mt-minus-1">
-          <i class="hs-admin-list"></i>
-        </span>
-                  <span class="media-body align-self-center">Sub Level 2</span>
-                </a>
-              </li>
-              <!-- End Sub Level 2 -->
-            </ul>
-            <!-- End Menu Leveles: Submenu-1 -->
-          </li>
-          <!-- End Menu Leveles -->
         </ul>
       </div>
       <!-- End Sidebar Nav -->

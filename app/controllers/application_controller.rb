@@ -1,11 +1,13 @@
 class ApplicationController < ActionController::Base
 
-	# def default_url_options
-	#   { locale: I18n.locale }
-	# end
 
 	helper_method :current_user, :logged_in?
   before_action :no_login
+  before_action :default_url_options
+
+	def default_url_options
+	  { locale: I18n.locale }
+	end
 
 	def current_user
     if session[:user_id]

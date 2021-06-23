@@ -1,29 +1,60 @@
-<p id="notice"><%= notice %></p>
+<h1>Usuarios</h1>
 
-<h1>Users</h1>
+<%= link_to '<i class="hs-admin-plus"></i> Nuevo usuario'.html_safe, new_user_path(), {:remote => true, 'data-toggle' =>  "modal",
+      'data-target' => '#modal-user', 'class' => 'btn u-btn-teal justify-content-end mb-2'} %>
 
-<table>
+<table id="users_table" class="table hover dt-responsive w-100">
   <thead>
     <tr>
-      <th>Rol</th>
-      <th>Clients</th>
-      <th colspan="3"></th>
+      <th>Usuario</th>
+      <th>Nombre</th>
+      <th>Email</th>
+      <th>Acciones</th>
     </tr>
   </thead>
 
   <tbody>
-    <% @users.each do |user| %>
-      <tr>
-        <td><%= user.rol %></td>
-        <td><%= user.clients %></td>
-        <td><%= link_to 'Show', user %></td>
-        <td><%= link_to 'Edit', edit_user_path(user) %></td>
-        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
   </tbody>
 </table>
 
-<br>
+<!-- Modal alta de user -->
+<div class="modal fade" id="modal-user" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+</div>
+<!-- End modal -->
 
-<%= link_to 'New User', new_user_path %>
+
+<!-- Modal para eliminar user -->
+<div class="modal fade" id="modal-disable-user" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">¿ Esta seguro de dar de baja al lote ?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger" role="alert">
+          Tenga en cuenta que todos los registros asociados tambien seran dados de baja.
+          <span data-toggle="collapse" href="#multiCollapseExample1" 
+                role="button" aria-expanded="false" aria-controls="multiCollapseExample1"  
+                class="badge badge-info">Leer mas...</span>
+            <div class="collapse multi-collapse" id="multiCollapseExample1">
+              Registros afectados:
+              <ul>
+                <li>Manzanas del usere</li>
+                <li>Lotes del usere</li>
+              </ul>
+            </div>
+        </div>
+        <%= form_with(url: '_', id: 'form-disable-user') %>
+          <input type="hidden" id="user_id" name="user[id]" value="">
+          <button type="submit" class="btn u-btn-red g-mr-10">Eliminar</button>
+          <button type="button" data-dismiss="modal" class="btn u-btn-teal g-mr-10"> Cerrar </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Fin modal eliminar user -->

@@ -6,8 +6,9 @@ function modal_disable_field(id) {
 }
 
 $(document).ready(function(){
+  const apple_id = document.getElementById('apple_id').value 
 	fields_table = $("#fields_table").DataTable({
-    'ajax':'fields',
+    'ajax':`lotes`,
     'columns': [
     {'data': 'code'},
     {'data': 'measures'},
@@ -17,6 +18,7 @@ $(document).ready(function(){
     {'data': 'price'},
     {'data': 'is_green_space'},
     {'data': 'status'},
+    {'data': 'blueprint'},
     {'data': 'actions'}
     ],
     'language': {'url': "/assets/plugins/datatables_lang_spa.json"}

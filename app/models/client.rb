@@ -15,6 +15,9 @@
 #  updated_at   :datetime         not null
 #
 class Client < ApplicationRecord
+
+	has_many :client_fields
+
 	validates :name, presence: true
 	validates :last_name, presence: true
 	validates :dni, uniqueness: { message: "Este dni pertenece a otro cliente" }, allow_blank: true

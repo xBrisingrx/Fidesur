@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Client:</strong>
+  <%= @client_field.client %>
+</p>
+
+<p>
+  <strong>Field:</strong>
+  <%= @client_field.field %>
+</p>
+
+<p>
+  <strong>Detail:</strong>
+  <%= @client_field.detail %>
+</p>
+
+<p>
+  <strong>Active:</strong>
+  <%= @client_field.active %>
+</p>
+
+<%= link_to 'Edit', edit_client_field_path(@client_field) %> |
+<%= link_to 'Back', client_fields_path %>

@@ -1,37 +1,36 @@
-<%= form_with(model: user, local: true) do |form| %>
-  <% if user.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+<%= form_with(model: @user, id: 'form-user', class: 'needs-validation g-brd-around g-brd-gray-light-v4 g-pa-15 g-mb-15') do |form| %>
 
-      <ul>
-      <% user.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= form.label :password %>
-    <%= form.password_field :password %>
+  <div class="form-group">
+    <%= form.label :username, 'Nombre de usuario:' ,class: 'col-3' %>
+    <%= form.text_field :username, class: 'form-control form-control-md rounded-0'%>
+    <div class="invalid-feedback user_username"></div>
   </div>
 
-  <div class="field">
-    <%= form.label :password_confirmation %>
-    <%= form.password_field :password_confirmation %>
+    <div class="form-group">
+    <%= form.label :name, 'Nombre:' ,class: 'col-3' %>
+    <%= form.text_field :name, class: 'form-control form-control-md rounded-0'%>
+    <div class="invalid-feedback user_name"></div>
   </div>
 
-  <div class="field">
-    <%= form.label :rol %>
-    <%= form.number_field :rol %>
+
+  <div class="form-group">
+    <%= form.label :email, 'Email:' ,class: 'col-3' %>
+    <%= form.text_field :email, class: 'form-control form-control-md rounded-0' %>
+    <div class="invalid-feedback client_email"></div>
   </div>
 
-  <div class="field">
-    <%= form.label :clients_id %>
-    <%= form.text_field :clients_id %>
+  <div class="form-group">
+    <%= form.label :password , class: 'col-3'%>
+    <%= form.password_field :password, class: 'form-control form-control-md rounded-0' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :password_confirmation, class: 'col-3'  %>
+    <%= form.password_field :password_confirmation, class: 'form-control form-control-md rounded-0' %>
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit 'Guardar', class: 'btn u-btn-teal mr-2'  %>
+    <button type="button" class="btn u-btn-darkred" data-dismiss="modal">Cerrar</button>
   </div>
 <% end %>

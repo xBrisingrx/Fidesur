@@ -29,6 +29,7 @@
 //= require apples
 //= require clients
 //= require fields
+//= require users
 
 // require_tree .
 

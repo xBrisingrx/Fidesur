@@ -28,6 +28,7 @@
 class Field < ApplicationRecord
 	belongs_to :apple
 	has_one_attached :blueprint
+	has_many :client_fields
 
 	enum status: [:free, :bought, :canceled]
 	enum field_type: [:habitable, :no_habitable, :green_space]

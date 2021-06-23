@@ -7,7 +7,7 @@ function modal_disable_sector(id) {
 
 $(document).ready(function(){
 	sector_table = $("#sectors_table").DataTable({
-    'ajax':'sectors',
+    'ajax':'/en/sectors',
     'columns': [
     {'data': 'name'},
     {'data': 'size'},

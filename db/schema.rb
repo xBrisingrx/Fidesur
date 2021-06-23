@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_17_202930) do
+ActiveRecord::Schema.define(version: 2021_06_21_224750) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -43,6 +43,17 @@ ActiveRecord::Schema.define(version: 2021_06_17_202930) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["sector_id"], name: "index_apples_on_sector_id"
+  end
+
+  create_table "client_fields", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "client_id"
+    t.bigint "field_id"
+    t.text "detail"
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["client_id"], name: "index_client_fields_on_client_id"
+    t.index ["field_id"], name: "index_client_fields_on_field_id"
   end
 
   create_table "clients", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -83,7 +94,20 @@ ActiveRecord::Schema.define(version: 2021_06_17_202930) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "username"
+    t.string "name"
+    t.string "email"
+    t.string "password_digest"
+    t.integer "rol"
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "apples", "sectors"
+  add_foreign_key "client_fields", "clients"
+  add_foreign_key "client_fields", "fields"
   add_foreign_key "fields", "apples"
 end

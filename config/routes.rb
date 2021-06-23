@@ -46,32 +46,48 @@
 
 Rails.application.routes.draw do
   
-  root 'apples#index'
-  
   resources :sessions, only: [:new, :create, :destroy]  
   get 'signup', to: 'users#new', as: 'signup'
   get 'login', to: 'sessions#new', as: 'login'
   get 'logout', to: 'sessions#destroy', as: 'logout'
-  resources :users
-  resources :client_fields
-  # scope '(:locale)', locale: /es/ do
-    # Sectores
-    # get '/sectores', to:'sectors#index', as: 'sectors'
-    # get '/sector/:id', to: 'sectors#show', as: 'sector'
-    resources :sectors #, only: [:new, :create, :edit, :update]
-    post '/sectors/disable'
+
+  # resources :apples do
+  #   resources :fields
+  # end
+  #   post '/apples/disable'
+  #   post '/fields/disable'
+  # resources :clients
+  #   post '/clients/disable'
+
+
+
+  localized do 
+
+    root 'apples#index'
     
-    resources :apples do
-      resources :fields
-    end
+    
+    resources :users
+    resources :client_fields
+    # scope '(:locale)', locale: /es/ do
+      # Sectores
+      # get '/sectores', to:'sectors#index', as: 'sectors'
+      # get '/sector/:id', to: 'sectors#show', as: 'sector'
+      resources :sectors #, only: [:new, :create, :edit, :update]
+      post '/sectors/disable'
+      
+      resources :apples do
+        resources :fields
+      end
       post '/apples/disable'
       post '/fields/disable'
-    resources :clients
-      post '/clients/disable'
-  # end
+      resources :clients
+        post '/clients/disable'
+    # end
 
-  
-  # get 'signup', to: 'users#new', as: 'signup'
-  # get 'login', to: 'sessions#new', as: 'login'
-  # get 'logout', to: 'sessions#destroy', as: 'logout'
-end
+    
+    # get 'signup', to: 'users#new', as: 'signup'
+    # get 'login', to: 'sessions#new', as: 'login'
+    # get 'logout', to: 'sessions#destroy', as: 'logout'
+
+  end # end localized
+end 

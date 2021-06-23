@@ -1,4 +1,12 @@
-es_AR:
+es:
+  routes:
+    apples: manzanas
+    apple: manzana
+    sectors: sectores
+    fields: lotes
+    field: lote
+    client: cliente
+    clients: clientes
   activerecord:
     errors:
       messages:

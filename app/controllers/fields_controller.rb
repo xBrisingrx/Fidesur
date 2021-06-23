@@ -6,6 +6,7 @@ class FieldsController < ApplicationController
   # GET /fields or /fields.json
   def index
     @fields = Field.where(apple_id: params[:apple_id],active: true)
+    @apple_id = params[:apple_id]
   end
 
   # GET /fields/1 or /fields/1.json
@@ -89,6 +90,6 @@ class FieldsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def field_params
-      params.require(:field).permit(:measures, :surface, :ubication, :price, :code, :status, :is_green_space, :space_not_available)
+      params.require(:field).permit(:measures, :surface, :ubication, :price, :code, :status, :is_green_space, :space_not_available, :blueprint)
     end
 end
