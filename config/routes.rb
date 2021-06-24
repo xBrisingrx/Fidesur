@@ -59,7 +59,7 @@ Rails.application.routes.draw do
   # resources :clients
   #   post '/clients/disable'
 
-
+  get 'sell_field/:field_id', to: 'client_fields#sell_field', as: 'sell_field'
 
   localized do 
 

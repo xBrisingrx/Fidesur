@@ -29,5 +29,7 @@ $(document).ready(function(){
       $(`#form-sector .sector_${key}`).text( value ).show('slow')
     })
   })
+
+  $.HSCore.components.HSDonutChart.init('.js-donut-chart');
 })
 

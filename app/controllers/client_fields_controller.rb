@@ -47,6 +47,12 @@ class ClientFieldsController < ApplicationController
     end
   end
 
+  def sell_field
+    # vendo un solo lote, aca me viene un lote por parametro
+    @client_field = ClientField.new
+    @client_field.field_id = params[:field_id]
+  end
+
   # DELETE /client_fields/1 or /client_fields/1.json
   def destroy
     @client_field.destroy
