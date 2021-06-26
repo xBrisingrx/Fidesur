@@ -30,6 +30,6 @@ class Field < ApplicationRecord
 	has_one_attached :blueprint
 	has_many :client_fields
 
-	enum status: [:free, :bought, :canceled]
+	enum status: [:available, :bought, :canceled]
 	enum field_type: [:habitable, :no_habitable, :green_space]
 end

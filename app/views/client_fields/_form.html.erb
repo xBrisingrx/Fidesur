@@ -1,19 +1,21 @@
-<%= form_with(model: client_field, local: true) do |form| %>
-  <% if client_field.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(client_field.errors.count, "error") %> prohibited this client_field from being saved:</h2>
+<%= form_with(model: @client_field, class: 'needs-validation g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30') do |form| %>
 
-      <ul>
-      <% client_field.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+  <div class="form-group row">
+    <div class="col-4 col-lg-3">
+      <%= form.label :client_id, 'Cliente (*)' %>
     </div>
-  <% end %>
+    <div class="form-group col-8 col-ls-6">
+      <%= form.select(:client_id, @clients.collect {|c| ["#{c.last_name} #{c.name}", c.id]}, 
+                      {:include_blank => "Seleccione comprador"},
+                      class: 'select-2-client-field') %>
+      <button id="add-client" class="bnt u-btn-primary"> + </button>
+    </div>
+  </div>
 
-  <div class="field">
-    <%= form.label :client_id %>
-    <%= form.text_field :client_id %>
+  <div class="form-group row">
+    <ul class="client-list">
+      
+    </ul>
   </div>
 
   <div class="field">
@@ -30,8 +32,8 @@
     <%= form.label :active %>
     <%= form.check_box :active %>
   </div>
-
   <div class="actions">
-    <%= form.submit %>
+    <button id="btnSubmit" type="button" class="btn u-btn-teal mr-2"> Guardar </button>
+    <button type="button" class="btn u-btn-red" data-dismiss="modal" aria-label="Close"> Cancelar </button>
   </div>
 <% end %>

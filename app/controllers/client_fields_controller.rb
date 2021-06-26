@@ -21,17 +21,18 @@ class ClientFieldsController < ApplicationController
 
   # POST /client_fields or /client_fields.json
   def create
-    @client_field = ClientField.new(client_field_params)
+    puts "============ #{params[:client_id]}"
+    # @client_field = ClientField.new(client_field_params)
 
-    respond_to do |format|
-      if @client_field.save
-        format.html { redirect_to @client_field, notice: "Client field was successfully created." }
-        format.json { render :show, status: :created, location: @client_field }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @client_field.errors, status: :unprocessable_entity }
-      end
-    end
+    # respond_to do |format|
+    #   if @client_field.save
+    #     format.html { redirect_to @client_field, notice: "Client field was successfully created." }
+    #     format.json { render :show, status: :created, location: @client_field }
+    #   else
+    #     format.html { render :new, status: :unprocessable_entity }
+    #     format.json { render json: @client_field.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   # PATCH/PUT /client_fields/1 or /client_fields/1.json
@@ -49,6 +50,7 @@ class ClientFieldsController < ApplicationController
 
   def sell_field
     # vendo un solo lote, aca me viene un lote por parametro
+    @clients = Client.where(active:true)
     @client_field = ClientField.new
     @client_field.field_id = params[:field_id]
   end

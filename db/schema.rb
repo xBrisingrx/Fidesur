@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_21_224750) do
+ActiveRecord::Schema.define(version: 2021_06_25_212817) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -45,15 +45,14 @@ ActiveRecord::Schema.define(version: 2021_06_21_224750) do
     t.index ["sector_id"], name: "index_apples_on_sector_id"
   end
 
-  create_table "client_fields", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "client_sales", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "client_id"
-    t.bigint "field_id"
-    t.text "detail"
+    t.bigint "sale_id"
     t.boolean "active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["client_id"], name: "index_client_fields_on_client_id"
-    t.index ["field_id"], name: "index_client_fields_on_field_id"
+    t.index ["client_id"], name: "index_client_sales_on_client_id"
+    t.index ["sale_id"], name: "index_client_sales_on_sale_id"
   end
 
   create_table "clients", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -67,6 +66,16 @@ ActiveRecord::Schema.define(version: 2021_06_21_224750) do
     t.boolean "active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "field_sales", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "field_id"
+    t.bigint "sale_id"
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["field_id"], name: "index_field_sales_on_field_id"
+    t.index ["sale_id"], name: "index_field_sales_on_sale_id"
   end
 
   create_table "fields", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -84,6 +93,19 @@ ActiveRecord::Schema.define(version: 2021_06_21_224750) do
     t.boolean "is_green_space", default: false
     t.decimal "space_not_available", precision: 15, scale: 2, default: "0.0", comment: "Espacio de el lote que no puede ser utilizado"
     t.index ["apple_id"], name: "index_fields_on_apple_id"
+  end
+
+  create_table "sales", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.decimal "paid", precision: 15, scale: 2, default: "0.0"
+    t.decimal "total_cost", precision: 15, scale: 2, default: "0.0"
+    t.integer "number_of_payments"
+    t.integer "arrear"
+    t.integer "due_date"
+    t.boolean "apply_arrear"
+    t.text "comment"
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "sectors", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -107,7 +129,9 @@ ActiveRecord::Schema.define(version: 2021_06_21_224750) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "apples", "sectors"
-  add_foreign_key "client_fields", "clients"
-  add_foreign_key "client_fields", "fields"
+  add_foreign_key "client_sales", "clients"
+  add_foreign_key "client_sales", "sales"
+  add_foreign_key "field_sales", "fields"
+  add_foreign_key "field_sales", "sales"
   add_foreign_key "fields", "apples"
 end

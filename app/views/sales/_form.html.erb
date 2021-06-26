@@ -1,0 +1,75 @@
+<%= form_with( class: 'needs-validation g-brd-around g-brd-gray-light-v4 g-pa-10 g-mb-10', id: 'form-field-sale' ) do |form| %>
+  
+  <%= form.hidden_field :field_id, value: @field.id %>
+  <%= form.hidden_field :total_cost, value: @field.price %>
+
+  <div class="mb-2">
+    <b><u>Valor del lote:</u> $ <%= @field.price %></b>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-4 col-lg-3">
+      <%= form.label :client_id, 'Quien compra (*)' %>
+    </div>
+    <div class="form-group col-8 col-ls-6">
+      <%= form.select(:client_id, @clients.collect {|c| ["#{c.last_name} #{c.name}", c.id]}, 
+                      {:include_blank => "Seleccione comprador"},
+                      class: 'select-2-client-field') %>
+      <button id="add-client" class="bnt u-btn-primary"> + </button>
+      <div class="invalid-feedback client_id"></div>
+    </div>
+
+  </div>
+
+  <div class="form-group row mb-2">
+    <ul class="client-list">
+      
+    </ul>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :paid, 'Primer entrega $:' , class: 'col-3' %>
+    <%= form.number_field :paid, class: 'form-control rounded-0 col-6', step:'0.01' %>
+    <div class="invalid-feedback field_price"></div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :number_of_payments, 'Cantidad de cuotas:' , class: 'col-3' %>
+    <%= form.number_field :number_of_payments, class: 'form-control rounded-0 col-8', step:'0.01' %>
+    <div class="invalid-feedback field_number_of_payments"></div>
+  </div>
+
+  <div class="form-group">
+    <label class="form-check-inline u-check g-pl-25">
+      <%= form.check_box :apply_arrear, class: 'g-hidden-xs-up g-pos-abs g-top-0 g-left-0' %>
+      <div class="u-check-icon-checkbox-v6 g-absolute-centered--y g-left-0">
+        <i class="fa" data-check-icon="&#xf00c"></i>
+      </div>
+      Aplica mora
+    </label>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :arrear, 'Mora %:' , class: 'col-3' %>
+    <%= form.number_field :arrear, class: 'form-control rounded-0 col-8', step:'0.01' %>
+    <div class="invalid-feedback field_price"></div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :due_date, 'Día vencimiento cuota:' , class: 'col-3' %>
+    <%= form.number_field :due_date, class: 'form-control rounded-0 col-6', step:'0.01' %>
+    <div class="invalid-feedback field_due_date"></div>
+  </div>
+
+
+  <div class="form-group">
+    <%= form.text_area :comment, 
+        class: 'form-control form-control-md u-textarea-expandable g-brd-gray-light-v7 g-brd-gray-light-v3--focus g-rounded-4 g-resize-none g-overflow-hidden', 
+          row: '3', placeholder: 'Comentario...'%>
+  </div>
+
+  <div class="actions">
+    <button id="btnSubmit" type="button" class="btn u-btn-teal mr-2"> Guardar </button>
+    <button type="button" class="btn u-btn-red" data-dismiss="modal" aria-label="Close"> Cancelar </button>
+  </div>
+<% end %>

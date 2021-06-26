@@ -1,26 +1,28 @@
 # == Schema Information
 #
-# Table name: client_fields
+# Table name: field_sales
 #
 #  id         :bigint           not null, primary key
 #  active     :boolean          default(TRUE)
-#  detail     :text(65535)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  client_id  :bigint
 #  field_id   :bigint
+#  sale_id    :bigint
 #
 # Indexes
 #
-#  index_client_fields_on_client_id  (client_id)
-#  index_client_fields_on_field_id   (field_id)
+#  index_field_sales_on_field_id  (field_id)
+#  index_field_sales_on_sale_id   (sale_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (client_id => clients.id)
 #  fk_rails_...  (field_id => fields.id)
+#  fk_rails_...  (sale_id => sales.id)
 #
-class ClientField < ApplicationRecord
-  belongs_to :client
-  belongs_to :field
+require 'test_helper'
+
+class FieldSaleTest < ActiveSupport::TestCase
+  # test "the truth" do
+  #   assert true
+  # end
 end

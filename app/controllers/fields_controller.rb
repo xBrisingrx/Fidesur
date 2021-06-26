@@ -84,7 +84,7 @@ class FieldsController < ApplicationController
 
     # Paso a :es mis enumarados
     def set_name_enums
-      @status = { 'free' => 'Libre', 'bought' => 'Comprado', 'canceled' => 'Cancelado'}
+      @status = { 'available' => 'Disponible', 'bought' => 'Comprado', 'canceled' => 'Cancelado'}
       @field_type = { 'habitable' => 'Habitable', 'no_habitable' => 'No habitable', 'green_space' => 'Espacio verde' }
     end
 

@@ -1,0 +1,79 @@
+$("#modal-field").html("<%= j (render 'layouts/modal') %>")
+$('.select-2-client-field').select2({ width: '80%',theme: "bootstrap4" })
+$("#modal-field").modal('show')
+
+$("#form-field-sale").on("ajax:success", function(event) {
+    fields_table.ajax.reload(null,false)
+    let msg = JSON.parse(event.detail[2].response)
+    noty_alert(msg.status, msg.msg)
+    $("#modal-field").modal('hide')
+  }).on("ajax:error", function(event) {
+	let msg = JSON.parse( event.detail[2].response )
+	$.each( msg, function( key, value ) {
+		$(`#form-field-sale #field_${key}`).addClass('is-invalid')
+		$(`#form-field-sale .field_${key}`).text( value ).show('slow')
+	})
+})
+
+
+
+
+document.getElementById('add-client').addEventListener('click', (event) => {
+	event.preventDefault()
+	let client = document.getElementById('client_id')
+
+	if (client.value != null && client.value != '') {
+		let client_name =  $('#client_id option:selected').text()
+		
+		$('.client-list').append(`
+			<div class="row">
+				<input type="text" value="${client_name}" class="client-id form-control rounded-0 mb-2" data-id=${client.value} disabled></input>
+			</div>
+		`)
+
+		$('#client_id option:selected').attr('disabled', 'disabled')
+		$('.select-2-client-field').val('').trigger('change')
+	} else {
+		console.log('falso')
+	}
+})
+
+function get_clients() {
+	let compradores = []
+	let lista = document.getElementsByClassName('client-id')
+	for (let i = lista.length - 1; i >= 0; i--) {
+		compradores.push(lista[i].dataset.id)
+	}
+
+	return compradores
+}
+
+document.getElementById('btnSubmit').addEventListener('click', (event) => {
+  
+	fetch('/sales/', 
+			{
+        method: 'POST',
+        headers: {           
+          'X-CSRF-Token': document.getElementsByName('csrf-token')[0].content,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body:
+          JSON.stringify({ "clients":get_clients(), 
+          								 "field_id": document.getElementById('field_id').value,
+          								 "comment": document.getElementById('comment').value,
+          								 "apply_arrear": document.getElementById('apply_arrear').value,
+          								 "arrear": document.getElementById('arrear').value,
+          								 "due_date": document.getElementById('due_date').value,
+          								 "paid": document.getElementById('paid').value,
+          								 "total_cost": document.getElementById('total_cost').value })
+      }
+    )
+    .then( response => {
+      return response.json()
+    })
+    .then( response => {
+      console.log(response)
+    })
+    .catch(console.log)
+})
