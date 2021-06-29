@@ -43,16 +43,6 @@
       <div class="modal-body">
         <div class="alert alert-danger" role="alert">
           Tenga en cuenta que todos los registros asociados tambien seran dados de baja.
-          <span data-toggle="collapse" href="#multiCollapseExample1" 
-                role="button" aria-expanded="false" aria-controls="multiCollapseExample1"  
-                class="badge badge-info">Leer mas...</span>
-            <div class="collapse multi-collapse" id="multiCollapseExample1">
-              Registros afectados:
-              <ul>
-                <li>Manzanas del fielde</li>
-                <li>Lotes del fielde</li>
-              </ul>
-            </div>
         </div>
         <%= form_with(url: fields_disable_path, id: 'form-disable-field') %>
           <input type="hidden" id="field_id" name="field[id]" value="">
