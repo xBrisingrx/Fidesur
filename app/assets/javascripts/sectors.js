@@ -10,7 +10,6 @@ $(document).ready(function(){
     'ajax':'/en/sectors',
     'columns': [
     {'data': 'name'},
-    {'data': 'size'},
     {'data': 'actions'}
     ],
     'language': {'url': "/assets/plugins/datatables_lang_spa.json"}

@@ -13,7 +13,7 @@ json.data @fields do |f|
 		json.blueprint "<button class='btn u-btn-orange' disabled title='No se adjunto ningun plano'><i class= 'hs-admin-file'></i></button>"
 	end
 
-	if f.free?
+	if f.available?
 		json.actions "#{link_to '<i class="hs-admin-pencil"></i>'.html_safe, edit_apple_field_path(apple_id:f.apple_id, id: f.id), 
   								 :remote => true, 'data-toggle' =>  'modal',
       							'data-target' => '#modal-field', 
