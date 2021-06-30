@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_25_212817) do
+ActiveRecord::Schema.define(version: 2021_06_30_130629) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(version: 2021_06_25_212817) do
 
   create_table "apples", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "code"
-    t.integer "hectares"
+    t.decimal "hectares", precision: 15, scale: 2, default: "0.0"
     t.string "location"
     t.float "value", default: 0.0
     t.boolean "active", default: true

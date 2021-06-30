@@ -5,7 +5,7 @@
 #  id         :bigint           not null, primary key
 #  active     :boolean          default(TRUE)
 #  code       :string(255)
-#  hectares   :integer
+#  hectares   :decimal(15, 2)   default(0.0)
 #  location   :string(255)
 #  value      :float(24)        default(0.0)
 #  created_at :datetime         not null
