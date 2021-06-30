@@ -7,7 +7,7 @@ function modal_disable_apple(id) {
 
 $(document).ready(function(){
 	apples_table = $("#apples-table").DataTable({
-    'ajax':'/en/apples',
+    'ajax':'manzanas',
     'columns': [
 	    {'data': 'code'},
 	    {'data': 'hectares'},
