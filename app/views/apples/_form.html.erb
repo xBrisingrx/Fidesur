@@ -7,7 +7,7 @@
 
   <div class="form-group">
     <%= form.label :hectares, 'N° hectareas:' ,class: 'col-3' %>
-    <%= form.number_field :hectares, class: 'form-control form-control-md rounded-0' %>
+    <%= form.number_field :hectares, class: 'form-control form-control-md rounded-0', step:'0.001' %>
     <div class="invalid-feedback apple_hectares"></div>
   </div>
 
@@ -19,7 +19,7 @@
 
   <div class="form-group">
     <%= form.label :value, 'Valor ($):' ,class: 'col-3' %>
-    <%= form.text_field :value, class: 'form-control form-control-md rounded-0'%>
+    <%= form.number_field :value, class: 'form-control form-control-md rounded-0', step:'0.001' %>
     <div class="invalid-feedback apple_value"></div>
   </div>
 
