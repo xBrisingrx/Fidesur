@@ -7,7 +7,7 @@ function modal_disable_client(id) {
 
 $(document).ready(function(){
 	clients_table = $("#clients_table").DataTable({
-    'ajax':'/en/clients',
+    'ajax':'clientes',
     'columns': [
     {'data': 'code'},
     {'data': 'last_name'},
