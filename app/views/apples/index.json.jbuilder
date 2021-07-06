@@ -1,6 +1,7 @@
 json.data @apples do |a|
 	json.code a.code
 	json.hectares a.hectares
+	json.space_not_available "#{a.space_not_available} m²"
 	json.location a.location
 	json.value "$ #{a.value}"
 	json.sector a.sector.name

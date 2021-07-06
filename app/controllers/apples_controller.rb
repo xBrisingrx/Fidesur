@@ -79,6 +79,6 @@ class ApplesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def apple_params
-      params.require(:apple).permit(:hectares, :location, :value, :code, :sector_id, :blueprint)
+      params.require(:apple).permit(:hectares, :location, :value, :code, :sector_id,:space_not_available, :blueprint)
     end
 end

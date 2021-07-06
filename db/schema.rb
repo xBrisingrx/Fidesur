@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_25_212817) do
+ActiveRecord::Schema.define(version: 2021_07_06_192451) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 2021_06_25_212817) do
     t.bigint "sector_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "space_not_available", precision: 15, scale: 2, default: "0.0", comment: "Espacio de la manzana que no puede ser utilizado"
     t.index ["sector_id"], name: "index_apples_on_sector_id"
   end
 
@@ -91,7 +92,6 @@ ActiveRecord::Schema.define(version: 2021_06_25_212817) do
     t.datetime "updated_at", null: false
     t.integer "field_type", default: 0
     t.boolean "is_green_space", default: false
-    t.decimal "space_not_available", precision: 15, scale: 2, default: "0.0", comment: "Espacio de el lote que no puede ser utilizado"
     t.index ["apple_id"], name: "index_fields_on_apple_id"
   end
 

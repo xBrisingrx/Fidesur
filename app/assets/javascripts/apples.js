@@ -11,6 +11,7 @@ $(document).ready(function(){
     'columns': [
 	    {'data': 'code'},
 	    {'data': 'hectares'},
+      {'data': 'space_not_available'},
 	    {'data': 'location'},
 	    {'data': 'value'},
 	    {'data': 'sector'},

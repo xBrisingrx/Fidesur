@@ -2,15 +2,16 @@
 #
 # Table name: apples
 #
-#  id         :bigint           not null, primary key
-#  active     :boolean          default(TRUE)
-#  code       :string(255)
-#  hectares   :integer
-#  location   :string(255)
-#  value      :float(24)        default(0.0)
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  sector_id  :bigint
+#  id                                                                    :bigint           not null, primary key
+#  active                                                                :boolean          default(TRUE)
+#  code                                                                  :string(255)
+#  hectares                                                              :integer
+#  location                                                              :string(255)
+#  space_not_available(Espacio de la manzana que no puede ser utilizado) :decimal(15, 2)   default(0.0)
+#  value                                                                 :float(24)        default(0.0)
+#  created_at                                                            :datetime         not null
+#  updated_at                                                            :datetime         not null
+#  sector_id                                                             :bigint
 #
 # Indexes
 #

@@ -90,6 +90,6 @@ class FieldsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def field_params
-      params.require(:field).permit(:measures, :surface, :ubication, :price, :code, :status, :is_green_space, :space_not_available, :blueprint)
+      params.require(:field).permit(:measures, :surface, :ubication, :price, :code, :status, :is_green_space, :blueprint)
     end
 end
