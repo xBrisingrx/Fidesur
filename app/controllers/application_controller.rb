@@ -5,6 +5,8 @@ class ApplicationController < ActionController::Base
   before_action :no_login
   before_action :default_url_options
 
+  config.time_zone = "America/Argentina/Buenos_Aires"
+
 	def default_url_options
 	  { locale: I18n.locale }
 	end
