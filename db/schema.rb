@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(version: 2021_07_06_192451) do
 
   create_table "apples", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "code"
-    t.integer "hectares"
+    t.decimal "hectares", precision: 15, scale: 2, default: "0.0"
     t.string "location"
     t.float "value", default: 0.0
     t.boolean "active", default: true
