@@ -60,6 +60,7 @@ Rails.application.routes.draw do
   #   post '/clients/disable'
 
   post 'sales', to: 'sales#create'
+  get 'show_field_sale/:field_id', to: 'sales#show_field_sale', as: 'show_field_sale'
   get 'start_field_sale/:field_id', to: 'sales#start_field_sale', as: 'start_field_sale'
 
   localized do 

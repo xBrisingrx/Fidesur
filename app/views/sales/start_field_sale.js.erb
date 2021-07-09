@@ -49,7 +49,7 @@ function get_clients() {
 }
 
 document.getElementById('btnSubmit').addEventListener('click', (event) => {
-  
+  console.info(`por aca paso la info`)
 	fetch('/sales/', 
 			{
         method: 'POST',
@@ -66,14 +66,17 @@ document.getElementById('btnSubmit').addEventListener('click', (event) => {
           								 "arrear": document.getElementById('arrear').value,
           								 "due_date": document.getElementById('due_date').value,
           								 "paid": document.getElementById('paid').value,
-          								 "total_cost": document.getElementById('total_cost').value })
+          								 "total_cost": document.getElementById('total_cost').value,
+          								 "number_of_payments": document.getElementById('number_of_payments').value })
       }
     )
+    .then( response => response.json() )
     .then( response => {
-      return response.json()
-    })
-    .then( response => {
-      console.log(response)
-    })
-    .catch(console.log)
+    	console.log(`todo ok => ${response.msg}`)
+    	fields_table.ajax.reload(null,false)
+	    // let msg = JSON.parse(event.detail[2].response)
+	    noty_alert(response.status, response.msg)
+	    $("#modal-field").modal('hide')
+    } )
+    .catch( error => console.log(`todo no ok !! ${error}`) )
 })

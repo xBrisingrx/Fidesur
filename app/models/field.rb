@@ -29,6 +29,9 @@ class Field < ApplicationRecord
 	has_one_attached :blueprint
 	has_many :client_fields
 
+	# Los lotes de una misma manzana no pueden llamarse igual
+	validates :code, uniqueness: { scope: :apple_id,case_sensitive: false, message: "Ya existe un lote con esta denominación" }
+
 	enum status: [:available, :bought, :canceled]
 	enum field_type: [:habitable, :no_habitable, :green_space]
 end
