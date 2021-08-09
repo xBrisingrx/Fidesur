@@ -30,6 +30,7 @@
 //= require clients
 //= require fields
 //= require users
+//= require sales
 
 // require_tree .
 

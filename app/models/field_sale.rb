@@ -24,5 +24,4 @@ class FieldSale < ApplicationRecord
   belongs_to :sale
 
   validates :field_id, uniqueness: { message: "Este lote ya fue comprado" }
-
 end

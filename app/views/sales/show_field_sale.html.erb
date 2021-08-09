@@ -1,0 +1,51 @@
+<h1>Lotes de manzana </h1>
+
+<%= link_to '<i class= "hs-admin-back-left"></i> Volver a manzanas'.html_safe, apples_path, class: 'btn u-btn-blue mb-2 mr-2'%>
+<%= link_to '<i class= "hs-admin-back-left"></i> Volver a lotes'.html_safe, apples_path, class: 'btn u-btn-primary mb-2 mr-2'%>
+
+<div class="row">
+  Cuotas pagadas: .../... 
+</div>
+<div class="row mb-2">
+  <small>Cuotas vencidas: <%= @cant_vencidas %></small>
+</div>
+<table id="sale_field_table" class="table hover dt-responsive w-100">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Valor</th>
+      <th>Fecha vencimiento</th>
+      <th>Pagada</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @batch_payments.each do |b| %>
+      <% clase = (b.expired?) ? "table-danger" : " " %>
+      <tr class="<%= clase %>">
+        <td> <%= b.number %> </td>
+        <td> <%= b.money %> </td>
+        <td> <%= b.due_date.strftime('%d-%m-%y') %> </td>
+        <td> <%= (b.payed?) ? 'Si' : 'No' %> </td>
+        <td>
+          <% if b.expired? %>
+            Acciones de cuotas expiradas
+          <% else %>
+            <%= link_to '<i class="hs-admin-money"></i>'.html_safe, root_path, 
+                   :remote => true, 'data-toggle' =>  'modal',
+                    'data-target' => '#modal-sales', 
+                    'class' => 'u-link-v5 g-color-gray-light-v6 g-color-secondary--hover g-text-underline--none--hover g-ml-12', title: 'Pagar cuota' %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<!-- Modal pagar cuota -->
+<div class="modal fade" id="modal-sales" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+</div>
+<!-- End modal -->

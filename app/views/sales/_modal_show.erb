@@ -26,9 +26,8 @@
       </div>
       <div class="row">
       	<div class="col-6"><b>Cuotas pagadas: </b></div>
-      	<div class="col-6"> $ <%= @sale.number_of_payments %> </div>
+      	<div class="col-6"><%= "#{@sale.batch_payments.where(payed: true).count}/#{@sale.number_of_payments}" %></div>
       </div>
-			
     </div>
   </div>
 </div>

@@ -32,8 +32,6 @@ json.data @fields do |f|
       							'data-target' => '#modal-field', 
       							'class' => 'u-link-v5 g-color-gray-light-v6 g-color-secondary--hover g-text-underline--none--hover g-ml-12', title: 'Pagar cuota'}
       							#{link_to '<i class="hs-admin-eye"></i>'.html_safe, show_field_sale_path(field_id:f.id), 
-  								 :remote => true, 'data-toggle' =>  'modal',
-      							'data-target' => '#modal-field', 
       							'class' => 'u-link-v5 g-color-gray-light-v6 g-color-secondary--hover g-text-underline--none--hover g-ml-12', title: 'Detalle'}"
 	end
 end

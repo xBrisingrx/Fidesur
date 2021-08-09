@@ -32,6 +32,14 @@ class SalesController < ApplicationController
           field.update!(status: :bought)
         end
 
+        today = Time.new
+
+        due_date = Time.new(today.year, today.month, params[:due_date].to_i)
+
+        for i in 1..params[:number_of_payments].to_i
+          due_date += 1.month
+          cuota = BatchPayment.create!(due_date: due_date, money: sale.total_cost, number: i, sale_id: sale.id)
+        end
         render json: {status: 'success', msg: 'Venta exitosa'}
       else
         puts 'no se guardo'
@@ -47,13 +55,21 @@ class SalesController < ApplicationController
       puts @response
       render json: { @response[0] => @response[1] }, status: 402
 
-   end # create
+  end # create
 
 
    def show_field_sale
     @field_sale = FieldSale.find(params[:field_id])
-    sale = Sale.find(@field_sale.sale_id)
+    @id = params[:field_id]
+    @sale = Sale.find(@field_sale.sale_id)
+    @batch_payments = @sale.batch_payments
+    @cant_vencidas = @batch_payments.where( "due_date < ?", Time.new ).count
    end
+
+   def pay
+     
+   end
+
 
    private
    # def field_params

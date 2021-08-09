@@ -49,7 +49,6 @@ function get_clients() {
 }
 
 document.getElementById('btnSubmit').addEventListener('click', (event) => {
-  console.info(`por aca paso la info`)
 	fetch('/sales/', 
 			{
         method: 'POST',
@@ -72,11 +71,11 @@ document.getElementById('btnSubmit').addEventListener('click', (event) => {
     )
     .then( response => response.json() )
     .then( response => {
-    	console.log(`todo ok => ${response.msg}`)
-    	fields_table.ajax.reload(null,false)
+    	// console.log(`todo ok => ${response.msg}`)
+    	// fields_table.ajax.reload(null,false)
 	    // let msg = JSON.parse(event.detail[2].response)
 	    noty_alert(response.status, response.msg)
-	    $("#modal-field").modal('hide')
+	    // $("#modal-field").modal('hide')
     } )
     .catch( error => console.log(`todo no ok !! ${error}`) )
 })

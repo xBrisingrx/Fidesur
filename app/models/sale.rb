@@ -17,5 +17,5 @@
 class Sale < ApplicationRecord
 	has_many :client_sales
 	has_many :field_sales
-	
+	has_many :batch_payments
 end

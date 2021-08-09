@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_06_192451) do
+ActiveRecord::Schema.define(version: 2021_08_04_231320) do
 
-  create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
     t.bigint "record_id", null: false
@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 2021_07_06_192451) do
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
-  create_table "active_storage_blobs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "active_storage_blobs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "key", null: false
     t.string "filename", null: false
     t.string "content_type"
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 2021_07_06_192451) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "apples", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "apples", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "code"
     t.decimal "hectares", precision: 15, scale: 2, default: "0.0"
     t.string "location"
@@ -46,7 +46,32 @@ ActiveRecord::Schema.define(version: 2021_07_06_192451) do
     t.index ["sector_id"], name: "index_apples_on_sector_id"
   end
 
-  create_table "client_sales", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "batch_payments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
+    t.integer "number", null: false
+    t.decimal "money", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "total", precision: 15, scale: 2, default: "0.0"
+    t.boolean "active", default: true
+    t.date "due_date"
+    t.date "pay_date"
+    t.boolean "payed", default: false
+    t.bigint "sale_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sale_id"], name: "index_batch_payments_on_sale_id"
+  end
+
+  create_table "cash_registers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
+    t.integer "product"
+    t.integer "activity"
+    t.decimal "value", precision: 15, scale: 2, default: "0.0"
+    t.text "detail"
+    t.text "comment"
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "client_sales", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.bigint "client_id"
     t.bigint "sale_id"
     t.boolean "active", default: true
@@ -56,7 +81,7 @@ ActiveRecord::Schema.define(version: 2021_07_06_192451) do
     t.index ["sale_id"], name: "index_client_sales_on_sale_id"
   end
 
-  create_table "clients", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "clients", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "code", comment: "Legajo"
     t.string "name"
     t.string "last_name"
@@ -69,7 +94,7 @@ ActiveRecord::Schema.define(version: 2021_07_06_192451) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "field_sales", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "field_sales", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.bigint "field_id"
     t.bigint "sale_id"
     t.boolean "active", default: true
@@ -79,7 +104,7 @@ ActiveRecord::Schema.define(version: 2021_07_06_192451) do
     t.index ["sale_id"], name: "index_field_sales_on_sale_id"
   end
 
-  create_table "fields", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "fields", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "code"
     t.string "measures"
     t.decimal "surface", precision: 15, scale: 2, default: "0.0"
@@ -95,7 +120,7 @@ ActiveRecord::Schema.define(version: 2021_07_06_192451) do
     t.index ["apple_id"], name: "index_fields_on_apple_id"
   end
 
-  create_table "sales", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "sales", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.decimal "paid", precision: 15, scale: 2, default: "0.0"
     t.decimal "total_cost", precision: 15, scale: 2, default: "0.0"
     t.integer "number_of_payments"
@@ -108,7 +133,7 @@ ActiveRecord::Schema.define(version: 2021_07_06_192451) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "sectors", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "sectors", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "name"
     t.decimal "size", precision: 15, scale: 2, default: "0.0"
     t.boolean "active", default: true
@@ -116,7 +141,7 @@ ActiveRecord::Schema.define(version: 2021_07_06_192451) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "username"
     t.string "name"
     t.string "email"
@@ -129,6 +154,7 @@ ActiveRecord::Schema.define(version: 2021_07_06_192451) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "apples", "sectors"
+  add_foreign_key "batch_payments", "sales"
   add_foreign_key "client_sales", "clients"
   add_foreign_key "client_sales", "sales"
   add_foreign_key "field_sales", "fields"
