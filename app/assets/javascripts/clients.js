@@ -13,7 +13,7 @@ $(document).ready(function(){
     {'data': 'last_name'},
     {'data': 'name'},
     {'data': 'dni'},
-    {'data': 'cuil'},
+    {'data': 'direction'},
     {'data': 'email'},
     {'data': 'phone'},
     {'data': 'actions'}

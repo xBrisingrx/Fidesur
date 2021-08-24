@@ -3,7 +3,7 @@ json.data @clients do |c|
 	json.last_name c.last_name
 	json.name c.name
 	json.dni c.dni
-	json.cuil c.cuil
+	json.direction c.direction
 	json.email c.email
 	json.phone c.phone
 	json.actions "#{link_to '<i class="hs-admin-pencil"></i>'.html_safe, edit_client_path(c), 

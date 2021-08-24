@@ -5,7 +5,7 @@
 #  id           :bigint           not null, primary key
 #  active       :boolean          default(TRUE)
 #  code(Legajo) :string(255)
-#  cuil         :string(255)
+#  direction    :string(255)
 #  dni          :integer
 #  email        :string(255)
 #  last_name    :string(255)
