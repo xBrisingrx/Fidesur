@@ -60,9 +60,11 @@ Rails.application.routes.draw do
   #   post '/clients/disable'
 
   post 'sales', to: 'sales#create'
-  get 'show_field_sale/:field_id', to: 'sales#show_field_sale', as: 'show_field_sale'
+  get 'detalle_venta_lote/:field_id', to: 'field_sale#index', as: 'show_field_sale'
   get 'start_field_sale/:field_id', to: 'sales#start_field_sale', as: 'start_field_sale'
-
+  get 'pay_sale/:data', to: 'sales#pay', as: 'pay_batch'
+  get 'detalle_pago_cuota/:id', to: 'batch_payments#detalle_pago_cuota', as: 'detalle_pago_cuota'
+  get 'lotes_cliente/:client_id', to: 'sales#lotes_cliente', as: 'lotes_cliente'
   localized do 
 
     root 'apples#index'
@@ -85,7 +87,8 @@ Rails.application.routes.draw do
       resources :clients
         post '/clients/disable'
     # end
-
+    resources :field_sale
+    resources :batch_payments
     
     # get 'signup', to: 'users#new', as: 'signup'
     # get 'login', to: 'sessions#new', as: 'login'
@@ -93,3 +96,15 @@ Rails.application.routes.draw do
 
   end # end localized
 end 
+
+
+# scope "(:locale)", locale: /en|es/ do
+#   get'/hola', to: 'welcome#hola', as: :hola
+#   root 'welcome#index'
+# end
+
+# asi podrias obtener urls como:
+# http://localhost:3000/hola
+# http://localhost:3000/es/hola
+# http://localhost:3000/en/hola
+

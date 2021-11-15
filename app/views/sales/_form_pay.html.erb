@@ -1,0 +1,37 @@
+<%= form_with( class: 'needs-validation g-brd-around g-brd-gray-light-v4 g-pa-10 g-mb-10', id: 'form-field-pay-quote' ) do |form| %>
+  <p id='valor_cuota'></p>
+  <%= form.hidden_field :id%>
+  <div class="form-group row">
+    <%= form.label :payment, 'Paga $:' , class: 'col-3' %>
+    <%= form.number_field :payment, class: 'form-control rounded-0 col-6', step:'0.01' %>
+    <div class="invalid-feedback field_price"></div>
+  </div>
+
+  <div class="form-group">
+    <label class="form-check-inline u-check g-pl-25">
+      <%= form.check_box :aply_interest, class: 'g-hidden-xs-up g-pos-abs g-top-0 g-left-0' %>
+      <div class="u-check-icon-checkbox-v6 g-absolute-centered--y g-left-0">
+        <i class="fa" data-check-icon="&#xf00c"></i>
+      </div>
+      <p id="aply-interest-text"></p>  
+    </label>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :interest, 'Recargo $:' , class: 'col-3' %>
+    <%= form.number_field :interest, class: 'form-control rounded-0 col-6', step:'0.01', disabled: true%>
+    <div class="invalid-feedback field_price"></div>
+  </div>
+
+
+  <div class="form-group">
+    <%= form.text_area :comment, 
+        class: 'form-control form-control-md u-textarea-expandable g-brd-gray-light-v7 g-brd-gray-light-v3--focus g-rounded-4 g-resize-none g-overflow-hidden', 
+          row: '3', placeholder: 'Comentario...'%>
+  </div>
+
+  <div class="actions">
+    <button id="btnSubmit" type="button" class="btn u-btn-teal mr-2" onclick="pagar_cuota()"> Guardar </button>
+    <button type="button" class="btn u-btn-red" data-dismiss="modal" aria-label="Close"> Cancelar </button>
+  </div>
+<% end %>

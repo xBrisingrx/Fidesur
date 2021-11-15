@@ -1,0 +1,68 @@
+$("#modal-field-sale").html("<%= j (render 'layouts/modal') %>")
+$("#modal-field-sale").modal('show')
+
+if (!<%= @batch_payment.apply_arrear? %>) {
+	// Si no corresponde aplicar interes solo se paga la cuota 
+	document.getElementById('esta_vencido').style.display = 'none'
+} else {
+	// Si corresponde, manejamos los campos del interes
+	let valor_cuota = parseFloat(<%= @batch_payment.money %>)
+	let interes = parseFloat(<%= @interes %>)
+	document.getElementById('batch_payment_interest').value = <%= @interes %>
+	document.getElementById('aply_interest').addEventListener('click', function(event) {
+		if ( this.checked ) {
+			document.getElementById('batch_payment_interest').value = <%= @interes %>
+			document.getElementById('batch_payment_payment').value = valor_cuota + interes
+			check_input_payment()
+		} else {
+			document.getElementById('batch_payment_interest').value = 0
+			document.getElementById('batch_payment_payment').value = valor_cuota
+			check_input_payment()
+		}
+	})
+}
+
+document.getElementById('batch_payment_interest').addEventListener('change', function(event) {
+	let total_a_pagar = parseFloat(<%= @batch_payment.money %>)
+
+	let recargo = parseFloat( this.value )
+	if (!isNaN(recargo)) {
+		this.parentElement.classList.remove('u-has-error-v1')
+		document.getElementById('batch_payment_payment').value = total_a_pagar + recargo
+	} else {
+		this.parentElement.classList.add('u-has-error-v1')
+	}
+
+	check_input_payment()
+})
+
+document.getElementById('batch_payment_payment').addEventListener('change', function(event) {
+	check_input_payment()
+} )
+
+function check_input_payment(msg) {
+	let input = document.getElementById('batch_payment_payment')
+	if ( input.value <= 0  ) {
+		input.parentElement.classList.add('u-has-error-v1')
+		noty_alert('error', 'Debe ingresar un valor en pago')
+		$('.btnSubmit').prop("disabled", true)
+	} else {
+		input.parentElement.classList.remove('u-has-error-v1')
+		$('.btnSubmit').prop("disabled", false)
+	}
+}
+
+$("#form-field-pay-quote").on("ajax:success", function(event) {
+    field_sale_table.ajax.reload(null,false)
+    let msg = JSON.parse(event.detail[2].response)
+    noty_alert(msg.status, msg.msg)
+    $("#modal-field-sale").modal('hide')
+  }).on("ajax:error", function(event) {
+  	console.error('error' + event.detail[2].response)
+  	noty_alert('error', 'No se pudo registrar el pago')
+		// let msg = JSON.parse( event.detail[2].response )
+		// $.each( msg, function( key, value ) {
+		// 	$(`#form-field #field_${key}`).addClass('is-invalid')
+		// 	$(`#form-field .field_${key}`).text( value ).show('slow')
+		// })
+})

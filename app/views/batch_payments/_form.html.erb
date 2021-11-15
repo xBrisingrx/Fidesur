@@ -1,0 +1,41 @@
+<%= form_with( model: @batch_payment, class: 'needs-validation g-brd-around g-brd-gray-light-v4 g-pa-10 g-mb-10', id: 'form-field-pay-quote' ) do |form| %>
+  <p id='valor_cuota'> Valor de la cuota: <b> $ <%= @batch_payment.money %> </b></p>
+  <% if @adeuda > 0 %>
+    <p> Adeuda de cuota anterior: <b> $ <%= @adeuda %> </b></p>
+  <% end %>
+
+  <div id="esta_vencido" style="display:">
+    <label class="u-label g-bg-darkred g-mr-10 g-mb-15"> Cuota vencida  </label>
+      <div class="form-group">
+        <label class="form-check-inline u-check g-pl-25">
+          <input class="g-hidden-xs-up g-pos-abs g-top-0 g-left-0" type="checkbox" checked="" id="aply_interest">
+          <div class="u-check-icon-checkbox-v6 g-absolute-centered--y g-left-0">
+            <i class="fa" data-check-icon=""></i>
+          </div>
+          <p> Aplicar interes del <b><%= @porcentaje_interes %>%</b> ? </p>  
+        </label>
+      </div>
+      <div class="form-group row g-pos-rel">
+        <%= form.label :interest, 'Recargo sugerido $:' , class: 'col-3' %>
+        <%= form.number_field :interest, class: 'form-control rounded-0 col-6', step:'0.01'%>
+        <div class="invalid-feedback field_price"></div>
+      </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :payment, 'Total a pagar $:' , class: 'col-3' %>
+    <%= form.number_field :payment, class: 'form-control rounded-0 col-6', step:'0.01' , value: @total_a_pagar, required: true %>
+    <div class="invalid-feedback field_price"></div>
+  </div>
+
+  <div class="form-group">
+    <%= form.text_area :comment, 
+        class: 'form-control form-control-md u-textarea-expandable g-brd-gray-light-v7 g-brd-gray-light-v3--focus g-rounded-4 g-resize-none g-overflow-hidden', 
+          row: '3', placeholder: 'Comentario...'%>
+  </div>
+
+  <div class="actions">
+    <%= form.submit 'Guardar', class: 'btn u-btn-teal mr-2 btnSubmit'  %>
+    <button type="button" class="btn u-btn-red" data-dismiss="modal" aria-label="Close"> Cancelar </button>
+  </div>
+<% end %>

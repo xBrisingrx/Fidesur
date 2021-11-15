@@ -31,6 +31,7 @@
 //= require fields
 //= require users
 //= require sales
+//= require field_sale
 
 // require_tree .
 
@@ -50,6 +51,11 @@ function noty_alert(type, message) {
     "text": `<div class="g-mr-20"><div class="noty_body__icon"><i class="${icon}"></i></div></div><div>${message}.</div>`,
     "theme": "unify--v1"
   }).show();
+}
+
+// Redondeo un numero a 2 decimales
+function roundToTwo(num) {
+    return +(Math.round(num + "e+2")  + "e-2")
 }
 
 

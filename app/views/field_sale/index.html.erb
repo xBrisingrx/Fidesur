@@ -1,0 +1,44 @@
+<h1> Detalle de venta del lote <%= @field_sale.field.code %> </h1>
+
+<%= link_to '<i class= "hs-admin-back-left"></i> Volver a manzanas'.html_safe, apples_path, class: 'btn u-btn-blue mb-2 mr-2'%>
+<%= link_to '<i class= "hs-admin-back-left"></i> Volver a lotes'.html_safe, apple_fields_path(@field_sale.field.apple), class: 'btn u-btn-primary mb-2 mr-2'%>
+
+<input type="hidden" id="field_sale_id" value="<%= @id %>">
+
+<div class="row ml-2">
+  A nombre de: 
+  <ul>
+    <% @sale.clients.each do |client| %>
+      <li> <%= client.fullname %> </li>
+    <% end %>
+  </ul>
+</div>
+<div class="row ml-2">
+  Cuotas pagadas: <%= "#{@cuotas_pagadas}/#{@total_cuotas}" %>
+</div>
+<div class="row ml-2 mb-4">
+  Cuotas vencidas: <%= @cant_vencidas %>
+</div>
+<table id="field_sale_table" class="table hover dt-responsive w-100">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Valor</th>
+      <th>Fecha vencimiento</th>
+      <th> Debe </th>
+      <th> Haber </th>
+      <th>Estado</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+
+  <tbody>
+  </tbody>
+</table>
+
+
+<!-- Modal pagar cuota -->
+<div class="modal fade" id="modal-field-sale" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+</div>
+<!-- End modal -->

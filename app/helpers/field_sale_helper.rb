@@ -1,0 +1,2 @@
+module FieldSaleHelper
+end
