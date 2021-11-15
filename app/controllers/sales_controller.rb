@@ -41,7 +41,6 @@ class SalesController < ApplicationController
         today = Time.new
         # Fecha de vencimiento si venciera ESTE mes, en base a eso saco las siguientes fechas de vencimiento
         due_date = Time.new(today.year, today.month, params[:due_date].to_i)
-        due_date -= 2.month
 
         # El costo total que va a pagar el cliente es lo que entrega mas el valor de la cuota
         # El valor de la cuota puede ser que cambie , el valor total incrementa
