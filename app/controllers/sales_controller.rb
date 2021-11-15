@@ -37,8 +37,14 @@ class SalesController < ApplicationController
           field = Field.find(params[:field_id])
           field.update!(status: :bought)
         end
-        # Fecha de ahora
-        today = Time.new
+
+        # Fecha de compra
+        if params[:fecha_compra]
+          today = Date.parse(params[:fecha_compra])
+        else
+          today = Time.new
+        end
+        
         # Fecha de vencimiento si venciera ESTE mes, en base a eso saco las siguientes fechas de vencimiento
         due_date = Time.new(today.year, today.month, params[:due_date].to_i)
 

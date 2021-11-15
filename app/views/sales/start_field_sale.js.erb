@@ -105,6 +105,11 @@ document.getElementById('submit-form-field-sale').addEventListener('click', (eve
 	  "valor_cuota": parseFloat( document.getElementById('valor_cuota').value )
 	}
 	// validaciones aqui
+	if ($('#fecha_compra').val() === '') {
+		noty_alert( 'error', 'Debe seleccionar una fecha' )
+		return
+	}
+
 	if (info.clients.length == 0) {
 		noty_alert( 'error', 'No ha seleccionado clientes' )
 		return
@@ -126,6 +131,8 @@ document.getElementById('submit-form-field-sale').addEventListener('click', (eve
 	}
 
 
+
+
 	fetch('/sales/', 
 		{
       method: 'POST',
@@ -144,7 +151,8 @@ document.getElementById('submit-form-field-sale').addEventListener('click', (eve
 													"paid": parseFloat( document.getElementById('paid').value ),
 													"total_cost": document.getElementById('total_cost').value,
 													"number_of_payments": document.getElementById('number_of_payments').value,
-												  "valor_cuota": parseFloat( document.getElementById('valor_cuota').value ) })
+												  "valor_cuota": parseFloat( document.getElementById('valor_cuota').value ),
+												  "fecha_compra": document.getElementById('fecha_compra').value })
     }
   )
   .then( response => response.json() )
