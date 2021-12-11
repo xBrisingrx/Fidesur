@@ -14,6 +14,6 @@
 #
 class User < ApplicationRecord
   has_secure_password
-  validates :username, presence: true, uniqueness: { case_sensitive: false, message: "Este email ya se encuentra registrado" }
-  validates :email, presence: true, uniqueness: { case_sensitive: false, message: "Este nombre de usuario se encuentra en uso" }
+  validates :username, presence: true, uniqueness: { case_sensitive: false, message: "Este usuario ya se encuentra registrado" }
+  validates :email, presence: true, uniqueness: { case_sensitive: false, message: "Este email de usuario se encuentra en uso" }
 end
