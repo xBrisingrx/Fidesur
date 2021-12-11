@@ -4,7 +4,6 @@
 #
 #  id             :bigint           not null, primary key
 #  active         :boolean          default(TRUE)
-#  ajuste         :decimal(15, 2)   default(0.0)
 #  code           :string(255)
 #  field_type     :integer          default("habitable")
 #  is_green_space :boolean          default(FALSE)

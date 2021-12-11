@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_11_181959) do
+ActiveRecord::Schema.define(version: 2021_12_11_182902) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "name", null: false
@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(version: 2021_12_11_181959) do
     t.text "comment"
     t.decimal "interest", precision: 15, scale: 2, default: "0.0"
     t.integer "pay_status", default: 0
+    t.decimal "ajuste", precision: 15, scale: 2, default: "0.0"
     t.index ["sale_id"], name: "index_batch_payments_on_sale_id"
   end
 
@@ -122,7 +123,6 @@ ActiveRecord::Schema.define(version: 2021_12_11_181959) do
     t.datetime "updated_at", null: false
     t.integer "field_type", default: 0
     t.boolean "is_green_space", default: false
-    t.decimal "ajuste", precision: 15, scale: 2, default: "0.0"
     t.index ["apple_id"], name: "index_fields_on_apple_id"
   end
 

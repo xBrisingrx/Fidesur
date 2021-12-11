@@ -4,6 +4,7 @@
 #
 #  id         :bigint           not null, primary key
 #  active     :boolean          default(TRUE)
+#  ajuste     :decimal(15, 2)   default(0.0)
 #  comment    :text(65535)
 #  due_date   :date
 #  interest   :decimal(15, 2)   default(0.0)
