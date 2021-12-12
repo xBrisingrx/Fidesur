@@ -3,7 +3,7 @@ class ApplesController < ApplicationController
 
   # GET /apples or /apples.json
   def index
-    @apples = Apple.where( active: true )
+    @apples = Apple.where( active: true ).includes(:sector)
   end
 
   # GET /apples/1 or /apples/1.json
