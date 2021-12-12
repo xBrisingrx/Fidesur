@@ -7,11 +7,11 @@ if (!<%= @batch_payment.apply_arrear? %>) {
 } else {
 	// Si corresponde, manejamos los campos del interes
 	let valor_cuota = parseFloat(<%= @batch_payment.money %>)
-	let interes = parseFloat(<%= @interes %>)
-	document.getElementById('batch_payment_interest').value = <%= @interes %>
+	let interes = parseFloat(<%= @interes_sugerido %>)
+	document.getElementById('batch_payment_interest').value = interes
 	document.getElementById('aply_interest').addEventListener('click', function(event) {
 		if ( this.checked ) {
-			document.getElementById('batch_payment_interest').value = <%= @interes %>
+			document.getElementById('batch_payment_interest').value = <%= @interes_sugerido %>
 			document.getElementById('batch_payment_payment').value = valor_cuota + interes
 			check_input_payment()
 		} else {
@@ -39,6 +39,10 @@ document.getElementById('batch_payment_interest').addEventListener('change', fun
 document.getElementById('batch_payment_payment').addEventListener('change', function(event) {
 	check_input_payment()
 } )
+
+document.getElementById('batch_payment_ajuste').addEventListener('change', function(event) {
+	console.log(this.value)
+})
 
 function check_input_payment(msg) {
 	let input = document.getElementById('batch_payment_payment')
