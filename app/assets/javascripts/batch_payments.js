@@ -1,2 +1,6 @@
-// Place all the behaviors and hooks related to the matching controller here.
-// All this logic will automatically be available in application.js.
+var batch_payment_data = {
+	valor_cuota: null,
+	recargo_sugerido: null,
+	ajuste: null,
+	total_a_pagar: null
+}

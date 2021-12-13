@@ -8,10 +8,15 @@
     </div>
     <div class="modal-body">
       <ul>
-        <li> Fecha del pago: <b><%= @cuota.due_date.strftime('%d-%m-%y') %></b> </li>
+        <li> Fecha del pago: <b><%= @cuota.pay_date.strftime('%d-%m-%y') %></b> </li>
 
         <% if @cuota.interest > 0 %>
           <li> Interes pagado: <b>$<%= @cuota.interest %></b> </li>
+        <% end %>
+
+        <% if @cuota.ajuste > 0 %>
+          <li> Ajuste: <b>$<%= @cuota.ajuste %></b> </li>
+          
         <% end %>
 
         <li> Total pagado: <b>$<%= @cuota.payment %></b> </li>

@@ -1,36 +1,44 @@
 $("#modal-field-sale").html("<%= j (render 'layouts/modal') %>")
 $("#modal-field-sale").modal('show')
 
+batch_payment_data.valor_cuota = parseFloat(<%= @batch_payment.money %>)
+batch_payment_data.total_a_pagar = parseFloat(<%= @batch_payment.money %>)
+batch_payment_data.ajuste = parseFloat(document.getElementById('batch_payment_ajuste').value)
+document.getElementById('batch_payment_aply_interest').checked = <%= @batch_payment.apply_arrear? %>
+
 if (!<%= @batch_payment.apply_arrear? %>) {
 	// Si no corresponde aplicar interes solo se paga la cuota 
 	document.getElementById('esta_vencido').style.display = 'none'
 } else {
-	// Si corresponde, manejamos los campos del interes
-	let valor_cuota = parseFloat(<%= @batch_payment.money %>)
-	let interes = parseFloat(<%= @interes_sugerido %>)
-	document.getElementById('batch_payment_interest').value = interes
-	document.getElementById('aply_interest').addEventListener('click', function(event) {
+	// Si corresponde, manejamos los campos del interes/recargo sugerido
+	batch_payment_data.recargo_sugerido = parseFloat(<%= @interes_sugerido %>)
+	document.getElementById('batch_payment_interest').value = batch_payment_data.recargo_sugerido
+	document.getElementById('batch_payment_aply_interest').addEventListener('click', function(event) {
+		$( '#batch_payment_interest').prop("disabled", !this.checked )
 		if ( this.checked ) {
+			batch_payment_data.recargo_sugerido = parseFloat(<%= @interes_sugerido %>)
+			batch_payment_data.total_a_pagar = batch_payment_data.valor_cuota + batch_payment_data.recargo_sugerido + batch_payment_data.ajuste
 			document.getElementById('batch_payment_interest').value = <%= @interes_sugerido %>
-			document.getElementById('batch_payment_payment').value = valor_cuota + interes
+			document.getElementById('batch_payment_payment').value = batch_payment_data.total_a_pagar
 			check_input_payment()
 		} else {
-			document.getElementById('batch_payment_interest').value = 0
-			document.getElementById('batch_payment_payment').value = valor_cuota
+			batch_payment_data.recargo_sugerido = 0.0
+			batch_payment_data.total_a_pagar = batch_payment_data.valor_cuota + batch_payment_data.ajuste
+			document.getElementById('batch_payment_interest').value = batch_payment_data.recargo_sugerido
+			document.getElementById('batch_payment_payment').value = batch_payment_data.total_a_pagar
 			check_input_payment()
 		}
 	})
 }
 
 document.getElementById('batch_payment_interest').addEventListener('change', function(event) {
-	let total_a_pagar = parseFloat(<%= @batch_payment.money %>)
-
-	let recargo = parseFloat( this.value )
-	if (!isNaN(recargo)) {
-		this.parentElement.classList.remove('u-has-error-v1')
-		document.getElementById('batch_payment_payment').value = total_a_pagar + recargo
+	batch_payment_data.recargo_sugerido = parseFloat( this.value )
+	if (!isNaN( batch_payment_data.recargo_sugerido )) {
+		document.getElementById('batch_payment_payment').value = batch_payment_data.valor_cuota + batch_payment_data.recargo_sugerido + batch_payment_data.ajuste
 	} else {
-		this.parentElement.classList.add('u-has-error-v1')
+		batch_payment_data.recargo_sugerido = 0.0
+		document.getElementById('batch_payment_interest').value = batch_payment_data.recargo_sugerido
+		document.getElementById('batch_payment_payment').value = batch_payment_data.valor_cuota + batch_payment_data.ajuste
 	}
 
 	check_input_payment()
@@ -41,7 +49,15 @@ document.getElementById('batch_payment_payment').addEventListener('change', func
 } )
 
 document.getElementById('batch_payment_ajuste').addEventListener('change', function(event) {
-	console.log(this.value)
+	batch_payment_data.ajuste = parseFloat( this.value )
+	if (!isNaN( batch_payment_data.ajuste )) {
+		document.getElementById('batch_payment_payment').value = batch_payment_data.valor_cuota + batch_payment_data.recargo_sugerido + batch_payment_data.ajuste
+	} else {
+		batch_payment_data.ajuste = 0.0
+		document.getElementById('batch_payment_ajuste').value = batch_payment_data.ajuste
+		document.getElementById('batch_payment_payment').value = batch_payment_data.valor_cuota + batch_payment_data.recargo_sugerido
+	}
+	check_input_payment()
 })
 
 function check_input_payment(msg) {
@@ -70,3 +86,10 @@ $("#form-field-pay-quote").on("ajax:success", function(event) {
 		// 	$(`#form-field .field_${key}`).text( value ).show('slow')
 		// })
 })
+
+
+  // 383333.33 -> valor cuota
+  // 245333,33 -> recargo
+
+  // 628666,66 -> suma primera
+

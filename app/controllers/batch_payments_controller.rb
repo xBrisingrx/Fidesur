@@ -29,8 +29,8 @@ class BatchPaymentsController < ApplicationController
 			@porcentaje_interes = @batch_payment.sale.arrear
 			# Esto es el valor calculado del interes diario
 			@interes_sugerido = calcular_interes!(@porcentaje_interes, @batch_payment.money, @batch_payment.due_date)
-			@interes = @batch_payment.interest
-			@total_a_pagar = @batch_payment.money + @interes + @adeuda
+
+			@total_a_pagar = @batch_payment.money + @interes_sugerido + @adeuda
 		else 
 			@porcentaje_interes = 0
 			@interes = 0.0
@@ -39,29 +39,36 @@ class BatchPaymentsController < ApplicationController
 	end
 
 	def update # Actualizar los valores de una cuota sigifica que se pago esa cuota
-		@cuota = BatchPayment.find(params[:id])
-		if @cuota.apply_arrear?
+		cuota = BatchPayment.find(params[:id])
+		cuota.payment = params[:batch_payment][:payment].to_f
+
+		# chequeamos si se le sumo intereses
+		if params[:batch_payment][:interest].to_f > 0
 			# discrimino el interes aplicado en la cuota
-			@cuota.interest = params[:batch_payment][:interest].to_f
-			# chequeo si hubo pago parcial y actualizo campo debe
-			@cuota.owes = ( @cuota.money + @cuota.interest ) -  params[:batch_payment][:payment].to_f
-
-		else
-			# boraamos el monto si no se pago interes
-			@cuota.interest = 0.0
-			@cuota.owes = @cuota.money -  params[:batch_payment][:payment].to_f
+			cuota.interest = params[:batch_payment][:interest].to_f
 		end
 
-		if @cuota.owes < 0
-			@cuota.owes = 0.0
+		if params[:batch_payment][:ajuste].to_f > 0
+			cuota.ajuste = params[:batch_payment][:ajuste].to_f
+			cuota.comment_ajuste = params[:batch_payment][:comment_ajuste]
 		end
 
-		@cuota.pay_date = Time.now
-		@cuota.payed = true
-		@cuota.payment = params[:batch_payment][:payment]
-		@cuota.comment = params[:batch_payment][:comment]
+		# total pagado 
+
+		# Calculo el total que se deberia haber pagado
+		cuota.total = cuota.money + cuota.interest + cuota.ajuste 
+
+		# Chequeo si se pago menos de lo que se debia, en caso de que hay sido asi pasa al atributo DEBE
+		if ( cuota.total - cuota.payment ).to_f > 0
+			cuota.owes = total_a_pagar - cuota.payment
+		end
+
+		cuota.pay_date = Time.now
+		cuota.payed = true
+		cuota.comment = params[:batch_payment][:comment]
+
 		# si debe plata el status es pago parcial , sino pago total
-		@cuota.pay_status = ( @cuota.owes > 0 ) ? :pago_parcial : :pagado
+		cuota.pay_status = ( cuota.owes > 0 ) ? :pago_parcial : :pagado
 
 		if @cuota.save!
 			render json: { status: 'success', msg: 'Pago registrado' }, status: 200
@@ -98,7 +105,9 @@ class BatchPaymentsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def batch_payment_params
-    params.require(:batch_payment).permit(:due_date, :interest, :money, :number, :owes,:pay_date, :pay_status, :payed, :payment, :total, :comment )
+    params.require(:batch_payment).permit(:due_date, :interest, :money, :number, :owes,:pay_date, :pay_status, 
+    									:payed, :payment, :total, :comment, :comment_ajuste, :aply_arrear )
   end
 
 end
+

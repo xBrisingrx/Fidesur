@@ -32,6 +32,7 @@
 //= require users
 //= require sales
 //= require field_sale
+//= require batch_payments
 
 // require_tree .
 

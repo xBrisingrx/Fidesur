@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_11_182902) do
+ActiveRecord::Schema.define(version: 2021_12_13_165044) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", null: false
@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(version: 2021_12_11_182902) do
     t.decimal "interest", precision: 15, scale: 2, default: "0.0"
     t.integer "pay_status", default: 0
     t.decimal "ajuste", precision: 15, scale: 2, default: "0.0"
+    t.text "comment_ajuste"
     t.index ["sale_id"], name: "index_batch_payments_on_sale_id"
   end
 
