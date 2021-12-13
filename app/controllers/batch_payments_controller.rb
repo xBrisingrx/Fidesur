@@ -28,7 +28,7 @@ class BatchPaymentsController < ApplicationController
 			# El % que se seteo cuando se hizo la venta
 			@porcentaje_interes = @batch_payment.sale.arrear
 			# Esto es el valor calculado del interes diario
-			@interes_sugerido = calcular_interes!(@porcentaje_interes, @batch_payment.money, @batch_payment.sale.due_date)
+			@interes_sugerido = calcular_interes!(@porcentaje_interes, @batch_payment.money, @batch_payment.due_date)
 			@interes = @batch_payment.interest
 			@total_a_pagar = @batch_payment.money + @interes + @adeuda
 		else 
@@ -80,12 +80,13 @@ class BatchPaymentsController < ApplicationController
 		@title_modal = 'Detalle del pago realizado'
 	end
 
-	def calcular_interes! porcentaje_interes, valor_cuota, dia_vencimiento
+	def calcular_interes! porcentaje_interes, valor_cuota, fecha_vencimiento
 		# Calculo el interes diario
-		hoy = Time.now.day.to_i
+		# Se resta el dia de hoy con la fecha de vencimiento de la cuota
+		hoy = Date.today
 		interes_diario = (valor_cuota * porcentaje_interes) / 100
-		interes = interes_diario * ( hoy - dia_vencimiento + 5)
-		interes
+		interes = interes_diario * ( hoy - fecha_vencimiento ).to_i
+		interes.round(2)
 	end
 
   private
