@@ -59,7 +59,24 @@ function roundToTwo(num) {
     return +(Math.round(num + "e+2")  + "e-2")
 }
 
+function setInputDate(_id){
+    var _dat = document.querySelector(_id);
+    var hoy = new Date(),
+        d = hoy.getDate(),
+        m = hoy.getMonth()+1, 
+        y = hoy.getFullYear(),
+        data;
 
+    if(d < 10){
+        d = "0"+d;
+    };
+    if(m < 10){
+        m = "0"+m;
+    };
+
+    data = y+"-"+m+"-"+d;
+    _dat.value = data;
+}
 
 $(document).on('ready', function () {
   // initialization of custom select
