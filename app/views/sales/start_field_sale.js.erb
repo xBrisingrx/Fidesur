@@ -3,7 +3,7 @@ $('.select-2-client-field').select2({ width: '80%',theme: "bootstrap4" })
 $("#modal-field").modal('show')
 sale.precio = <%= @field.price %>
 sale.cuotas = 0
-
+setInputDate("#fecha_compra")
 $("#form-field-sale").on("ajax:success", function(event) {
     fields_table.ajax.reload(null,false)
     let msg = JSON.parse(event.detail[2].response)
@@ -107,7 +107,7 @@ document.getElementById('submit-form-field-sale').addEventListener('click', (eve
 	// validaciones aqui
 	if ($('#fecha_compra').val() === '') {
 		noty_alert( 'error', 'Debe seleccionar una fecha' )
-		return
+		// return
 	}
 
 	if (info.clients.length == 0) {
@@ -152,7 +152,7 @@ document.getElementById('submit-form-field-sale').addEventListener('click', (eve
 													"total_cost": document.getElementById('total_cost').value,
 													"number_of_payments": document.getElementById('number_of_payments').value,
 												  "valor_cuota": parseFloat( document.getElementById('valor_cuota').value ),
-												  "fecha_compra": document.getElementById('fecha_compra').value })
+												  "sale_date": document.getElementById('fecha_compra').value })
     }
   )
   .then( response => response.json() )

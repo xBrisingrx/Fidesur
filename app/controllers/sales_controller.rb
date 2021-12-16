@@ -16,6 +16,7 @@ class SalesController < ApplicationController
         apply_arrear: params[:apply_arrear],
         arrear: params[:arrear],
         comment: params[:comment],
+        sale_date: (!params[:sale_date].blank?) ? params[:sale_date] : Time.now.strftime("%Y/%m/%d"),
         due_date: params[:due_date],
         number_of_payments: params[:number_of_payments].to_i,
         paid: params[:paid],
@@ -39,8 +40,8 @@ class SalesController < ApplicationController
         end
 
         # Fecha de compra
-        if params[:fecha_compra]
-          today = Date.parse(params[:fecha_compra])
+        if !params[:sale_date].blank?
+          today = Date.parse(params[:sale_date])
         else
           today = Time.new
         end

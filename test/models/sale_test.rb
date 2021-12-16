@@ -10,6 +10,7 @@
 #  due_date           :integer
 #  number_of_payments :integer
 #  paid               :decimal(15, 2)   default(0.0)
+#  sale_date          :date
 #  total_cost         :decimal(15, 2)   default(0.0)
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null

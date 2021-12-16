@@ -60,7 +60,7 @@ class BatchPaymentsController < ApplicationController
 
 		# Chequeo si se pago menos de lo que se debia, en caso de que hay sido asi pasa al atributo DEBE
 		if ( cuota.total - cuota.payment ).to_f > 0
-			cuota.owes = total_a_pagar - cuota.payment
+			cuota.owes = (cuota.total - cuota.payment).round(2)
 		end
 
 		cuota.pay_date = Time.now
@@ -70,7 +70,7 @@ class BatchPaymentsController < ApplicationController
 		# si debe plata el status es pago parcial , sino pago total
 		cuota.pay_status = ( cuota.owes > 0 ) ? :pago_parcial : :pagado
 
-		if @cuota.save!
+		if cuota.save!
 			render json: { status: 'success', msg: 'Pago registrado' }, status: 200
 		else
 			render json: { status: 'error', msg: 'No se pudo registrar el pago' }, status: 422
