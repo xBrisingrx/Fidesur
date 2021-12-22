@@ -1,4 +1,4 @@
-<h1>Lotes de manzana </h1>
+<h1>Lotes de manzana <%= @apple_name %></h1>
 
 <%= link_to '<i class= "hs-admin-back-left"></i> Volver a manzanas'.html_safe, apples_path, class: 'btn u-btn-blue mb-2 mr-2'%>
 <%= link_to '<i class= "hs-admin-back-left"></i> Volver a lotes'.html_safe, apples_path, class: 'btn u-btn-primary mb-2 mr-2'%>
@@ -23,11 +23,11 @@
   </thead>
 
   <tbody>
-    <% @land_fees.each do |b| %>
+    <% @land_payments.each do |b| %>
       <% clase = (b.expired?) ? "table-danger" : " " %>
       <tr class="<%= clase %>">
         <td> <%= b.number %> </td>
-        <td> <%= b.fee_value %> </td>
+        <td> <%= b.money %> </td>
         <td> <%= b.due_date.strftime('%d-%m-%y') %> </td>
         <td> Debe </td>
         <td> Haber </td>
@@ -36,7 +36,7 @@
           <% if b.expired? %>
             Acciones de cuotas expiradas
           <% else %>
-            <%= link_to '<i class="hs-admin-money"></i>'.html_safe, pay_batch_path(b.id), 
+            <%= link_to '<i class="hs-admin-money"></i>'.html_safe, pay_land_path(b.id), 
                    :remote => true, 'data-toggle' =>  'modal',
                     'data-target' => '#modal-sales', 
                     'class' => 'u-link-v5 g-color-gray-light-v6 g-color-secondary--hover g-text-underline--none--hover g-ml-12', title: 'Pagar cuota' %>

@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Land Fee Payments</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @land_fee_payments.each do |land_fee_payment| %>
+      <tr>
+        <td><%= link_to 'Show', land_fee_payment %></td>
+        <td><%= link_to 'Edit', edit_land_fee_payment_path(land_fee_payment) %></td>
+        <td><%= link_to 'Destroy', land_fee_payment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Land Fee Payment', new_land_fee_payment_path %>

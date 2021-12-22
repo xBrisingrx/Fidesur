@@ -1,8 +1,11 @@
 $("#modal-field").html("<%= j (render 'layouts/modal') %>")
 $('.select-2-client-field').select2({ width: '80%',theme: "bootstrap4" })
 $("#modal-field").modal('show')
+
 sale.precio = <%= @field.price %>
 sale.cuotas = 0
+sale.resto =  <%= @field.price %>
+
 setInputDate("#fecha_compra")
 $("#form-field-sale").on("ajax:success", function(event) {
     fields_table.ajax.reload(null,false)
@@ -60,7 +63,16 @@ function get_clients() {
 document.getElementById('paid').addEventListener('change', function(event) {
 	$('#valor_restante').html('')
 	let entrega = parseFloat(this.value)
-	if (entrega > 0 && entrega != '' && entrega < sale.precio) {
+
+	if (isNaN(entrega)) {
+		entrega = 0
+		this.value = 0
+		sale.resto = sale.precio - entrega
+		calular_valor_cuota()
+		return 
+	}
+
+	if (entrega > 0 &&  !isNaN(entrega) && entrega < sale.precio) {
 		this.parentElement.classList.remove('u-has-error-v1')
 		sale.resto = sale.precio - entrega
 		$('#valor_restante').append(`A pagar en cuotas: <b>$${sale.resto}</b>`)
@@ -129,9 +141,6 @@ document.getElementById('submit-form-field-sale').addEventListener('click', (eve
 		document.getElementById('number_of_payments').parentElement.classList.remove('u-has-error-v1')
 		$('#msg_number_of_payment').html('')
 	}
-
-
-
 
 	fetch('/sales/', 
 		{

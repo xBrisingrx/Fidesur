@@ -33,6 +33,7 @@
 //= require sales
 //= require field_sale
 //= require batch_payments
+//= require land_fees
 
 // require_tree .
 

@@ -18,7 +18,7 @@
 class Sale < ApplicationRecord
 	has_many :client_sales
 	has_many :field_sales
-	has_many :batch_payments
+	has_many :land_fees
 
 	has_many :clients, through: :client_sales
 	has_many :fields, through: :field_sales

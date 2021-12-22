@@ -1,0 +1,31 @@
+# == Schema Information
+#
+# Table name: land_fee_payments
+#
+#  id          :bigint           not null, primary key
+#  active      :boolean          default(TRUE)
+#  comment     :text(65535)
+#  pay_date    :date
+#  payment     :decimal(15, 2)   default(0.0)
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  land_fee_id :bigint
+#
+# Indexes
+#
+#  index_land_fee_payments_on_land_fee_id  (land_fee_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (land_fee_id => land_fees.id)
+#
+
+# This model initially had no columns defined. If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+one: {}
+# column: value
+#
+two: {}
+# column: value

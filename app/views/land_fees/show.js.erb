@@ -1,0 +1,92 @@
+$("#modal-field-sale").html("<%= j (render 'layouts/modal') %>")
+$("#modal-field-sale").modal('show')
+
+land_fee_data.valor_cuota = parseFloat(<%= @land_fee.fee_value%>)
+land_fee_data.total_a_pagar = parseFloat(<%= @land_fee.fee_value %>)
+land_fee_data.ajuste = parseFloat(document.getElementById('land_fee_adjust').value)
+land_fee_data.adeuda = parseFloat(<%= @adeuda %>)
+
+document.getElementById('land_fee_aply_interest').checked = <%= @land_fee.apply_arrear? %>
+
+if (!<%= @land_fee.apply_arrear? %>) {
+	// Si no corresponde aplicar interes solo se paga la cuota 
+	document.getElementById('esta_vencido').style.display = 'none'
+} else {
+	// Si corresponde, manejamos los campos del interes/recargo sugerido
+	land_fee_data.recargo_sugerido = parseFloat(<%= @interes_sugerido %>)
+	document.getElementById('land_fee_interest').value = land_fee_data.recargo_sugerido
+	document.getElementById('land_fee_aply_interest').addEventListener('click', function(event) {
+		$( '#land_fee_interest').prop("disabled", !this.checked )
+		if ( this.checked ) {
+			land_fee_data.recargo_sugerido = parseFloat(<%= @interes_sugerido %>)
+			land_fee_data.total_a_pagar = land_fee_data.sumar_todo()
+			document.getElementById('land_fee_interest').value = <%= @interes_sugerido %>
+			document.getElementById('land_fee_payment').value = land_fee_data.total_a_pagar
+			check_input_payment()
+		} else {
+			land_fee_data.recargo_sugerido = 0.0
+			land_fee_data.total_a_pagar = land_fee_data.sumar_sin_recargo()
+			document.getElementById('land_fee_interest').value = land_fee_data.recargo_sugerido
+			document.getElementById('land_fee_payment').value = land_fee_data.total_a_pagar
+			check_input_payment()
+		}
+	})
+}
+
+document.getElementById('land_fee_interest').addEventListener('change', function(event) {
+	land_fee_data.recargo_sugerido = parseFloat( this.value )
+	if (!isNaN( land_fee_data.recargo_sugerido )) {
+		document.getElementById('land_fee_payment').value = land_fee_data.sumar_todo()
+	} else {
+		land_fee_data.recargo_sugerido = 0.0
+		document.getElementById('land_fee_interest').value = land_fee_data.recargo_sugerido
+		document.getElementById('land_fee_payment').value = land_fee_data.sumar_sin_recargo()
+	}
+
+	check_input_payment()
+})
+
+document.getElementById('land_fee_payment').addEventListener('change', function(event) {
+	check_input_payment()
+} )
+
+document.getElementById('land_fee_adjust').addEventListener('change', function(event) {
+	land_fee_data.ajuste = parseFloat( this.value )
+	if (!isNaN( land_fee_data.ajuste )) {
+		document.getElementById('land_fee_payment').value = land_fee_data.sumar_todo()
+	} else {
+		land_fee_data.ajuste = 0.0
+		document.getElementById('land_fee_adjust').value = land_fee_data.ajuste
+		document.getElementById('land_fee_payment').value = land_fee_data.sumar_sin_ajuste()
+	}
+	check_input_payment()
+})
+
+function check_input_payment(msg) {
+	let input = document.getElementById('land_fee_payment')
+	if ( input.value <= 0  ) {
+		input.parentElement.classList.add('u-has-error-v1')
+		noty_alert('error', 'Debe ingresar un valor en pago')
+		$('.btnSubmit').prop("disabled", true)
+	} else {
+		input.parentElement.classList.remove('u-has-error-v1')
+		$('.btnSubmit').prop("disabled", false)
+	}
+}
+
+$("#form-field-pay-quote").on("ajax:success", function(event) {
+    field_sale_table.ajax.reload(null,false)
+    let msg = JSON.parse(event.detail[2].response)
+    noty_alert(msg.status, msg.msg)
+    get_totales_cuota($('#field_sale_id').val())
+    $("#modal-field-sale").modal('hide')
+  }).on("ajax:error", function(event) {
+  	console.warn('paso x este error')
+  	console.error('error' + event.detail[2].response)
+  	noty_alert('error', 'No se pudo registrar el pago')
+		// let msg = JSON.parse( event.detail[2].response )
+		// $.each( msg, function( key, value ) {
+		// 	$(`#form-field #field_${key}`).addClass('is-invalid')
+		// 	$(`#form-field .field_${key}`).text( value ).show('slow')
+		// })
+})

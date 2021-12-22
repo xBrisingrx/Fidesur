@@ -46,6 +46,13 @@
 
 Rails.application.routes.draw do
   
+  
+  resources :land_fees do 
+    get 'partial_payment/:land_fee_id', to: 'land_fee_payments#new', as: 'partial_payment'
+    post 'partial_payment', to: 'land_fee_payments#create', as: 'register_partial_payment'
+    resources :land_fee_payments
+  end
+  # resources :land_payments
   resources :sessions, only: [:new, :create, :destroy]  
   get 'signup', to: 'users#new', as: 'signup'
   get 'login', to: 'sessions#new', as: 'login'
@@ -61,9 +68,10 @@ Rails.application.routes.draw do
 
   post 'sales', to: 'sales#create'
   get 'detalle_venta_lote/:field_id', to: 'field_sale#index', as: 'show_field_sale'
+  get 'get_totales_cuota/:field_id', to: 'field_sale#get_totales_cuota', as: 'get_totales_cuota'
   get 'start_field_sale/:field_id', to: 'sales#start_field_sale', as: 'start_field_sale'
-  get 'pay_sale/:data', to: 'sales#pay', as: 'pay_batch'
-  get 'detalle_pago_cuota/:id', to: 'batch_payments#detalle_pago_cuota', as: 'detalle_pago_cuota'
+  get 'pay_sale/:data', to: 'sales#pay', as: 'pay_land'
+  get 'detalle_pago_cuota/:id', to: 'land_fees#detalle_pago_cuota', as: 'detalle_pago_cuota'
   get 'lotes_cliente/:client_id', to: 'sales#lotes_cliente', as: 'lotes_cliente'
   localized do 
 
@@ -88,8 +96,7 @@ Rails.application.routes.draw do
         post '/clients/disable'
     # end
     resources :field_sale
-    resources :batch_payments
-    
+      
     # get 'signup', to: 'users#new', as: 'signup'
     # get 'login', to: 'sessions#new', as: 'login'
     # get 'logout', to: 'sessions#destroy', as: 'logout'

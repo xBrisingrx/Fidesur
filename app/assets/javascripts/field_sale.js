@@ -1,11 +1,22 @@
 let field_sale_table
 
+async function get_totales_cuota(id) {
+  let data = await fetch('/get_totales_cuota/' + id)
+  let totales = await data.json()
+
+  $('#total_debe').html(`Debe <b> ($${totales.debe}) </b>`)
+  $('#total_haber').html(`Haber <b> ($${totales.haber}) </b>`)
+  $('#monto_adeudado').html(`$${totales.total_adeudado}`)
+  $('#monto_pagado').html(`$${totales.total_pagado}`)
+  $('#cant_cuotas_pagadas').html(`Cuotas pagadas: ${totales.cuotas_pagadas}/${totales.cant_cuotas}`)
+}
+
 $(document).ready(function(){
 	field_sale_table = $("#field_sale_table").DataTable({
     'ajax':`/detalle_venta_lote/` + $('#field_sale_id').val(),
     'columns': [
     {'data': 'number'},
-    {'data': 'money'},
+    {'data': 'fee_value'},
     {'data': 'due_date'},
     {'data': 'debe'},
     {'data': 'haber'},
@@ -14,18 +25,5 @@ $(document).ready(function(){
     ],
     'language': {'url': "/assets/plugins/datatables_lang_spa.json"}
 	})
-
-  // $("#form-disable-field").on("ajax:success", function(event) {
-  //   fields_table.ajax.reload(null,false)
-  //   let msg = JSON.parse(event.detail[2].response)
-  //   noty_alert(msg.status, msg.msg)
-  //   $("#modal-disable-field").modal('hide')
-  // }).on("ajax:error", function(event) {
-  //   let msg = JSON.parse( event.detail[2].response )
-  //   console.log(event.detail[2].response)
-  //   $.each( msg, function( key, value ) {
-  //     $(`#form-field #field_${key}`).addClass('is-invalid')
-  //     $(`#form-field .field_${key}`).text( value ).show('slow')
-  //   })
-  // })
 })
+

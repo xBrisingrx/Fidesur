@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_14_233745) do
+ActiveRecord::Schema.define(version: 2021_12_17_180309) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", null: false
@@ -127,6 +127,38 @@ ActiveRecord::Schema.define(version: 2021_12_14_233745) do
     t.index ["apple_id"], name: "index_fields_on_apple_id"
   end
 
+  create_table "land_fee_payments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "land_fee_id"
+    t.date "pay_date"
+    t.decimal "payment", precision: 15, scale: 2, default: "0.0"
+    t.text "comment"
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["land_fee_id"], name: "index_land_fee_payments_on_land_fee_id"
+  end
+
+  create_table "land_fees", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "sale_id"
+    t.integer "number", null: false
+    t.decimal "fee_value", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "total_value", precision: 15, scale: 2, default: "0.0"
+    t.date "due_date"
+    t.date "pay_date"
+    t.decimal "owes", precision: 15, scale: 2, default: "0.0"
+    t.decimal "payment", precision: 15, scale: 2, default: "0.0"
+    t.text "comment"
+    t.decimal "interest", precision: 15, scale: 2, default: "0.0"
+    t.integer "pay_status", default: 0
+    t.decimal "adjust", precision: 15, scale: 2, default: "0.0"
+    t.text "comment_adjust"
+    t.boolean "payed", default: false
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sale_id"], name: "index_land_fees_on_sale_id"
+  end
+
   create_table "sales", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.decimal "paid", precision: 15, scale: 2, default: "0.0"
     t.decimal "total_cost", precision: 15, scale: 2, default: "0.0"
@@ -168,4 +200,6 @@ ActiveRecord::Schema.define(version: 2021_12_14_233745) do
   add_foreign_key "field_sales", "fields"
   add_foreign_key "field_sales", "sales"
   add_foreign_key "fields", "apples"
+  add_foreign_key "land_fee_payments", "land_fees"
+  add_foreign_key "land_fees", "sales"
 end
