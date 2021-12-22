@@ -57,15 +57,9 @@ class SalesController < ApplicationController
         # valor de cuota es el costo de mi lote - lo que el cliente pago dividido cantidad de cuotas pactadas
         # valor_cuota = (sale.total_cost - sale.paid) / sale.number_of_payments 
 
-        if sale.apply_arrear
-          valor_interes = (valor_cuota * sale.arrear) / 100
-        else
-          valor_interes = 0.0 
-        end
-
         for i in 1..sale.number_of_payments
           due_date += 1.month
-          cuota = BatchPayment.create!(due_date: due_date, money: valor_cuota, number: i, sale_id: sale.id, interest: valor_interes.round(2))
+          cuota = LandFee.create!(due_date: due_date, fee_value: valor_cuota, number: i, sale_id: sale.id)
         end
         render json: {status: 'success', msg: 'Venta exitosa'}
       else
@@ -92,7 +86,7 @@ class SalesController < ApplicationController
   def pay
     puts "esto es una B => #{params}"
     puts "filtrado #{params[:data]}"
-    cuota = BatchPayment.find(params[:data])
+    cuota = LandFee.find(params[:data])
 
     render json: { 'data' => cuota, 'interest' => cuota.sale.arrear }
   end
