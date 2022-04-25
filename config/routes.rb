@@ -110,8 +110,3 @@ end
 #   root 'welcome#index'
 # end
 
-# asi podrias obtener urls como:
-# http://localhost:3000/hola
-# http://localhost:3000/es/hola
-# http://localhost:3000/en/hola
-
