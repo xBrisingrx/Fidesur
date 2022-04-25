@@ -15,7 +15,6 @@ class LandFeesController < ApplicationController
     @title_modal = 'Pagar cuota'
     # obtengo info de una sola cuota
     @land_fee = LandFee.find(params[:id])
-
     # Plata que quedo pendiente de cuotas anteriores 
     @adeuda = @land_fee.get_deuda
     # testeo que este vencida la cuota y que se haya seteado q se corresponda aplicar intereses
@@ -96,6 +95,7 @@ class LandFeesController < ApplicationController
     hoy = Date.today
     interes_diario = (valor_cuota * porcentaje_interes) / 100
     interes = interes_diario * ( hoy - fecha_vencimiento ).to_i
+    puts "====> vencido hace #{ ( hoy - fecha_vencimiento ).to_i } de dias"
     interes.round(2)
   end
 

@@ -43,6 +43,16 @@ document.getElementById('add-client').addEventListener('click', (event) => {
 	}
 })
 
+document.getElementById('add-payment').addEventListener('click', (e) => {
+	e.preventDefault()
+	console.log(e)
+	const payment_list = document.getElementsByClassName('payment-list')
+	console.log(payment_list)
+	payment_list.innerHTML += `
+		<input type='text'></input>
+	`
+})
+
 function remove_client( id ) {
 	event.preventDefault()
 
