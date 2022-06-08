@@ -13,6 +13,7 @@ class LandFeePaymentsController < ApplicationController
   # GET /land_fee_payments/new
   def new
     @title_modal = 'Pago parcial'
+    @currencies = Currency.where(active:true)
     @land_fee = LandFee.find(params[:land_fee_id])
     @data = @land_fee.land_fee_payments.build
     @land_fee_payment = LandFeePayment.new
@@ -25,9 +26,23 @@ class LandFeePaymentsController < ApplicationController
   # POST /land_fee_payments or /land_fee_payments.json
   def create
     land_fee = LandFee.find(params[:land_fee_id])
+    land_fee_payments = land_fee.land_fee_payments.new(
+      payment: params[:payment],
+      pay_date: params[:pay_date],
+      comment: params[:comment],
+      currency_id: params[:currency_id],
+      tomado_en: params[:tomado_en],
+      total: params[:calculo_en_pesos],
+      pay_name: params[:name_pay]
+    )
+    if !params[:images].nil?
+      puts 'aca'
+      land_fee_payments.images = params[:images]
+    end
+
     respond_to do |format|
       # create tiene un callback para atualizar land_fee
-      if land_fee.land_fee_payments.create!(land_fee_payment_params)
+      if land_fee_payments.save!
         format.json { render json: {'status' => 'success', 'msg' => 'Pago registrado'}, location: @land_fee_payment }
       else
         format.json { render json: land_fee.land_fee_payments.errors, status: :unprocessable_entity }
@@ -35,7 +50,9 @@ class LandFeePaymentsController < ApplicationController
     end
     
     rescue => e
+      puts "!!! rescue => #{e}"
       response = e.message.split(':')
+      puts "===> #{response[1]}"
       response[1] = response[1].split(' ')[1..-1].join(' ')
       render json: { response[0] => response[1] }, status: 402
   end
@@ -53,7 +70,6 @@ class LandFeePaymentsController < ApplicationController
     end
   end
 
-  # DELETE /land_fee_payments/1 or /land_fee_payments/1.json
   def destroy
     @land_fee_payment.destroy
     respond_to do |format|
@@ -63,13 +79,11 @@ class LandFeePaymentsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_land_fee_payment
       @land_fee_payment = LandFeePayment.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def land_fee_payment_params
-      params.require(:land_fee_payment).permit(:payment, :pay_date, :active, :comment)
+      params.require(:land_fee_payment).permit(:payment, :pay_date, :images, :comment, :currency_id, :tomado_en,:active, :total, :pay_name)
     end
 end

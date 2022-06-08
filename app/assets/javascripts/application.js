@@ -34,6 +34,7 @@
 //= require field_sale
 //= require batch_payments
 //= require land_fees
+//= require land_fee_payments
 
 // require_tree .
 
@@ -58,6 +59,16 @@ function noty_alert(type, message) {
 // Redondeo un numero a 2 decimales
 function roundToTwo(num) {
     return +(Math.round(num + "e+2")  + "e-2")
+}
+
+function addClassValid( input ) {
+  input.classList.remove('is-invalid')
+  input.classList.add('is-valid')
+}
+
+function addClassInvalid( input ) {
+  input.classList.remove('is-valid')
+  input.classList.add('is-invalid')
 }
 
 function setInputDate(_id){

@@ -30,7 +30,6 @@
 #  fk_rails_...  (sale_id => sales.id)
 #
 class LandFee < ApplicationRecord
-
 	# total_value es el valor que se deberia haber pagado ( sumamos el valor cuota + interes + ajuste )
 	# fee_value es el valor de la cuota
 	#number es el numero de cuota
@@ -57,7 +56,6 @@ class LandFee < ApplicationRecord
 	def get_deuda
 		LandFee.where(sale_id: self.sale_id).where('number < ?', self.number).where('owes > 0').sum('owes')
 	end
-
 
 	def pago_deuda
 		puts "\n ========================  entramos al pago deuda ============================= \n"
