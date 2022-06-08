@@ -6,21 +6,29 @@
 #  active      :boolean          default(TRUE)
 #  comment     :text(65535)
 #  pay_date    :date
+#  pay_name    :string(255)
 #  payment     :decimal(15, 2)   default(0.0)
+#  tomado_en   :decimal(15, 2)   default(0.0), not null
+#  total       :decimal(15, 2)   default(0.0), not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  currency_id :bigint
 #  land_fee_id :bigint
 #
 # Indexes
 #
+#  index_land_fee_payments_on_currency_id  (currency_id)
 #  index_land_fee_payments_on_land_fee_id  (land_fee_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (currency_id => currencies.id)
 #  fk_rails_...  (land_fee_id => land_fees.id)
 #
 class LandFeePayment < ApplicationRecord
 	belongs_to :land_fee
+	belongs_to :currency
+	has_many_attached :images
 
 	validates :payment, presence: true
 	validates :payment, numericality: { greater_than: 0,  message: 'El pago debe ser mayor a cero' }
@@ -45,9 +53,9 @@ class LandFeePayment < ApplicationRecord
 			puts "\n\n pagos realizados  => #{cuota.land_fee_payments.count} \n\n"
 			puts "\n lo q se debe de esta cuota es => #{cuota.owes} \n"
 			
-			cuota.payment += self.payment 
+			cuota.payment += self.total 
 
-			if self.payment > cuota.total_value
+			if self.total > cuota.total_value
 				puts "\n ####################### pago mas de el valor de la cuota !! \n"
 				cuota.owes = 0
 				cuota.pago_deuda
@@ -62,7 +70,4 @@ class LandFeePayment < ApplicationRecord
 			cuota.save!
 		end
 	end
-
-
-
 end

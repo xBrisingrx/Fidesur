@@ -6,8 +6,7 @@ class FieldSaleController < ApplicationController
 
     @id = params[:field_id]
     @sale = Sale.find(@field_sale.sale_id)
-    @land_fees = @sale.land_fees
-
+    @land_fees = @sale.land_fees #obtengo cuotas
     @total_pagado = (@land_fees.sum(:payment) + @field_sale.sale.paid)
     @total_adeudado = @field_sale.field.price - @total_pagado
 

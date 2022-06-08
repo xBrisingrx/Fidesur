@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_17_180309) do
+ActiveRecord::Schema.define(version: 2022_06_08_064653) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", null: false
@@ -101,6 +101,14 @@ ActiveRecord::Schema.define(version: 2021_12_17_180309) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "currencies", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.string "name", limit: 40
+    t.string "detail"
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "field_sales", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "field_id"
     t.bigint "sale_id"
@@ -135,6 +143,11 @@ ActiveRecord::Schema.define(version: 2021_12_17_180309) do
     t.boolean "active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "tomado_en", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "total", precision: 15, scale: 2, default: "0.0", null: false
+    t.bigint "currency_id"
+    t.string "pay_name"
+    t.index ["currency_id"], name: "index_land_fee_payments_on_currency_id"
     t.index ["land_fee_id"], name: "index_land_fee_payments_on_land_fee_id"
   end
 
@@ -173,6 +186,21 @@ ActiveRecord::Schema.define(version: 2021_12_17_180309) do
     t.date "sale_date"
   end
 
+  create_table "sales_payments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.decimal "value", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "tomado_en", precision: 15, scale: 2, default: "0.0", null: false
+    t.decimal "value_in_pesos", precision: 15, scale: 2, default: "0.0", null: false
+    t.string "detail"
+    t.bigint "sale_id"
+    t.bigint "currency_id"
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "pay_name"
+    t.index ["currency_id"], name: "index_sales_payments_on_currency_id"
+    t.index ["sale_id"], name: "index_sales_payments_on_sale_id"
+  end
+
   create_table "sectors", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name"
     t.decimal "size", precision: 15, scale: 2, default: "0.0"
@@ -200,6 +228,9 @@ ActiveRecord::Schema.define(version: 2021_12_17_180309) do
   add_foreign_key "field_sales", "fields"
   add_foreign_key "field_sales", "sales"
   add_foreign_key "fields", "apples"
+  add_foreign_key "land_fee_payments", "currencies"
   add_foreign_key "land_fee_payments", "land_fees"
   add_foreign_key "land_fees", "sales"
+  add_foreign_key "sales_payments", "currencies"
+  add_foreign_key "sales_payments", "sales"
 end

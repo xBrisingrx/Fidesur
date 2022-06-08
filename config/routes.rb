@@ -73,6 +73,9 @@ Rails.application.routes.draw do
   get 'pay_sale/:data', to: 'sales#pay', as: 'pay_land'
   get 'detalle_pago_cuota/:id', to: 'land_fees#detalle_pago_cuota', as: 'detalle_pago_cuota'
   get 'lotes_cliente/:client_id', to: 'sales#lotes_cliente', as: 'lotes_cliente'
+
+  post 'sales/send_payments', to: 'sales#send_payments'
+
   localized do 
 
     root 'apples#index'

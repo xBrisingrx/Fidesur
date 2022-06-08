@@ -80,6 +80,41 @@
     <% end %>
   </ul>
 </div>
+<div>
+  <p>Primer entrega:</p>
+  <div class="row">
+    <table class="table table-sm mx-4">
+      <thead>
+        <tr>
+          <th>Moneda</th>
+          <th>Ingresado</th>
+          <th>Tomado en</th>
+          <th>Total</th>
+          <th>Adjunto</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @sale.sales_payments.each do |payment|%>
+          <tr>
+            <td><%= payment.currency.name %></td>
+            <td><%= payment.value %></td>
+            <td><%= "$#{payment.tomado_en}" %></td>
+            <td><%= "$#{payment.value_in_pesos}" %></td>
+            <td>
+              <%payment.images.each do |img| %>
+                <%= link_to img, target: '_blank' do %>
+                  <%= image_tag img.variant(resize: "100x100"), class: 'img-thumbnail m-2' %>
+                <%end%>
+              <% end %>
+            </td>
+          </tr>
+        <%end%>
+      </tbody>  
+    </table>
+    <div class="row">
+    </div>
+  </div>
+</div>
 
 <div class="row ml-2" id="cant_cuotas_pagadas">
   Cuotas pagadas: <%= "#{@cuotas_pagadas}/#{@total_cuotas}" %>
@@ -87,7 +122,6 @@
 <div class="row ml-2 mb-4">
   Cuotas vencidas: <%= @cant_vencidas %>
 </div>
-
 <table id="field_sale_table" class="table hover dt-responsive w-100">
   <thead>
     <tr>

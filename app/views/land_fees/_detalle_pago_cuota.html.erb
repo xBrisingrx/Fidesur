@@ -25,14 +25,30 @@
           <thead>
             <tr>
               <th>Fecha</th>
-              <th>Monto</th>
+              <th>Moneda</th>
+              <th>Ingreso</th>
+              <th>Tomado en</th>
+              <th>Total</th>
+              <th>Adjuntos</th>
             </tr>
           </thead>
           <tbody>
             <% @cuota.land_fee_payments.each do |payment|%>
               <tr>
                 <td><%= payment.pay_date.strftime('%d-%m-%y') %></td>
-                <td> $<%= payment.payment %> </td>
+                <th><%= payment.currency.name %></th>
+                <% if payment.currency.id == 4 %>
+                  <th><%= "$#{payment.payment}" %></th>
+                <%else%>
+                  <th><%= "#{payment.currency.name}#{payment.payment}" %></th>
+                <%end%>
+                <th><%= "$#{payment.tomado_en}" %></th>
+                <th><%= "$#{payment.total}" %></th>
+                <th>
+                  <% payment.images.each do |image| %>
+                    <%= link_to '<i class="hs-admin-image"></i>'.html_safe, image, target: '_blank', class: 'btn u-btn-teal' %>
+                  <% end %>
+                </th>
               </tr>
             <% end %>
           </tbody>
