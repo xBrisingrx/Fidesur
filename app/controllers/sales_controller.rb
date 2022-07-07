@@ -36,10 +36,6 @@ class SalesController < ApplicationController
         # Registramos los pagos
         all_payments = params[:num_pays].to_i
         for i in 1..all_payments do 
-          puts "========= #{i}"
-          puts params["currency_id_#{i}".to_sym]
-          puts "=> currency_id_#{i}"
-
           currency_id = params["currency_id_#{i}".to_sym].to_i
           value_in_pesos = params["value_in_pesos_#{i}".to_sym].to_f
           paid = params["payment_#{i}".to_sym].to_f
