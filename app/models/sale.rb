@@ -23,4 +23,11 @@ class Sale < ApplicationRecord
 
 	has_many :clients, through: :client_sales
 	has_many :fields, through: :field_sales
+
+	after_create :calculate_total_paid
+
+	def calculate_total_paid
+		total_paid = self.sales_payments.sum(:value_in_pesos)
+		self.update( paid: total_paid )
+	end
 end
