@@ -3,7 +3,7 @@ json.data @apples do |a|
 	json.hectares a.hectares
 	json.space_not_available "#{a.space_not_available} m²"
 	json.location a.location
-	json.value "$ #{a.value}"
+	json.value "$ #{format_currency( a.value )}"
 	json.sector a.sector.name
 	json.actions "#{link_to '<i class="hs-admin-widgetized"></i>'.html_safe, apple_fields_path(a), 
       							'class' => 'u-link-v5 g-color-gray-light-v6 g-color-secondary--hover g-text-underline--none--hover g-ml-12', title: 'Lotes'}

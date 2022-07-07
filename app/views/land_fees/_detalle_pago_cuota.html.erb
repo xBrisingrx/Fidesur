@@ -38,12 +38,12 @@
                 <td><%= payment.pay_date.strftime('%d-%m-%y') %></td>
                 <th><%= payment.currency.name %></th>
                 <% if payment.currency.id == 4 %>
-                  <th><%= "$#{payment.payment}" %></th>
+                  <th><%= "$#{format_currency( payment.payment )}" %></th>
                 <%else%>
-                  <th><%= "#{payment.currency.name}#{payment.payment}" %></th>
+                  <th><%= "#{payment.currency.name}#{format_currency( payment.payment )}" %></th>
                 <%end%>
-                <th><%= "$#{payment.tomado_en}" %></th>
-                <th><%= "$#{payment.total}" %></th>
+                <th><%= "$#{format_currency( payment.tomado_en )}" %></th>
+                <th><%= "$#{format_currency( payment.total )}" %></th>
                 <th>
                   <% payment.images.each do |image| %>
                     <%= link_to '<i class="hs-admin-image"></i>'.html_safe, image, target: '_blank', class: 'btn u-btn-teal' %>

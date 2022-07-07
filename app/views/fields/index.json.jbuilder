@@ -3,7 +3,7 @@ json.data @fields do |f|
 	json.measures f.measures
 	json.surface "#{f.surface} m²"
 	json.ubication f.ubication
-	json.price "$ #{f.price}"
+	json.price "$ #{format_currency(f.price) }"
 	json.is_green_space (f.is_green_space)? 'Si' : 'No'
 	json.status "#{@status[f.status]}"
 	if f.blueprint.attached?
