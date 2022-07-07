@@ -12,7 +12,6 @@ class SalesController < ApplicationController
     if params[:clients].blank?
       return render json: {status: 'error', msg: 'No se han seleccionado clientes'}
     end
-
     ActiveRecord::Base.transaction do 
       sale = Sale.new(
         apply_arrear: params[:apply_arrear],
@@ -34,19 +33,28 @@ class SalesController < ApplicationController
           field = Field.find(params[:field_id])
           field.update!(status: :bought)
         end
-        # Registramos el metodo de pago
-        sales_payments = sale.sales_payments.new(
-          currency_id: params[:currency_id].to_i,
-          value: params[:paid].to_f,
-          value_in_pesos: ( (params[:currency_id].to_i == 2) || (params[:currency_id].to_i == 3) ) ? params[:value_in_pesos].to_f : params[:paid].to_f,
-          tomado_en: params[:tomado_en].to_f,
-          detail: params[:name_pay]
-        )
-        if !params[:files].blank?
-          sales_payments.images = params[:files]
-        end
-        sales_payments.save!
+        # Registramos los pagos
+        all_payments = params[:num_pays].to_i
+        for i in 1..all_payments do 
+          puts "========= #{i}"
+          puts params["currency_id_#{i}".to_sym]
+          puts "=> currency_id_#{i}"
 
+          currency_id = params["currency_id_#{i}".to_sym].to_i
+          value_in_pesos = params["value_in_pesos_#{i}".to_sym].to_f
+          paid = params["payment_#{i}".to_sym].to_f
+          sales_payments = sale.sales_payments.new(
+            currency_id: currency_id,
+            value: paid,
+            value_in_pesos: ( ( currency_id == 2) || ( currency_id == 3) ) ? value_in_pesos : paid,
+            tomado_en: params["tomado_en_#{i}".to_sym].to_f,
+            detail: params["name_pay_#{i}".to_sym]
+          )
+          if !params["files_#{i}".to_sym].blank?
+            sales_payments.images = params["files_#{i}".to_sym]
+          end
+          sales_payments.save!
+        end
         # Fecha de compra
         if !params[:sale_date].blank?
           today = Date.parse(params[:sale_date])
@@ -72,7 +80,6 @@ class SalesController < ApplicationController
       else
         render json: {status: 'errors', msg: 'No se pudo registrar la venta'}, status: :unprocessable_entity
       end #end if
-      # raise 'Merequetengue'
     end # transaction
     rescue => e
       puts "Excepcion => #{e.message}"
