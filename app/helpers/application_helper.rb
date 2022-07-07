@@ -1,5 +1,5 @@
 module ApplicationHelper
-	def format_number(num)
+	def format_currency(num)
 		number_to_currency(num, {:unit => '', :separator => ',', :delimiter => '.', :precision => 2})
 	end
 
