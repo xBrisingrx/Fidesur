@@ -72,7 +72,7 @@ Rails.application.routes.draw do
   get 'start_field_sale/:field_id', to: 'sales#start_field_sale', as: 'start_field_sale'
   get 'pay_sale/:data', to: 'sales#pay', as: 'pay_land'
   get 'detalle_pago_cuota/:id', to: 'land_fees#detalle_pago_cuota', as: 'detalle_pago_cuota'
-  get 'lotes_cliente/:client_id', to: 'sales#lotes_cliente', as: 'lotes_cliente'
+  # get 'lotes_cliente/:client_id', to: 'sales#lotes_cliente', as: 'lotes_cliente'
 
   post 'sales/send_payments', to: 'sales#send_payments'
 
@@ -97,6 +97,7 @@ Rails.application.routes.draw do
       post '/fields/disable'
       resources :clients
         post '/clients/disable'
+        get '/clients/:id/lotes_cliente', to: 'clients#lotes_cliente', as: 'lotes_cliente'
     # end
     resources :field_sale
       

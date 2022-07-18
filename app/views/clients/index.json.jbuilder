@@ -11,6 +11,10 @@ json.data @clients do |c|
   								 :remote => true, 'data-toggle' =>  'modal',
       							'data-target' => '#modal-client', 
       							'class' => 'u-link-v5 g-color-gray-light-v6 g-color-secondary--hover g-text-underline--none--hover g-ml-12', title: 'Editar'}
+      						#{link_to '<i class="hs-admin-home"></i>'.html_safe, lotes_cliente_path(c.id), 
+  								 :remote => true, 'data-toggle' =>  'modal',
+      							'data-target' => '#modal-client', 
+      							'class' => 'u-link-v5 g-color-gray-light-v6 g-color-secondary--hover g-text-underline--none--hover g-ml-12', title: 'Ver lotes comprados'}
   							<a class='u-link-v5 g-color-gray-light-v6 g-color-secondary--hover g-text-underline--none--hover g-ml-12' 
   								title='Eliminar' 
   								onclick='modal_disable_client( #{ c.id } )'>
@@ -20,10 +24,6 @@ json.data @clients do |c|
   								 :remote => true, 'data-toggle' =>  'modal',
       							'data-target' => '#modal-client', 
       							'class' => 'u-link-v5 g-color-gray-light-v6 g-color-secondary--hover g-text-underline--none--hover g-ml-12', title: 'Editar'}
-      						#{link_to '<i class="hs-admin-home"></i>'.html_safe, lotes_cliente_path(c.id), 
-  								 :remote => true, 'data-toggle' =>  'modal',
-      							'data-target' => '#modal-client', 
-      							'class' => 'u-link-v5 g-color-gray-light-v6 g-color-secondary--hover g-text-underline--none--hover g-ml-12', title: 'Ver lotes comprados'}
   							<a class='u-link-v5 g-color-gray-light-v6 g-color-secondary--hover g-text-underline--none--hover g-ml-12' 
   								title='Eliminar' 
   								onclick='modal_disable_client( #{ c.id } )'>

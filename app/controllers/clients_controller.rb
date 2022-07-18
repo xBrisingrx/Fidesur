@@ -1,5 +1,5 @@
 class ClientsController < ApplicationController
-  before_action :set_client, only: %i[ show edit update destroy ]
+  before_action :set_client, only: %i[ show edit update destroy lotes_cliente]
 
   # GET /clients or /clients.json
   def index
@@ -67,6 +67,11 @@ class ClientsController < ApplicationController
     rescue => e
       @response = e.message.split(':')
       render json: { @response[0] => @response[1] }, status: 402
+  end
+
+  def lotes_cliente
+    @compras = @client.client_sales
+    @title_modal = "Lotes de #{@client.fullname}"
   end
 
   private
