@@ -75,6 +75,7 @@ Rails.application.routes.draw do
   # get 'lotes_cliente/:client_id', to: 'sales#lotes_cliente', as: 'lotes_cliente'
 
   post 'sales/send_payments', to: 'sales#send_payments'
+  get '/ver_todos_los_lotes', to: "field_sale#all_fields"
 
   localized do 
 
@@ -99,6 +100,7 @@ Rails.application.routes.draw do
         post '/clients/disable'
         get '/clients/:id/lotes_cliente', to: 'clients#lotes_cliente', as: 'lotes_cliente'
     # end
+
     resources :field_sale
       
     # get 'signup', to: 'users#new', as: 'signup'

@@ -36,4 +36,8 @@ class FieldSaleController < ApplicationController
                   'cant_cuotas' => cant_cuotas}
   end
 
+  def all_fields # show all field
+    @fields = FieldSale.where( active: true )
+  end
+
 end

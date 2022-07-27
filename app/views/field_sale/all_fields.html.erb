@@ -1,0 +1,26 @@
+<h1> Lotes vendidos </h1>
+
+<table class="table hover dt-responsive w-100" id="all_fields">
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>Manzana</th>
+          <th>Lote</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @fields.each do |field|%>
+          <tr>
+            <td>
+              <ul>
+                <% field.sale.clients.each do |client| %>
+                  <li><%= "#{client.fullname} - #{client.dni}" %></li>
+                <% end %>
+              </ul>
+            </td>
+            <td><%= field.sale.fields.first.apple.code %></td>
+            <td><%= field.sale.fields.first.code %></td>
+          </tr>
+        <%end%>
+      </tbody>  
+    </table>

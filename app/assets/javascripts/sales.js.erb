@@ -1,4 +1,4 @@
-let sale_field_table
+let sale_field_table, all_fields
 
 let sale = {
   precio: null,
@@ -31,9 +31,13 @@ function pagar_cuota() {
   
 }
 
+
+
 $(document).ready(function(){
 	sale_field_table = $("#sale_field_table").DataTable({ 'language': {'url': "/assets/plugins/datatables_lang_spa.json"} })
-
+  all_fields = $("#all_fields").DataTable({
+    'language': {'url': "/assets/plugins/datatables_lang_spa.json"}
+  })
   $("#form-disable-sale_field").on("ajax:success", function(event) {
     sale_field_table.ajax.reload(null,false)
     let msg = JSON.parse(event.detail[2].response)
