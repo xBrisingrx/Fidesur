@@ -1,7 +1,7 @@
 <%= form_with( model: @land_fee, class: 'needs-validation g-brd-around g-brd-gray-light-v4 g-pa-10 g-mb-10', id: 'form-field-pay-quote' ) do |form| %>
-  <p id='valor_cuota'> Valor de la cuota: <b> $ format_currency( <%= @land_fee.fee_value ) %> </b></p>
+  <p id='valor_cuota'> Valor de la cuota: <b> $ <%= format_currency( @land_fee.fee_value ) %> </b></p>
   <% if @adeuda > 0 %>
-    <p> Adeuda de cuota anterior: <b> $ format_currency(<%= @adeuda %>) </b></p>
+    <p> Adeuda de cuota anterior: <b> $ <%= format_currency( @adeuda ) %> </b></p>
   <% end %>
 
   <div id="esta_vencido" style="display:">
