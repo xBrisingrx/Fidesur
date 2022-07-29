@@ -146,8 +146,6 @@ function cambio_moneda(){
 }
 
 function calc_valor_en_pesos(e){
-	console.log(e)
-	console.log(e.parentElement)
 	const node = e.parentElement
 	let currency_id = node.querySelector(`#currency_id`).value
 	let calculo_en_pesos = node.querySelector(`#calculo_en_pesos`)
@@ -175,13 +173,14 @@ function calc_valor_en_pesos(e){
 	}
 }
 
-function calcular_monto_pagado(e){
+function calcular_monto_pagado(){
 	$('#valor_restante').html('')
-	let paid = e.parentElement.querySelector('#paid')
+	let target = event.target.parentElement
+	let paid = target.querySelector('#paid')
 	let entrega
-	let currency_id = e.parentElement.querySelector('#currency_id').value
+	let currency_id = target.querySelector('#currency_id').value
 	if (currency_id == '2' || currency_id == '3' ) {
-		entrega = parseFloat( e.parentElement.querySelector('#calculo_en_pesos').value )
+		entrega = parseFloat( target.querySelector('#calculo_en_pesos').value )
 		if (isNaN(entrega)) {
 			return
 		}
