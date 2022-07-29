@@ -8,7 +8,7 @@ land_fee_data.adeuda = parseFloat(<%= @adeuda %>)
 land_fee_data.reset()
 
 document.getElementById('land_fee_aply_interest').checked = <%= @land_fee.apply_arrear? %>
-
+setInputDate("#land_fee_pay_date")
 if (!<%= @land_fee.apply_arrear? %>) {
 	// Si no corresponde aplicar interes solo se paga la cuota 
 	document.getElementById('esta_vencido').style.display = 'none'
@@ -224,9 +224,10 @@ document.getElementById('submit-form-field-pay-quote').addEventListener('click',
   .then( response => response.json() )
   .then( response => {
   	if (response.status === 'success') {
-	    field_sale_table.ajax.reload(null,false)
+  		location.reload()
+	    // field_sale_table.ajax.reload(null,false)
 	    // get_totales_cuota($('#field_sale_id').val())
-	    $("#modal-field-sale").modal('hide')
+	    // $("#modal-field-sale").modal('hide')
   	}
   	noty_alert(response.status, response.msg)
   } )

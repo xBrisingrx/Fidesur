@@ -62,7 +62,7 @@ class LandFeesController < ApplicationController
         cuota.pago_deuda
       end
 
-      cuota.pay_date = Time.now
+      cuota.pay_date = params[:pay_date]
       cuota.payed = true
       cuota.comment = params[:comment]
 
