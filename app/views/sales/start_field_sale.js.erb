@@ -89,7 +89,7 @@ document.getElementById('add-payment').addEventListener('click', (e) => {
 	    </select>
 	    <input type="number" step='0.01' value="" class="form-control rounded-0 col-2 " id='paid' name='paid' onchange="calculo_de_entrega()"></input>
 	    <input type="number" step='0.01' value="" class="form-control rounded-0 col-2 ml-2" id='value_in_pesos' name='value_in_pesos' style="display:none" onchange="calculo_de_entrega()"></input>
-	    <input type="text" value="" class="form-control rounded-0 col-2 ml-2" id="calculo_en_pesos" name="calculo_en_pesos" style="display:none"></input>
+	    <input type="text" value="" class="form-control rounded-0 col-2 ml-2" id="calculo_en_pesos" name="calculo_en_pesos" style="display:none" disabled></input>
 	    <input type="text" value="" class="form-control rounded-0 col-2 ml-2" id='name_pay' name='name_pay' style="display:none" placeholder='Detalle entrega...'></input>
 	    <label class="u-file-attach-v2 g-color-gray-dark-v5 mb-0 ml-2">
 	      <input id="fileAttachment" name="file-attachment[]" type="file" multiple>
@@ -146,6 +146,8 @@ function cambio_moneda(){
 }
 
 function calc_valor_en_pesos(e){
+	console.log(e)
+	console.log(e.parentElement)
 	const node = e.parentElement
 	let currency_id = node.querySelector(`#currency_id`).value
 	let calculo_en_pesos = node.querySelector(`#calculo_en_pesos`)
@@ -175,20 +177,20 @@ function calc_valor_en_pesos(e){
 
 function calcular_monto_pagado(e){
 	$('#valor_restante').html('')
-	let paid = document.getElementById('paid')
+	let paid = e.parentElement.querySelector('#paid')
 	let entrega
-	let currency_id = document.getElementById('currency_id').value
+	let currency_id = e.parentElement.querySelector('#currency_id').value
 	if (currency_id == '2' || currency_id == '3' ) {
-		entrega = parseFloat( document.getElementById('calculo_en_pesos').value )
+		entrega = parseFloat( e.parentElement.querySelector('#calculo_en_pesos').value )
 		if (isNaN(entrega)) {
 			return
 		}
 	} else {
-		entrega = parseFloat( document.getElementById('paid').value )
+		entrega = parseFloat( paid.value )
 		if (isNaN(entrega)) {
 			entrega = 0
 			paid.value = 0
-			sale.resto = sale.precio - entrega
+			sumar_entregas()
 			calular_valor_cuota()
 			return 
 		}
@@ -209,6 +211,25 @@ function calculo_de_entrega() {
 	const input = event.target
 	calc_valor_en_pesos(input)
 	calcular_monto_pagado(input)
+}
+
+function sumar_entregas() {
+	// Sumamos todas las entregas puestas
+	const payments = document.getElementsByClassName('payment-data')
+	let calculo = 0
+	for (let pay of payments) {
+		if ( pay.querySelector('#calculo_en_pesos') !== null ) {
+			// si este no es null es que es dolar o euro
+			calculo += parseFloat( pay.querySelector('#calculo_en_pesos').value )
+		} else {
+			calculo += parseFloat( pay.querySelector('#paid').value )
+		}
+	}
+	if (isNaN(calculo)) {
+		sale.resto = sale.precio
+	} else {
+		sale.resto = sale.precio - calculo
+	}
 }
 
 function all_payments(form_data) {
