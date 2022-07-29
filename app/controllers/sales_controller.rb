@@ -51,6 +51,7 @@ class SalesController < ApplicationController
           end
           sales_payments.save!
         end
+        sale.calculate_total_paid
         # Fecha de compra
         if !params[:sale_date].blank?
           today = Date.parse(params[:sale_date])
@@ -72,6 +73,7 @@ class SalesController < ApplicationController
           due_date += 1.month
           cuota = LandFee.create!(due_date: due_date, fee_value: valor_cuota, number: i, sale_id: sale.id)
         end
+
         render json: {status: 'success', msg: 'Venta exitosa'}, status: :ok
       else
         render json: {status: 'errors', msg: 'No se pudo registrar la venta'}, status: :unprocessable_entity
