@@ -4,9 +4,6 @@ class SectorsController < ApplicationController
   # GET /sectors or /sectors.json
   def index
     @sectors = Sector.where(active: true)
-    Sale.all.each do |sale|
-      sale.calculate_total_paid
-    end
   end
 
   # GET /sectors/1 or /sectors/1.json
