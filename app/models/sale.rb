@@ -25,7 +25,11 @@ class Sale < ApplicationRecord
 	has_many :fields, through: :field_sales
 
 	def calculate_total_paid
-		total_paid = self.sales_payments.sum(:value_in_pesos)
-		self.update( paid: total_paid )
+		puts "\n\n calculando ..."
+		if self.sales_payments.count > 0 && self.paid == 0
+			pp self
+			total_paid = self.sales_payments.sum(:value_in_pesos)
+			self.update( paid: total_paid )
+		end
 	end
 end
