@@ -35,7 +35,13 @@
           <tbody>
             <% @cuota.land_fee_payments.each do |payment|%>
               <tr>
-                <td><%= payment.pay_date.strftime('%d-%m-%y') %></td>
+                <td>
+                  <% if payment.pay_date %>
+                    <%= payment.pay_date.strftime('%d-%m-%y') %>
+                  <% else %>
+                    <%= payment.created_at.strftime('%d-%m-%y') %>
+                  <% end %>  
+                </td>
                 <th><%= payment.currency.name %></th>
                 <% if payment.currency.id == 4 %>
                   <th><%= "$#{format_currency( payment.payment )}" %></th>
