@@ -170,6 +170,7 @@ document.getElementById('submit-form-field-pay-quote').addEventListener('click',
 	form_data.append("payment", parseFloat( document.getElementById('land_fee_payment').value ) )
 	form_data.append("value_in_pesos", parseFloat( document.getElementById('land_fee_value_in_pesos').value ) )
 	form_data.append("calculo_en_pesos", parseFloat( document.getElementById('land_fee_calculo_en_pesos').value ) )
+	form_data.append("pay_date", document.getElementById('land_fee_pay_date').value)
 
 	let files = document.getElementById('land-fee-images')
   let totalFiles = files.files.length
@@ -210,6 +211,12 @@ document.getElementById('submit-form-field-pay-quote').addEventListener('click',
   if ( isNaN( form_data.get('calculo_en_pesos') ) || form_data.get('calculo_en_pesos') <= 0 ) {
   	noty_alert('error', 'Datos invalidos')
   	addClassInvalid(document.getElementById('land_fee_calculo_en_pesos'))
+  	return
+  }
+
+  if ( form_data.get('pay_date') == ''  ) {
+  	noty_alert('error', 'Debe ingresar una fehca')
+  	addClassInvalid(document.getElementById('land_fee_pay_date'))
   	return
   }
 

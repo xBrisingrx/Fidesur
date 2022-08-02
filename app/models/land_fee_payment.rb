@@ -32,6 +32,7 @@ class LandFeePayment < ApplicationRecord
 
 	validates :payment, presence: true
 	validates :payment, numericality: { greater_than: 0,  message: 'El pago debe ser mayor a cero' }
+	validates :pay_date, presence: true
 	validate :check_owes, on: :create 
 
 	after_create :update_payment_land_fee
