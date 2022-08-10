@@ -64,16 +64,22 @@ class SalesController < ApplicationController
         # El costo total que va a pagar el cliente es lo que entrega mas el valor de la cuota
         # El valor de la cuota puede ser que cambie , el valor total incrementa
         valor_cuota = params[:valor_cuota].to_f
-        sale.total_cost = sale.paid + ( valor_cuota * sale.number_of_payments )
 
         # valor de cuota es el costo de mi lote - lo que el cliente pago dividido cantidad de cuotas pactadas
         # valor_cuota = (sale.total_cost - sale.paid) / sale.number_of_payments 
-
+        aumenta_cuota = ( !params['number_cuota_increase'].empty? && params['number_cuota_increase'] > 0 ) && (!params['valor_cuota_aumentada'].empty? && params['valor_cuota_aumentada'] > 0)
         for i in 1..sale.number_of_payments
+          # genero mis cuotas
           due_date += 1.month
-          cuota = LandFee.create!(due_date: due_date, fee_value: valor_cuota, number: i, sale_id: sale.id)
+          if aumenta_cuota && params['number_cuota_increase'] >= i
+            LandFee.create!(due_date: due_date, fee_value: params['valor_cuota_aumentada'].to_f, number: i, sale_id: sale.id)
+          else
+            # cuotas normales
+            LandFee.create!(due_date: due_date, fee_value: valor_cuota, number: i, sale_id: sale.id)
+          end
         end
-
+        sale.calculate_total_value!
+        
         render json: {status: 'success', msg: 'Venta exitosa'}, status: :ok
       else
         render json: {status: 'errors', msg: 'No se pudo registrar la venta'}, status: :unprocessable_entity

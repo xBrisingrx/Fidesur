@@ -28,4 +28,9 @@ class Sale < ApplicationRecord
 		total_paid = self.sales_payments.sum(:value_in_pesos)
 		self.update( paid: total_paid )
 	end
+
+	def calculate_total_value!
+		total_value = self.sales_payments.sum(:value_in_pesos) + self.land_fees.sum(:value_in_pesos)
+		self.update( total_value: total_value )
+	end
 end
