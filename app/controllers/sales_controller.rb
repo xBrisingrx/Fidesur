@@ -9,6 +9,7 @@ class SalesController < ApplicationController
   end
 
   def create 
+    raise 'NaN'
     if params[:clients].blank?
       return render json: {status: 'error', msg: 'No se han seleccionado clientes'}
     end

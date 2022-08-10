@@ -233,25 +233,43 @@ function sumar_entregas() {
 
 function all_payments(form_data) {
 	const payments = document.getElementsByClassName('payment-data')
-	form_data.append('num_pays', payments.length )
+	// form_data.append('num_pays', payments.length )
 	let i = 0
 	for (let pay of payments) {
-		i++
-		form_data.append( `currency_id_${i}`, parseInt( pay.querySelector('#currency_id').value ) )
-    form_data.append( `payment_${i}`, ( !isNaN( parseFloat( pay.querySelector('#paid').value ) ) ) ? parseFloat( pay.querySelector('#paid').value ) : 0 )
-    form_data.append( `tomado_en_${i}`, ( pay.querySelector('#value_in_pesos') !== null ) ? parseFloat( pay.querySelector('#value_in_pesos').value ) : '' )
-    form_data.append( `value_in_pesos_${i}`, ( pay.querySelector('#calculo_en_pesos') !== null ) ? parseFloat( pay.querySelector('#calculo_en_pesos').value ) : '' )
-    form_data.append( `detail_${i}`, ( pay.querySelector('#name_pay') !== null ) ? pay.querySelector('#name_pay').value : '' )
-		let files = pay.querySelector('#fileAttachment')
-		if (files !== null) {
-			let totalFiles = files.files.length
-			if (totalFiles > 0) {
-				for (let n = 0; n < totalFiles; n++) {
-	        form_data.append(`files_${i}[]`, files.files[n])
-	      }
+		let paid = parseFloat( pay.querySelector('#paid').value )
+		if ( isNaN(paid) ) {
+			console.log('nanaso')
+		} else {
+			i++
+			let currency_selected = parseInt( pay.querySelector('#currency_id').value ) 
+			let value_in_pesos = parseFloat( pay.querySelector('#value_in_pesos').value )
+			let tomado_en = pay.querySelector('#calculo_en_pesos').value
+			let detail = pay.querySelector('#name_pay')
+			
+			form_data.append( `currency_id_${i}`, currency_selected )
+	    form_data.append( `payment_${i}`, ( !isNaN( paid ) ) ? paid : '' );
+	    if ( currency_selected == 2 || currency_selected == 3 ) {
+	    	if ( isNaN(value_in_pesos) ) {
+	    		noty_alert('error','Debe ingresar en cuanto toma la moneda ingresada')
+		    	pay.querySelector('#value_in_pesos').classList.add('u-has-error-v1')
+		    	return
+	    	}
+	    }
+	    form_data.append( `tomado_en_${i}`, ( pay.querySelector('#value_in_pesos') !== null ) ? parseFloat( pay.querySelector('#value_in_pesos').value ) : '' )
+	    form_data.append( `value_in_pesos_${i}`, ( pay.querySelector('#calculo_en_pesos') !== null ) ? parseFloat( pay.querySelector('#calculo_en_pesos').value ) : '' )
+	    form_data.append( `detail_${i}`, ( pay.querySelector('#name_pay') !== null ) ? pay.querySelector('#name_pay').value : '' )
+			let files = pay.querySelector('#fileAttachment')
+			if (files !== null) {
+				let totalFiles = files.files.length
+				if (totalFiles > 0) {
+					for (let n = 0; n < totalFiles; n++) {
+		        form_data.append(`files_${i}[]`, files.files[n])
+		      }
+				}
 			}
 		}
 	}
+	form_data.append('num_pays', i )
 	return
 }
 
@@ -347,7 +365,7 @@ document.getElementById('submit-form-field-sale').addEventListener('click', (eve
 		noty_alert('error', 'Debe ingresar % de mora')
 		return
 	}
-
+	return
 	fetch('/sales/', {
       method: 'POST',
       headers: {           
