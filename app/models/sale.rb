@@ -24,13 +24,14 @@ class Sale < ApplicationRecord
 	has_many :clients, through: :client_sales
 	has_many :fields, through: :field_sales
 
-	def calculate_total_paid
+	def calculate_total_paid!
 		total_paid = self.sales_payments.sum(:value_in_pesos)
 		self.update( paid: total_paid )
 	end
 
 	def calculate_total_value!
-		total_value = self.sales_payments.sum(:value_in_pesos) + self.land_fees.sum(:value_in_pesos)
-		self.update( total_value: total_value )
+		# Se calcula el valor final de la venta, al momento de vender el lote
+		total_value = self.sales_payments.sum(:value_in_pesos) + self.land_fees.sum(:fee_value)
+		self.update( total_cost: total_value )
 	end
 end

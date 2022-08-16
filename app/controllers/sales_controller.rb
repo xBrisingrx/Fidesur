@@ -9,7 +9,6 @@ class SalesController < ApplicationController
   end
 
   def create 
-    raise 'NaN'
     if params[:clients].blank?
       return render json: {status: 'error', msg: 'No se han seleccionado clientes'}
     end
@@ -21,7 +20,6 @@ class SalesController < ApplicationController
         sale_date: (!params[:sale_date].blank?) ? params[:sale_date] : Time.now.strftime("%Y/%m/%d"),
         due_date: ( !params[:due_date].blank? ) ? params[:due_date] : 10,
         number_of_payments: params[:number_of_payments].to_i,
-        paid: (params[:paid].nil?) ? 0.0 : params[:paid],
         total_cost: 0
       )
 
@@ -52,7 +50,7 @@ class SalesController < ApplicationController
           end
           sales_payments.save!
         end
-        sale.calculate_total_paid
+        sale.calculate_total_paid!
         # Fecha de compra
         if !params[:sale_date].blank?
           today = Date.parse(params[:sale_date])
@@ -68,11 +66,11 @@ class SalesController < ApplicationController
 
         # valor de cuota es el costo de mi lote - lo que el cliente pago dividido cantidad de cuotas pactadas
         # valor_cuota = (sale.total_cost - sale.paid) / sale.number_of_payments 
-        aumenta_cuota = ( !params['number_cuota_increase'].empty? && params['number_cuota_increase'] > 0 ) && (!params['valor_cuota_aumentada'].empty? && params['valor_cuota_aumentada'] > 0)
+        aumenta_cuota = ( params['number_cuota_increase'].to_i > 0 ) && ( params['valor_cuota_aumentada'].to_f > 0 )
         for i in 1..sale.number_of_payments
           # genero mis cuotas
           due_date += 1.month
-          if aumenta_cuota && params['number_cuota_increase'] >= i
+          if aumenta_cuota && i >= params['number_cuota_increase'].to_i
             LandFee.create!(due_date: due_date, fee_value: params['valor_cuota_aumentada'].to_f, number: i, sale_id: sale.id)
           else
             # cuotas normales

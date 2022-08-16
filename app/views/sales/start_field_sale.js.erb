@@ -174,30 +174,29 @@ function calc_valor_en_pesos(e){
 }
 
 function calcular_monto_pagado(){
+	console.log('calculo monto pagado')
 	$('#valor_restante').html('')
-	let target = event.target.parentElement
-	let paid = target.querySelector('#paid')
-	let entrega
-	let currency_id = target.querySelector('#currency_id').value
-	if (currency_id == '2' || currency_id == '3' ) {
-		entrega = parseFloat( target.querySelector('#calculo_en_pesos').value )
-		if (isNaN(entrega)) {
-			return
+	// seleccionamos los pagos
+	const payments = document.getElementsByClassName('payment-data')
+	let entrega = 0
+	// recorremos y sumamos las entregas
+	for (let pay of payments) {
+		let currency_id = pay.querySelector('#currency_id').value
+		if (currency_id == '2' || currency_id == '3' ) {
+			// si este no es null es que es dolar o euro
+			entrega += parseFloat( pay.querySelector('#calculo_en_pesos').value )
+		} else {
+			entrega += parseFloat( pay.querySelector('#paid').value )
 		}
+	}
+	if (isNaN(entrega)) {
+		sale.resto = sale.precio
 	} else {
-		entrega = parseFloat( paid.value )
-		if (isNaN(entrega)) {
-			entrega = 0
-			paid.value = 0
-			sumar_entregas()
-			calular_valor_cuota()
-			return 
-		}
+		sale.resto = sale.precio - entrega
 	}
 
 	if (entrega > 0 &&  !isNaN(entrega) && entrega <= sale.precio) {
 		paid.parentElement.classList.remove('u-has-error-v1')
-		sale.resto = sale.precio - entrega
 		$('#valor_restante').append(`A pagar en cuotas: <b>$${sale.resto}</b>`)
 		calular_valor_cuota()
 	} else if ( entrega > sale.precio ) {
@@ -207,17 +206,19 @@ function calcular_monto_pagado(){
 }
 
 function calculo_de_entrega() {
+	console.log('calculo entrega')
 	const input = event.target
 	calc_valor_en_pesos(input)
 	calcular_monto_pagado(input)
 }
 
-function sumar_entregas() {
+function sumar_entregas(entrega) {
 	// Sumamos todas las entregas puestas
 	const payments = document.getElementsByClassName('payment-data')
 	let calculo = 0
 	for (let pay of payments) {
-		if ( pay.querySelector('#calculo_en_pesos') !== null ) {
+		let currency_id = pay.querySelector('#currency_id').value
+		if (currency_id == '2' || currency_id == '3' ) {
 			// si este no es null es que es dolar o euro
 			calculo += parseFloat( pay.querySelector('#calculo_en_pesos').value )
 		} else {
@@ -229,16 +230,17 @@ function sumar_entregas() {
 	} else {
 		sale.resto = sale.precio - calculo
 	}
+	entrega = calculo
 }
 
 function all_payments(form_data) {
 	const payments = document.getElementsByClassName('payment-data')
-	// form_data.append('num_pays', payments.length )
 	let i = 0
 	for (let pay of payments) {
 		let paid = parseFloat( pay.querySelector('#paid').value )
-		if ( isNaN(paid) ) {
-			console.log('nanaso')
+		if ( isNaN(paid) || paid == '' ) {
+			form_data.append('num_pays', 0 )
+			return
 		} else {
 			i++
 			let currency_selected = parseInt( pay.querySelector('#currency_id').value ) 
@@ -270,6 +272,7 @@ function all_payments(form_data) {
 		}
 	}
 	form_data.append('num_pays', i )
+	
 	return
 }
 
@@ -309,13 +312,13 @@ document.getElementById('submit-form-field-sale').addEventListener('click', (eve
 	form_data.append("apply_arrear", document.getElementById('apply_arrear').checked)
 	form_data.append("arrear", document.getElementById('arrear').value)
 	form_data.append("due_date", document.getElementById('due_date').value)
-	form_data.append("paid", parseFloat( document.getElementById('paid').value) )
+	// form_data.append("paid", parseFloat( document.getElementById('paid').value) )
 	form_data.append("total_cost", document.getElementById('total_cost').value)
 	form_data.append("number_of_payments", document.getElementById('number_of_payments').value)
   form_data.append("valor_cuota", parseFloat( document.getElementById('valor_cuota').value))
   form_data.append("sale_date", document.getElementById('sale_date').value )
-  form_data.append("number_cuota_increase", parseInt( document.getElementById('number_cuota_increase').value ) )
-  form_data.append("valor_cuota_aumentada", parseFloat( document.getElementById('valor_cuota_aumentada').value ) )
+  form_data.append("number_cuota_increase", document.getElementById('number_cuota_increase').value )
+  form_data.append("valor_cuota_aumentada", document.getElementById('valor_cuota_aumentada').value )
 
   all_payments(form_data)
 
@@ -330,10 +333,10 @@ document.getElementById('submit-form-field-sale').addEventListener('click', (eve
 		return
 	}
 
-	if (form_data.get('paid') > sale.precio) {
+	// if (form_data.get('paid') > sale.precio) {
 		// los cambios los hago en el onchange del input
-		return
-	}
+		// return
+	// }
 
 	if (form_data.get('number_of_payments') == '' ) {
 		document.getElementById('number_of_payments').parentElement.classList.add('u-has-error-v1')
@@ -355,17 +358,21 @@ document.getElementById('submit-form-field-sale').addEventListener('click', (eve
 		return
 	}
 
-	if ( form_data.get("number_cuota_increase") > form_data.get('number_of_payments') ) {
+	if ( form_data.get("number_cuota_increase") > 0 && ( form_data.get("number_cuota_increase") > form_data.get('number_of_payments') ) ) {
 		noty_alert( 'error', 'Cuota de aumento fuera de rango.' )
 		return
 	}
-
 
 	if (document.getElementById('apply_arrear').checked && document.getElementById('arrear').value == '') {
 		noty_alert('error', 'Debe ingresar % de mora')
 		return
 	}
-	return
+
+	if ( ( document.getElementsByClassName('payment-data').length != form_data.get("num_pays") ) && document.getElementsByClassName('payment-data').length > 1 ) {
+		noty_alert('error', 'Datos invalidos en primer pago')
+		return
+	}
+
 	fetch('/sales/', {
       method: 'POST',
       headers: {           

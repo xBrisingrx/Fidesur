@@ -8,7 +8,7 @@ class FieldSaleController < ApplicationController
     @sale = Sale.find(@field_sale.sale_id)
     @land_fees = @sale.land_fees #obtengo cuotas
     @total_pagado = (@land_fees.sum(:payment) + @field_sale.sale.paid)
-    @total_adeudado = @field_sale.field.price - @total_pagado
+    @total_adeudado = @field_sale.sale.total_cost - @total_pagado
 
     @cant_vencidas = @land_fees.where( "due_date < ?", Time.new ).where(payed: false).count
     @cuotas_pagadas =  @land_fees.where(payed: true).count
