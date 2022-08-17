@@ -27,7 +27,7 @@
 class Field < ApplicationRecord
 	belongs_to :apple
 	has_one_attached :blueprint
-	has_many :client_fields
+	has_one :field_sale
 
 	# Los lotes de una misma manzana no pueden llamarse igual
 	validates :code, uniqueness: { scope: :apple_id,case_sensitive: false, message: "Ya existe un lote con esta denominación" }

@@ -17,6 +17,7 @@ $(document).ready(function(){
     {'data': 'price'},
     {'data': 'is_green_space'},
     {'data': 'status'},
+    {'data': 'bought_date'},
     {'data': 'blueprint'},
     {'data': 'actions'}
     ],

@@ -6,6 +6,7 @@ json.data @fields do |f|
 	json.price "$ #{format_currency(f.price) }"
 	json.is_green_space (f.is_green_space)? 'Si' : 'No'
 	json.status "#{@status[f.status]}"
+	json.bought_date ( f.bought? ) ? f.field_sale.sale.sale_date.strftime('%d-%m-%y') : ''
 	if f.blueprint.attached?
 		json.blueprint "#{link_to "<i class= 'hs-admin-file'></i>".html_safe, f.blueprint, target: '_blank', class: 'btn u-btn-indigo', title: 'Ver plano'}"
 	else
