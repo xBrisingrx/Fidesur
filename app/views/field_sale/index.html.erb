@@ -9,11 +9,12 @@
   <%= render(partial: 'card_pay', locals: { color: 'lightblue-v3', paid: @sale.paid, detail: 'Primer entrega' })%>
   <%= render(partial: 'card_pay', locals: { color: 'teal-v2', paid: @total_pagado, detail: 'Pagado' })%>
   <%= render(partial: 'card_pay', locals: { color: 'lightred-v2', paid: @total_adeudado, detail: 'Adeuda' })%>
+  <%= render(partial: 'card_pay', locals: { color: 'indigo', paid: @valor_lote, detail: 'Valor del lote' })%>
 <!-- End Panel -->
 </div>   
 
 <div class="row ml-2">
-  A nombre de: 
+  <strong>A nombre de:</strong>
   <ul>
     <% @sale.clients.each do |client| %>
       <li> <%= client.fullname %> </li>
@@ -22,10 +23,10 @@
 </div>
 <div>
   <% if @sale.sales_payments.count > 0 %>
-    <p>Primer entrega:</p>
+    <p><strong>Detalle primer entrega:</strong></p>
     <div class="row">
       <table class="table table-sm mx-4">
-        <thead>
+        <thead class="thead-light">
           <tr>
             <th>Moneda</th>
             <th>Ingresado</th>
@@ -52,17 +53,13 @@
           <%end%>
         </tbody>  
       </table>
-      <div class="row">
-      </div>
     </div>
   <% end %>
 </div>
 
-<div class="row ml-2" id="cant_cuotas_pagadas">
-  Cuotas pagadas: <%= "#{@cuotas_pagadas}/#{@total_cuotas}" %>
-</div>
-<div class="row ml-2 mb-4">
-  Cuotas vencidas: <%= @cant_vencidas %>
+<div class="row ml-2 mb-4" id="cant_cuotas_pagadas">
+  <strong class="mr-1">Cuotas pagadas: </strong> <%= "#{@cuotas_pagadas}/#{@total_cuotas}" %>
+  <strong class="ml-4 mr-1">Cuotas vencidas: </strong> <%= @cant_vencidas %>
 </div>
 <table id="field_sale_table" class="table hover dt-responsive w-100">
   <thead>

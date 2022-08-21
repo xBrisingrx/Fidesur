@@ -13,6 +13,7 @@ class FieldSaleController < ApplicationController
       @field_sale.sale.calculate_total_value!
     end
 
+    @valor_lote = @field_sale.sale.total_cost
     @total_adeudado = @field_sale.sale.total_cost - @total_pagado
 
     @cant_vencidas = @land_fees.where( "due_date < ?", Time.new ).where(payed: false).count
@@ -44,5 +45,4 @@ class FieldSaleController < ApplicationController
   def all_fields # show all field
     @fields = FieldSale.where( active: true )
   end
-
 end
