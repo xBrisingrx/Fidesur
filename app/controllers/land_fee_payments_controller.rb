@@ -7,8 +7,7 @@ class LandFeePaymentsController < ApplicationController
   end
 
   # GET /land_fee_payments/1 or /land_fee_payments/1.json
-  def show
-  end
+  def show;end
 
   # GET /land_fee_payments/new
   def new
@@ -20,8 +19,7 @@ class LandFeePaymentsController < ApplicationController
   end
 
   # GET /land_fee_payments/1/edit
-  def edit
-  end
+  def edit;end
 
   # POST /land_fee_payments or /land_fee_payments.json
   def create
@@ -36,12 +34,11 @@ class LandFeePaymentsController < ApplicationController
       pay_name: params[:name_pay]
     )
     if !params[:images].nil?
-      puts 'aca'
       land_fee_payments.images = params[:images]
     end
 
     respond_to do |format|
-      # create tiene un callback para atualizar land_fee
+      # create tiene un callback para actualizar land_fee
       if land_fee_payments.save!
         format.json { render json: {'status' => 'success', 'msg' => 'Pago registrado'}, location: @land_fee_payment }
       else
