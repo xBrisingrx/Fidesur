@@ -19,7 +19,8 @@
               </ul>
             </td>
             <td><%= field.sale.fields.first.apple.code %></td>
-            <td><%= field.sale.fields.first.code %></td>
+            <td><%= field.sale.fields.first.code %> <%= link_to '<i class="icon-real-estate-044 u-line-icon-pro"></i>'.html_safe, show_field_sale_path( field.field_id ) ,
+                          class: 'u-link-v5 g-color-gray-light-v10 g-color-secondary--hover g-text-underline--none--hover g-ml-12', title: 'Ir a detalle de venta'  %></td>
           </tr>
         <%end%>
       </tbody>  
