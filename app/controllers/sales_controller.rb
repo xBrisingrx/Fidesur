@@ -61,18 +61,24 @@ class SalesController < ApplicationController
         # Fecha de vencimiento si venciera ESTE mes, en base a eso saco las siguientes fechas de vencimiento
         due_date = Time.new(today.year, today.month, sale.due_date.to_i)
         # El costo total que va a pagar el cliente es lo que entrega mas el valor de la cuota
-        # El valor de la cuota puede ser que cambie , el valor total incrementa
-        valor_cuota = params[:valor_cuota].to_f
         aumenta_cuota = ( params['number_cuota_increase'].to_i > 0 ) && ( params['valor_cuota_aumentada'].to_f > 0 )
         for i in 1..sale.number_of_payments
           # genero mis cuotas
           due_date += 1.month
+
+          # El valor de la cuota puede ser que cambie , el valor total incrementa
           if aumenta_cuota && i >= params['number_cuota_increase'].to_i
-            LandFee.create!(due_date: due_date, fee_value: params['valor_cuota_aumentada'].to_f, number: i, sale_id: sale.id, owes: params['valor_cuota_aumentada'].to_f)
+            valor_cuota = params['valor_cuota_aumentada'].to_f
           else
-            # cuotas normales
-            LandFee.create!(due_date: due_date, fee_value: valor_cuota, number: i, sale_id: sale.id, owes: valor_cuota)
+            valor_cuota = params[:valor_cuota].to_f
           end
+
+          LandFee.create!(due_date: due_date, 
+            fee_value: valor_cuota, 
+            number: i, 
+            sale_id: sale.id, 
+            owes: valor_cuota, 
+            total_value: valor_cuota)
         end
         sale.calculate_total_value!
         
