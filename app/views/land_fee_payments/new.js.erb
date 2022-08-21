@@ -41,21 +41,6 @@ document.getElementById('land_fee_payment_value_in_pesos').addEventListener('cha
 	land_fee_payment_data.check_input(e, this, 'tomado_en')
 })
 
-// $("#register-land-fee-payment").on("ajax:success", function(event) {
-//     field_sale_table.ajax.reload(null,false)
-//     let msg = JSON.parse(event.detail[2].response)
-//     noty_alert(msg.status, msg.msg)
-//     get_totales_cuota($('#field_sale_id').val())
-//     $("#modal-field-sale").modal('hide')
-//  	}).on("ajax:error", function(event) {
-// 	let msg = JSON.parse( event.detail[2].response )
-// 	$.each( msg, function( key, value ) {
-// 		noty_alert('error', value)
-// 		$(`#form-field #field_${key}`).addClass('is-invalid')
-// 		$(`#form-field .field_${key}`).text( value ).show('slow')
-// 	})
-// })
-
 document.getElementById('submit-land-fee-payment').addEventListener('click', function(e){
 	e.preventDefault()
 	let id = <%= @land_fee.id %>;
