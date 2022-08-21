@@ -18,14 +18,14 @@
       </div>
       <div class="form-group row g-pos-rel">
         <%= form.label :interest, 'Recargo sugerido $:' , class: 'col-3' %>
-        <%= form.number_field :interest, class: 'form-control rounded-0 col-6', step:'0.01'%>
+        <%= form.number_field :interest, class: 'form-control rounded-0 col-3', step:'0.01'%>
         <div class="invalid-feedback field_price"></div>
       </div>
   </div>
 
   <div class="form-group row">
     <%= form.label :adjust, 'Ajuste $:' , class: 'col-3' %>
-    <%= form.number_field :adjust, class: 'form-control rounded-0 col-6', step:'0.01' %>
+    <%= form.number_field :adjust, class: 'form-control rounded-0 col-3', step:'0.01' %>
     <div class="invalid-feedback field_price"></div>
   </div>
 
@@ -37,7 +37,7 @@
 
   <div class="form-group row">
     <%= form.label :total_to_pay, 'Total a pagar $:' , class: 'col-3' %>
-    <%= form.number_field :total_to_pay, class: 'form-control rounded-0 col-6', step:'0.01' , value: @total_a_pagar, disabled: true %>
+    <%= form.number_field :total_to_pay, class: 'form-control rounded-0 col-3', step:'0.01' , value: @total_a_pagar, disabled: true %>
     <div class="invalid-feedback field_price"></div>
   </div>
 

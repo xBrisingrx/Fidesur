@@ -19,7 +19,7 @@
 
         <li> Total pagado: <b>$<%= @cuota.payment %></b> </li>
       </ul>
-      <div class="row col-10">
+      <div class="row mx-2">
         <p>Pagos realizados</p>
         <table class="table w-100">
           <thead>
@@ -30,6 +30,7 @@
               <th>Tomado en</th>
               <th>Total</th>
               <th>Adjuntos</th>
+              <th>Comentario</th>
             </tr>
           </thead>
           <tbody>
@@ -42,19 +43,20 @@
                     <%= payment.created_at.strftime('%d-%m-%y') %>
                   <% end %>  
                 </td>
-                <th><%= payment.currency.name %></th>
+                <td><%= payment.currency.name %></td>
                 <% if payment.currency.id == 4 %>
-                  <th><%= "$#{format_currency( payment.payment )}" %></th>
+                  <td><%= "$#{format_currency( payment.payment )}" %></td>
                 <%else%>
-                  <th><%= "#{payment.currency.name}#{format_currency( payment.payment )}" %></th>
+                  <td><%= "#{payment.currency.name}#{format_currency( payment.payment )}" %></td>
                 <%end%>
-                <th><%= "$#{format_currency( payment.tomado_en )}" %></th>
-                <th><%= "$#{format_currency( payment.total )}" %></th>
-                <th>
+                <td><%= "$#{format_currency( payment.tomado_en )}" %></td>
+                <td><%= "$#{format_currency( payment.total )}" %></td>
+                <td>
                   <% payment.images.each do |image| %>
                     <%= link_to '<i class="hs-admin-image"></i>'.html_safe, image, target: '_blank', class: 'btn u-btn-teal' %>
                   <% end %>
-                </th>
+                </td>
+                <td> <%= payment.comment %> </td>
               </tr>
             <% end %>
           </tbody>
