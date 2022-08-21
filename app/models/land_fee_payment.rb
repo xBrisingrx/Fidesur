@@ -30,10 +30,10 @@ class LandFeePayment < ApplicationRecord
 	belongs_to :currency
 	has_many_attached :images
 
-	validates :payment, presence: true
-	validates :payment, numericality: { greater_than: 0,  message: 'El pago debe ser mayor a cero' }
+	validates :payment, presence: true,numericality: true
+	# validates :payment, numericality: { greater_than: 0,  message: 'El pago debe ser mayor a cero' }
 	validates :pay_date, presence: true
-	validate :check_owes, on: :create 
+	# validate :check_owes, on: :create 
 
 	after_create :update_payment_land_fee
 
@@ -49,17 +49,17 @@ class LandFeePayment < ApplicationRecord
 		puts "\n ########################### entramos al update_payment_land_fee \n"
 		# actualizamos el monto pagado
 		cuota = self.land_fee
-
-		if cuota.land_fee_payments.count > 1
+		# Si el total pagado es 0.0 significa que son las cuotas que genero de adelanto o pago de deuda
+		if cuota.land_fee_payments.count > 1 && self.total != 0.0
 			puts "\n\n pagos realizados  => #{cuota.land_fee_payments.count} \n\n"
 			puts "\n lo q se debe de esta cuota es => #{cuota.owes} \n"
 			
 			cuota.payment += self.total 
 
-			if self.total > cuota.total_value
-				puts "\n ####################### pago mas de el valor de la cuota !! \n"
+			if cuota.payment > cuota.total_value
+				puts "\n ####################### pago mas de el valor de la cuota \n"
 				cuota.owes = 0
-				cuota.pago_deuda
+				cuota.pago_supera_cuota
 			else 
 				cuota.owes = cuota.total_value - cuota.payment 
 			end
@@ -69,6 +69,9 @@ class LandFeePayment < ApplicationRecord
 			end
 
 			cuota.save!
+		else 
+			puts "\n Primer pago de la cuota \n" if cuota.land_fee_payments.count == 1
+			puts "\n Pago de adelanto o de deuda \n" if self.total == 0.0
 		end
 	end
 end

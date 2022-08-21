@@ -41,7 +41,9 @@ class LandFee < ApplicationRecord
 
 	#  hay que chequear este dato
 	# validates :owes, numericality: { greater_than_or_equal_to: 0,  message: 'Lo adeudado no puede ser menor a cero' }, on: :update
-	validates :payment, numericality: { greater_than: 0,  message: 'El pago debe ser mayor a cero' }, on: :update
+	# validates :payment, numericality: { greater_than: 0,  message: 'El pago debe ser mayor a cero' }, on: :update
+	validates :interest, :adjust, :payment, numericality: true
+	validates :fee_value, numericality: { greater_than: 0,  message: 'El valor de la cuota debe ser mayor a cero' }
 	
 	enum pay_status: [:pendiente, :pagado, :pago_parcial]
 
@@ -54,36 +56,52 @@ class LandFee < ApplicationRecord
 	end
 
 	def get_deuda
-		LandFee.where(sale_id: self.sale_id).where('number < ?', self.number).where('owes > 0').sum('owes')
+		LandFee.where(sale_id: self.sale_id).where('number < ?', self.number).where( 'due_date < ?', Time.new.strftime("%F") ).where('owes > 0').sum('owes')
 	end
 
-	def pago_deuda
-		puts "\n ========================  entramos al pago deuda ============================= \n"
-		# Se pago el valor total de la cuota (valor cuota + ajuste + intereses ) 
-		# y la deuda parcial o total que se tenia de cuotas anteriores
-		puts "============== payment #{self.payment} valor total #{self.total_value}"
-		monto = self.payment - self.total_value
-		puts "\n =============== mi monto es #{monto.class} \n"
-		deuda = LandFee.where(sale_id: self.sale_id).where('number < ?', self.number).where('owes > 0').order('id ASC')
-		puts "---------- cuotas encontradas => #{deuda.count} "
-		deuda.each do |d|
-			puts "\n START each ============> #{d.owes} <<- #{d.owes.class}"
-			if monto > 0
-				puts "\n ------------------ monto => #{monto} dedua #{d.owes}"
-				if monto <= d.owes 
-					d.owes -= monto 
-					monto -= d.owes 
-				else
-					d.owes = 0.0 
-					monto -= d.owes 
-				end # end if resto deuda
-			end # end if check monto > 0
-			puts "\n FIN each ============> #{d.owes}"
-			if d.owes == 0
-				d.pay_status = :pagado
-			end
-			d.save!
-		end # end each deudas
+	def has_debt?
+		self.get_deuda > 0
 	end
+
+	def pago_supera_cuota
+		payment = self.payment - self.total_value
+		puts "\n ######### EXTRA #{payment.to_f} ######### \n"
+		puts "\n ========================  Pago de otras cuotas ============================= \n"
+		# Obtengo todas las cuotas que no estan pagadas distintas a la que se esta pagando en este momento
+		cuotas_a_pagar = LandFee.where(sale_id: self.sale_id).where('number != ?', self.number).where('owes > 0').order('id ASC')
+		puts "\n *** Cantidad de cuotas encontradas #{ cuotas_a_pagar.count } \n"
+		cuotas_a_pagar.each do |cuota| 
+			puts "\n Payment menor a cero => #{payment.to_f} \n" if payment <= 0.0
+			return if payment <= 0.0
+			puts "De la cuota #{ cuota.number } debe #{ cuota.owes.to_f }"
+			# pago a registrar, se deja en cero el monto porque es para lleva el registro de adelantos/pago deuda
+			pago = cuota.land_fee_payments.new(
+				pay_date: self.pay_date, 
+        payment: 0, 
+        tomado_en: 1,
+        total: 0,
+        currency_id: 1)
+			owes = cuota.owes #lo que se adeuda de esta cuota
+			if payment <= cuota.owes
+				cuota.update!(owes: cuota.owes - payment, pay_status: :pago_parcial, payed: true )
+
+				if cuota.due_date < self.pay_date 
+					pago.comment = "Pago parcial de deuda de esta cuota por un monto de $#{payment.to_f}, realizado cuando se pago la cuota ##{self.number}" 
+				else 
+					pago.comment = "Se realizo un adelanto parcial de esta cuota por un monto de $#{payment.to_f}, cuando se pago la cuota ##{self.number}" 
+				end
+				puts "\n ===> payment #{payment} "
+			else
+				cuota.update!(owes: 0.0, pay_status: :pagado, payed: true )
+				if cuota.due_date < self.pay_date 
+					pago.comment = "Pago total de deuda de esta cuota por un monto de $#{owes.to_f}, realizado cuando se pago la cuota ##{self.number}" 
+				else 
+					pago.comment = "Se realizo un pago adelantado de esta cuota por un monto de $#{owes.to_f}, cuando se pago la cuota ##{self.number}" 
+				end
+			end # if payment <= cuota.owes
+			pago.save!
+			payment -= owes
+		end # cuotas_a_pagar.each
+	end # pago_supera_cuota
 
 end

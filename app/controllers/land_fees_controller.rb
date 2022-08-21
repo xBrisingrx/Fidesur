@@ -12,10 +12,10 @@ class LandFeesController < ApplicationController
   end
 
   def show
-    @title_modal = 'Pagar cuota'
     @currencies = Currency.select(:id, :name).where(active: true)
     # obtengo info de una sola cuota
     @land_fee = LandFee.find(params[:id])
+    @title_modal = "Pagar cuota ##{@land_fee.number}"
     # Plata que quedo pendiente de cuotas anteriores 
     @adeuda = @land_fee.get_deuda
     # testeo que este vencida la cuota y que se haya seteado q se corresponda aplicar intereses
@@ -48,7 +48,6 @@ class LandFeesController < ApplicationController
       # Si agregaron algo al ajuste sumamos 
       cuota.adjust = params[:adjust].to_f
       cuota.comment_adjust = params[:comment_adjust]
-      # total pagado 
 
       # Calculo el total que se deberia haber pagado
       # Aca no sumo el valor de cuotas anteriores
@@ -57,11 +56,9 @@ class LandFeesController < ApplicationController
       # Chequeo si se pago menos de lo que se debia, en caso de que haya sido asi pasa al atributo DEBE
       if ( cuota.total_value >= cuota.payment )
         cuota.owes = (cuota.total_value - cuota.payment).round(2)
-      elsif ( cuota.total_value < cuota.payment )
-        # Se pago la cuota y valor de lo adeudado
-        cuota.pago_deuda
+      else
+        cuota.owes = 0.0
       end
-
       cuota.pay_date = params[:pay_date]
       cuota.payed = true
       cuota.comment = params[:comment]
@@ -76,12 +73,15 @@ class LandFeesController < ApplicationController
             tomado_en: params[:value_in_pesos],
             total: params[:calculo_en_pesos],
             pay_name: params[:name_pay],
-            currency_id: params[:currency_id] )
+            currency_id: params[:currency_id],
+            comment: params[:comment] )
         if !params[:images].nil?
           pago_de_cuota.images = params[:images]
         end
 
         if pago_de_cuota.save!
+          cuota.pago_supera_cuota if ( cuota.total_value < cuota.payment )
+
           render json: { status: 'success', msg: 'Pago registrado' }, status: 200
         else
           render json: { status: 'error', msg: 'No se pudo registrar el pago' }, status: 422
