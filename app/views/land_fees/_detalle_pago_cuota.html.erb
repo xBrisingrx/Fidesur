@@ -1,4 +1,4 @@
-<div class="modal-dialog modal-lg" role="document">
+<div class="modal-dialog modal-xl" role="document">
   <div class="modal-content">
     <div class="modal-header">
       <h5 class="modal-title"><%= @title_modal%></h5>
@@ -9,15 +9,15 @@
     <div class="modal-body">
       <ul>
         <% if @cuota.interest > 0 %>
-          <li> Interes pagado: <b>$<%= @cuota.interest %></b> </li>
+          <li> Interes pagado: <b>$<%= format_currency(@cuota.interest) %></b> </li>
         <% end %>
 
         <% if @cuota.adjust > 0 %>
-          <li> Ajuste: <b>$<%= @cuota.adjust %></b> </li>
+          <li> Ajuste: <b>$<%= format_currency(@cuota.adjust) %></b> </li>
           
         <% end %>
 
-        <li> Total pagado: <b>$<%= @cuota.payment %></b> </li>
+        <li> Total pagado: <b>$<%= format_currency(@cuota.payment) %></b> </li>
       </ul>
       <div class="row mx-2">
         <p>Pagos realizados</p>
@@ -30,6 +30,7 @@
               <th>Tomado en</th>
               <th>Total</th>
               <th>Adjuntos</th>
+              <th>Detalle pago</th>
               <th>Comentario</th>
             </tr>
           </thead>
@@ -44,7 +45,7 @@
                   <% end %>  
                 </td>
                 <td><%= payment.currency.name %></td>
-                <% if payment.currency.id == 4 %>
+                <% if payment.currency.id >= 4 %>
                   <td><%= "$#{format_currency( payment.payment )}" %></td>
                 <%else%>
                   <td><%= "#{payment.currency.name}#{format_currency( payment.payment )}" %></td>
@@ -56,6 +57,7 @@
                     <%= link_to '<i class="hs-admin-image"></i>'.html_safe, image, target: '_blank', class: 'btn u-btn-teal' %>
                   <% end %>
                 </td>
+                <td> <%= payment.pay_name %> </td>
                 <td> <%= payment.comment %> </td>
               </tr>
             <% end %>
