@@ -12,19 +12,6 @@ class FieldSaleController < ApplicationController
     if @field_sale.sale.total_cost == 0.0
       @field_sale.sale.calculate_total_value!
     end
-
-    cuotas = LandFee.where(total_value: 0.0)
-    cuotas.each do |c|
-      c.update(total_value: c.fee_value)
-    end
-
-    cuotas2 = LandFee.where(owes: 0.0)
-    cuotas2.each do |c|
-      if !c.payed?
-        c.update(owes: c.total_value)
-      end
-    end
-
     @valor_lote = @field_sale.sale.total_cost
     @total_adeudado = @field_sale.sale.total_cost - @total_pagado
 
