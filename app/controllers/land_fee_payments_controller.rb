@@ -23,6 +23,7 @@ class LandFeePaymentsController < ApplicationController
 
   # POST /land_fee_payments or /land_fee_payments.json
   def create
+
     land_fee = LandFee.find(params[:land_fee_id])
     land_fee_payments = land_fee.land_fee_payments.new(
       payment: params[:payment],
@@ -31,7 +32,7 @@ class LandFeePaymentsController < ApplicationController
       currency_id: params[:currency_id],
       tomado_en: params[:tomado_en],
       total: params[:calculo_en_pesos],
-      pay_name: params[:name_pay]
+      pay_name: params[:pay_name]
     )
     if !params[:images].nil?
       land_fee_payments.images = params[:images]
