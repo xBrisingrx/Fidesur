@@ -56,10 +56,11 @@ class LandFeePayment < ApplicationRecord
 			
 			cuota.payment += self.total 
 
-			if cuota.payment > cuota.total_value
-				puts "\n ####################### pago mas de el valor de la cuota \n"
+			if cuota.owes < self.total 
+				puts "\n ####################### el valor abonado es mayor al q se debe de la cuota \n"
+				payment = self.total - cuota.owes # excedente
 				cuota.owes = 0
-				cuota.pago_supera_cuota
+				cuota.pago_supera_cuota( payment, self.pay_date )
 			else 
 				cuota.owes = cuota.total_value - cuota.payment 
 			end

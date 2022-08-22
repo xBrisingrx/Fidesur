@@ -83,7 +83,8 @@ class LandFeesController < ApplicationController
         end
 
         if pago_de_cuota.save!
-          cuota.pago_supera_cuota if ( cuota.total_value < cuota.payment )
+          # Lo abonado es mayor a lo que se debe de la cuota
+          cuota.pago_supera_cuota( cuota.payment - cuota.total_value, cuota.pay_date ) if ( cuota.total_value < cuota.payment )
           render json: { status: 'success', msg: 'Pago registrado' }, status: 200
         else
           render json: { status: 'error', msg: 'No se pudo registrar el pago' }, status: 422

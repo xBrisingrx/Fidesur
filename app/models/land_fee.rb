@@ -63,8 +63,8 @@ class LandFee < ApplicationRecord
 		self.get_deuda > 0
 	end
 
-	def pago_supera_cuota
-		payment = self.payment - self.total_value
+	def pago_supera_cuota payment, pay_date
+		# payment = self.payment - self.total_value
 		puts "\n ######### EXTRA #{payment.to_f} ######### \n"
 		puts "\n ========================  Pago de otras cuotas ============================= \n"
 		# Obtengo todas las cuotas que no estan pagadas distintas a la que se esta pagando en este momento
@@ -76,29 +76,31 @@ class LandFee < ApplicationRecord
 			puts "De la cuota #{ cuota.number } debe #{ cuota.owes.to_f }"
 			# pago a registrar, se deja en cero el monto porque es para lleva el registro de adelantos/pago deuda
 			pago = cuota.land_fee_payments.new(
-				pay_date: self.pay_date, 
+				pay_date: pay_date, 
         payment: 0, 
         tomado_en: 1,
         total: 0,
         currency_id: 1)
 			owes = cuota.owes #lo que se adeuda de esta cuota
 			if payment <= cuota.owes
+				puts "\n *** #{cuota.id} "
 				cuota.update!(owes: cuota.owes - payment, pay_status: :pago_parcial, payed: true )
 
-				if cuota.due_date < self.pay_date 
+				if cuota.due_date < pay_date 
 					pago.comment = "Pago parcial de deuda de esta cuota por un monto de $#{payment.to_f}, realizado cuando se pago la cuota ##{self.number}" 
 				else 
 					pago.comment = "Se realizo un adelanto parcial de esta cuota por un monto de $#{payment.to_f}, cuando se pago la cuota ##{self.number}" 
 				end
 				puts "\n ===> payment #{payment} "
 			else
-				cuota.update!(owes: 0.0, pay_status: :pagado, payed: true )
-				if cuota.due_date < self.pay_date 
+				cuota.update!(owes: 0.0, pay_status: :pagado, payed: true)
+				if cuota.due_date < pay_date 
 					pago.comment = "Pago total de deuda de esta cuota por un monto de $#{owes.to_f}, realizado cuando se pago la cuota ##{self.number}" 
 				else 
 					pago.comment = "Se realizo un pago adelantado de esta cuota por un monto de $#{owes.to_f}, cuando se pago la cuota ##{self.number}" 
 				end
 			end # if payment <= cuota.owes
+
 			pago.save!
 			payment -= owes
 		end # cuotas_a_pagar.each
