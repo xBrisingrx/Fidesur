@@ -47,8 +47,6 @@ class LandFee < ApplicationRecord
 	
 	enum pay_status: [:pendiente, :pagado, :pago_parcial]
 
-	before_update :total_value_change
-
 	def expired?
 		self.due_date.strftime("%F")  < Time.new.strftime("%F") 
 	end
@@ -105,11 +103,4 @@ class LandFee < ApplicationRecord
 			payment -= owes
 		end # cuotas_a_pagar.each
 	end # pago_supera_cuota
-
-	def total_value_change
-		if self.total_value_changed?
-			field_sale = self.sale 
-			sale.calculate_total_value!
-		end
-	end
 end
