@@ -65,7 +65,10 @@ class LandFeesController < ApplicationController
 
       # si debe plata el status es pago parcial , sino pago total
       cuota.pay_status = ( cuota.owes > 0 ) ? :pago_parcial : :pagado
+      # si el valor de la cuota cambia tenemos que actualizar el valor de la venta del lote
+      recalcular_valor_venta = cuota.total_value_changed?
       if cuota.save!
+        cuota.sale.calculate_total_value! if recalcular_valor_venta
         # este es el pago de la primer cuota 
         pago_de_cuota = cuota.land_fee_payments.new( 
             pay_date: cuota.pay_date, 
@@ -81,7 +84,6 @@ class LandFeesController < ApplicationController
 
         if pago_de_cuota.save!
           cuota.pago_supera_cuota if ( cuota.total_value < cuota.payment )
-
           render json: { status: 'success', msg: 'Pago registrado' }, status: 200
         else
           render json: { status: 'error', msg: 'No se pudo registrar el pago' }, status: 422
