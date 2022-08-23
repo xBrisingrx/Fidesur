@@ -15,6 +15,21 @@ class FieldSaleController < ApplicationController
     @valor_lote = @field_sale.sale.total_cost
     @total_adeudado = @field_sale.sale.total_cost - @total_pagado
 
+    puts "\n\n rollback"
+    venta_lota = FieldSale.find_by( field_id: 36 )
+    cuotas = venta_lota.sale.land_fees
+    cuotas.each do |cuota|
+      cuota.land_fee_payments.destroy 
+      cuota.update(
+        pay_date: nil,
+        owes: cuota.fee_value,
+        payment: 0,
+        pay_status: :pendiente,
+        payed: false
+      )
+    end
+    puts "\n\n End rollback"
+
     @cant_vencidas = @land_fees.where( "due_date < ?", Time.new ).where(payed: false).count
     @cuotas_pagadas =  @land_fees.where(payed: true).count
     @total_cuotas = @land_fees.count
