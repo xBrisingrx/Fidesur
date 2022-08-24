@@ -82,7 +82,7 @@ class LandFee < ApplicationRecord
         total: 0,
         currency_id: 1)
 			owes = cuota.owes #lo que se adeuda de esta cuota
-			if payment <= cuota.owes
+			if payment < cuota.owes
 				puts "\n *** #{cuota.id} "
 				cuota.update!(owes: cuota.owes - payment, pay_status: :pago_parcial, payed: true )
 
