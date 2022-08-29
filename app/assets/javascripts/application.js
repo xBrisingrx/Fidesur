@@ -90,6 +90,14 @@ function setInputDate(_id){
     _dat.value = data;
 }
 
+function format_date(date) {
+  let d = date.split('-')
+  return `${d[2]}-${d[1]}-${d[0]}`
+}
+
+// formato de numero para monedas
+const numberFormat = new Intl.NumberFormat('es-AR')
+
 $(document).on('ready', function () {
   // initialization of custom select
   // $('.js-select').selectpicker();
