@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Sale:</strong>
+  <%= @sale_product.sale %>
+</p>
+
+<p>
+  <strong>Product:</strong>
+  <%= @sale_product.product %>
+</p>
+
+<p>
+  <strong>Comment:</strong>
+  <%= @sale_product.comment %>
+</p>
+
+<p>
+  <strong>Active:</strong>
+  <%= @sale_product.active %>
+</p>
+
+<%= link_to 'Edit', edit_sale_product_path(@sale_product) %> |
+<%= link_to 'Back', sale_products_path %>

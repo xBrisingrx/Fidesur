@@ -47,6 +47,7 @@
 Rails.application.routes.draw do
   
   
+  resources :sale_products, except: :destroy
   resources :land_fees do 
     get 'partial_payment/:land_fee_id', to: 'land_fee_payments#new', as: 'partial_payment'
     post 'partial_payment', to: 'land_fee_payments#create', as: 'register_partial_payment'
