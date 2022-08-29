@@ -1,6 +1,7 @@
 $("#modal-field-sale").html("<%= j (render 'layouts/modal_xl') %>")
 $("#modal-field-sale").modal('show')
 
+let id, form_data;
 land_fee_data.valor_cuota = parseFloat(<%= @land_fee.fee_value%>)
 land_fee_data.total_a_pagar = parseFloat(<%= @land_fee.fee_value %>)
 land_fee_data.ajuste = parseFloat(document.getElementById('land_fee_adjust').value)
@@ -85,25 +86,18 @@ document.getElementById('currency_id').addEventListener('change', function(e) {
 	calculo_en_pesos.style.display = 'none'
 	nodo.querySelector('#land_fee_name_pay').style.display = 'none'
 	let entrega = parseInt(e.target.value)
-	switch (entrega) {
-		case 2:
-			value_in_pesos.placeholder = "1 US$ en $"
-			value_in_pesos.style.display = 'block'
-			calculo_en_pesos.style.display = 'block'
-			break;
-		case 3:
-			value_in_pesos.placeholder = "1 € en $"
-			value_in_pesos.style.display = 'block'
-			calculo_en_pesos.style.display = 'block'
-			break;
-		case 5:
-			nodo.querySelector('#land_fee_name_pay').style.display = 'block'
-			break;
-		case 6:
-			nodo.querySelector('#land_fee_name_pay').style.display = 'block'
-			break;
-		default:
-			break;
+	if (entrega == 2) {
+		value_in_pesos.placeholder = "1 US$ en $"
+		value_in_pesos.style.display = 'block'
+		calculo_en_pesos.style.display = 'block'
+	}
+	if (entrega == 3) {
+		value_in_pesos.placeholder = "1 € en $"
+		value_in_pesos.style.display = 'block'
+		calculo_en_pesos.style.display = 'block'
+	}
+	if (entrega > 3) {
+		nodo.querySelector('#land_fee_name_pay').style.display = 'block'
 	}
 })
 
@@ -149,8 +143,8 @@ function calc_valor_en_pesos(){
 
 document.getElementById('submit-form-field-pay-quote').addEventListener('click', function(e){
 	e.preventDefault()
-	let id = <%= @land_fee.id %>;
-	let form_data = new FormData()
+	id = <%= @land_fee.id %>;
+	form_data = new FormData()
 	form_data.append("aply_interest", document.getElementById('land_fee_aply_interest').value)
 	form_data.append("comment_adjust", document.getElementById('land_fee_comment_adjust').value )
 	form_data.append("currency_id", document.getElementById('currency_id').value)
@@ -212,6 +206,45 @@ document.getElementById('submit-form-field-pay-quote').addEventListener('click',
   	return
   }
 
+  $("#modal-pay-detail").html("<%= j (render 'modal_pay_detail') %>")
+
+  let pay_data = document.querySelector('#pay-data')
+
+  pay_data.innerHTML += `<tr><td>Fecha de pago: ${ format_date(form_data.get('pay_date')) }</td></tr>` 
+  if (document.getElementById('land_fee_aply_interest').checked) {
+  	pay_data.innerHTML += `<tr><td>Interes: $${ numberFormat.format( form_data.get('interest') )}</td></tr>` 
+  }
+  if ( form_data.get('adjust') > 0 ) {
+  	pay_data.innerHTML += `<tr><td>Ajuste: $${ numberFormat.format( form_data.get('adjust') )}</td></tr>` 
+  }
+
+  let currency_name = document.getElementById('currency_id')
+  currency_name = currency_name.options[currency_name.selectedIndex].text
+
+  if ( form_data.get('currency_id') == 1 ) {
+  	pay_data.innerHTML += `<tr><td>Pagado: $${numberFormat.format( form_data.get('payment') )}</td></tr>` 
+  } 
+
+  if( form_data.get('currency_id') == 2 || form_data.get('currency_id') == 3 ) {
+  	pay_data.innerHTML += `
+  		<tr><td>Ingresado:  ${currency_name}${numberFormat.format( form_data.get('payment') )}</td></tr>
+  		<tr><td>Tomado en:  $${numberFormat.format( form_data.get('value_in_pesos') )}</td></tr>
+  		<tr><td>Valor en pesos:  ${numberFormat.format( form_data.get('calculo_en_pesos') )}</td></tr>
+  	` 
+  }
+
+  if (form_data.get('currency_id') > 3) {
+  	pay_data.innerHTML += `
+  		<tr><td>Forma de pago: ${currency_name}</td></tr>
+  		<tr><td>Ingresado:  $${numberFormat.format( form_data.get('payment') )}</td></tr>
+  		<tr><td>Detalle: ${form_data.get('name_pay')} </td></tr>
+  	` 
+  }
+	$("#modal-pay-detail").modal('show')
+	
+})
+
+function pay_land_fee(){
 	fetch(`/land_fees/${id}`, {
       method: 'PATCH',
       headers: {           
@@ -224,11 +257,8 @@ document.getElementById('submit-form-field-pay-quote').addEventListener('click',
   .then( response => {
   	if (response.status === 'success') {
   		location.reload()
-	    // field_sale_table.ajax.reload(null,false)
-	    // get_totales_cuota($('#field_sale_id').val())
-	    // $("#modal-field-sale").modal('hide')
   	}
   	noty_alert(response.status, response.msg)
   } )
   .catch( error => noty_alert('error', 'Ocurrio un error, no se pudo registrar la venta') )
-})
+}
