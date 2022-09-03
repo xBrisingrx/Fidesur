@@ -1,8 +1,16 @@
 class SalesController < ApplicationController
-
+  def index;end
+  
+  def new 
+    @clients = Client.select(:id, :name, :last_name).where(active: true)
+    @product = [ 'product_id' => params[:product_id], 'product_type' => params[:product_type] ]
+    @currencies = Currency.select(:id, :name).where(active: true)
+    @title_modal = ""
+  end
+  
   def start_field_sale
     # vendo un solo lote, aca me viene un lote por parametro ya seteado
-    @clients = Client.where(active:true)
+    @clients = Client.select(:id, :name, :last_name).where(active: true)
     @field = Field.find(params[:field_id])
     @title_modal = "Venta del lote #{@field.code}"
     @currencies = Currency.select(:id, :name).where(active: true)
