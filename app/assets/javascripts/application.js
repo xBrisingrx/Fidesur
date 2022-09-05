@@ -35,6 +35,7 @@
 //= require batch_payments
 //= require land_fees
 //= require land_fee_payments
+//= require lands
 
 // require_tree .
 

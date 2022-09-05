@@ -1,0 +1,58 @@
+<h1>Lotes de manzana <%= @apple.code%></h1>
+<%= link_to '<i class= "hs-admin-back-left"></i> Volver a manzanas'.html_safe, apples_path, class: 'btn u-btn-blue mb-2 mr-2'%>
+<%= link_to '<i class="hs-admin-plus"></i> Nuevo lote'.html_safe, new_apple_land_path(), {:remote => true, 'data-toggle' =>  "modal",
+      'data-target' => '#modal-land', 'class' => 'btn u-btn-teal justify-content-end mb-2'} %>
+<table id="fields_table" class="table hover dt-responsive w-100">
+  <thead>
+    <tr>
+      <th>Denominación</th>
+      <th>Medidas</th>
+      <th>Superficie</th>
+      <th>Ubicación</th>
+      <th>Valor</th>
+      <th>Espacio verde</th>
+      <th>Estado</th>
+      <th>Fecha compra</th>
+      <th>Plano</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+  </tbody>
+</table>
+
+<!-- Modal alta de field -->
+<div class="modal fade" id="modal-land" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+</div>
+<!-- End modal -->
+
+
+<!-- Modal para eliminar field -->
+<div class="modal fade" id="modal-disable-land" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">¿ Esta seguro de dar de baja al lote ?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger" role="alert">
+          Tenga en cuenta que todos los registros asociados tambien seran dados de baja.
+        </div>
+        <%= form_with(url: fields_disable_path, id: 'form-disable-land') %>
+          <input type="hidden" id="field_id" name="field[id]" value="">
+          <button type="submit" class="btn u-btn-red g-mr-10">Eliminar</button>
+          <button type="button" data-dismiss="modal" class="btn u-btn-teal g-mr-10"> Cerrar </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Fin modal eliminar field -->
+
+<input type="hidden" id="apple_id" value="<%= @apple_id %>"> 

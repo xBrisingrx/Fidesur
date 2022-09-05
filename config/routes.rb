@@ -46,10 +46,7 @@
 
 Rails.application.routes.draw do
   
-  
-  get 'land_sale/index'
-  get 'land_sale/new/:land_id'
-  get 'land_sale/create'
+  resources :land_sale, only: [:index, :new, :create]
   resources :sale_products, except: :destroy
   resources :land_fees do 
     get 'partial_payment/:land_fee_id', to: 'land_fee_payments#new', as: 'partial_payment'
@@ -98,6 +95,7 @@ Rails.application.routes.draw do
       
       resources :apples do
         resources :fields
+        resources :lands, only: [:index, :new, :create, :edit, :update]
       end
       post '/apples/disable'
       post '/fields/disable'

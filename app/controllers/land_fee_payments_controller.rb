@@ -37,7 +37,7 @@ class LandFeePaymentsController < ApplicationController
     if !params[:images].nil?
       land_fee_payments.images = params[:images]
     end
-
+    
     respond_to do |format|
       # create tiene un callback para actualizar land_fee
       if land_fee_payments.save!

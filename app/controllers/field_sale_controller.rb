@@ -19,6 +19,24 @@ class FieldSaleController < ApplicationController
     @cuotas_pagadas =  @land_fees.where(payed: true).count
     @total_cuotas = @land_fees.count
     @status = { 'pendiente' => 'Pendiente', 'pagado' => 'Pagada', 'pago_parcial' => 'Pago parcial'}
+
+
+    # puts "\n\n rollback"
+    # venta_lote = FieldSale.find_by( field_id: 408 )
+    # cuotas = venta_lote.sale.land_fees
+    # cuotas.each do |cuota|
+    #   cuota.land_fee_payments.destroy_all
+    #   cuota.update(
+    #     pay_date: nil,
+    #     owes: cuota.fee_value,
+    #     payment: 0,
+    #     pay_status: :pendiente,
+    #     payed: false,
+    #     comment: ''
+    #   )
+    # end
+    # puts "\n\n End rollback"
+
     respond_to do |format|
     	format.html
       format.json
