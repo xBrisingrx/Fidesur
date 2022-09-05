@@ -24,18 +24,18 @@ json.data @land_fees do |b|
 	
 	btn_detalle_pago = link_to "<i class='hs-admin-eye'></i>".html_safe, detalle_pago_cuota_path(b.id), 
 		                   :remote => true, 'data-toggle' =>  'modal', 'data-target' => '#modal-sales', 
-		                    class: ' u-link-v5 g-color-white g-color-gray-dark-v6 g-color-secondary--hover g-text-underline--none--hover', 
+		                    class: ' u-link-v5 g-color-white g-color-gray-dark-v2 g-color-secondary--hover g-text-underline--none--hover', 
 		                    title: 'Detalle del pago de cuota'
 
 	if !b.payed?
 		json.actions "#{link_to "<i class='hs-admin-money'></i>".html_safe, land_fee_path(b.id), 
                    :remote => true, 'data-toggle' =>  'modal', 'data-target' => '#modal-sales', 
-                    class: ' u-link-v5 g-color-gray-dark-v6 g-color-secondary--hover g-text-underline--none--hover', title: 'Pagar cuota'}"
+                    class: ' u-link-v5 g-color-gray-dark-v2 g-color-secondary--hover g-text-underline--none--hover', title: 'Pagar cuota'}"
 	elsif b.pago_parcial?
 		json.actions "#{btn_detalle_pago}
                   #{link_to "<i class='hs-admin-money'></i>".html_safe, land_fee_partial_payment_path(b.id),
                   	:remote => true, 'data-toggle' =>  'modal', 'data-target' => '#modal-sales', 
-                  	class: 'ml-4 u-link-v5 g-color-white g-color-gray-dark-v6 g-color-secondary--hover g-text-underline--none--hover', 
+                  	class: 'ml-4 u-link-v5 g-color-white g-color-gray-dark-v2 g-color-secondary--hover g-text-underline--none--hover', 
                     title: 'Pago parcial' }"
 	else
 		json.actions "#{btn_detalle_pago}"
