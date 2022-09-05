@@ -46,7 +46,11 @@ class LandFeesController < ApplicationController
       end
 
       # Si agregaron algo al ajuste sumamos 
-      cuota.adjust = params[:adjust].to_f
+      if params[:adjust].to_f > 0 
+        cuota.adjust += params[:adjust].to_f
+        cuota.aply_adjust(params[:adjust].to_f)
+      end
+      
       cuota.comment_adjust = params[:comment_adjust]
 
       # Calculo el total que se deberia haber pagado

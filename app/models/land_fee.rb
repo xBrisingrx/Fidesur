@@ -63,6 +63,18 @@ class LandFee < ApplicationRecord
 		self.get_deuda > 0
 	end
 
+	def aply_adjust adjust
+		puts "\n\n\n\n\n ****************5 Aplicamos el ajuste a partir de la cuota #{self.number} \n"
+		cuotas = LandFee.where(["sale_id = ? and number > ?", self.sale_id, self.number ])
+		cuotas.each do |cuota|
+			"\n Ajustamos en la cuota #{cuota.number} q tenia de ajuste #{cuota.adjust.to_f} \n"
+			cuota.adjust += adjust
+			cuota.total_value = cuota.fee_value + cuota.interest + cuota.adjust
+			cuota.save
+			"\n Update exitoso #{cuota.adjust.to_f}"
+		end
+	end
+
 	def pago_supera_cuota payment, pay_date
 		# payment = self.payment - self.total_value
 		puts "\n ######### EXTRA #{payment.to_f} ######### \n"
