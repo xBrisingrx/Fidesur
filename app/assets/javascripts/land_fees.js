@@ -8,6 +8,8 @@ let land_fee_data = {
 	tomado_en: 0.0,
 	valor_en_pesos: 0.0,
 	name_pay:'',
+	form_data: '',
+	id: '',
 	sumar_todo(){
 		return this.valor_cuota + this.ajuste + this.adeuda + this.recargo_sugerido
 	},

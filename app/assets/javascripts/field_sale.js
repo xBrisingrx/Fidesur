@@ -17,6 +17,7 @@ $(document).ready(function(){
     'columns': [
     {'data': 'number'},
     {'data': 'fee_value'},
+    {'data': 'adjust'},
     {'data': 'due_date'},
     {'data': 'debe'},
     {'data': 'haber'},

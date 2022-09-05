@@ -1,7 +1,7 @@
 $("#modal-field-sale").html("<%= j (render 'layouts/modal_xl') %>")
 $("#modal-field-sale").modal('show')
 
-let id, form_data;
+
 land_fee_data.valor_cuota = parseFloat(<%= @land_fee.fee_value%>)
 land_fee_data.total_a_pagar = parseFloat(<%= @land_fee.fee_value %>)
 land_fee_data.ajuste = parseFloat(document.getElementById('land_fee_adjust').value)
@@ -143,64 +143,64 @@ function calc_valor_en_pesos(){
 
 document.getElementById('submit-form-field-pay-quote').addEventListener('click', function(e){
 	e.preventDefault()
-	id = <%= @land_fee.id %>;
-	form_data = new FormData()
-	form_data.append("aply_interest", document.getElementById('land_fee_aply_interest').value)
-	form_data.append("comment_adjust", document.getElementById('land_fee_comment_adjust').value )
-	form_data.append("currency_id", document.getElementById('currency_id').value)
-	form_data.append("name_pay", document.getElementById('land_fee_name_pay').value)
-	form_data.append("comment", document.getElementById('land_fee_comment').value)
+	land_fee_data.id = <%= @land_fee.id %>;
+	land_fee_data.form_data = new FormData()
+	land_fee_data.form_data.append("aply_interest", document.getElementById('land_fee_aply_interest').value)
+	land_fee_data.form_data.append("comment_adjust", document.getElementById('land_fee_comment_adjust').value )
+	land_fee_data.form_data.append("currency_id", document.getElementById('currency_id').value)
+	land_fee_data.form_data.append("name_pay", document.getElementById('land_fee_name_pay').value)
+	land_fee_data.form_data.append("comment", document.getElementById('land_fee_comment').value)
 	// valores numericos
-	form_data.append("interest", parseFloat( document.getElementById('land_fee_interest').value ) )
-	form_data.append("adjust",  parseFloat( document.getElementById('land_fee_adjust').value ) )
-	form_data.append("payment", parseFloat( document.getElementById('land_fee_payment').value ) )
-	form_data.append("value_in_pesos", parseFloat( document.getElementById('land_fee_value_in_pesos').value ) )
-	form_data.append("calculo_en_pesos", parseFloat( document.getElementById('land_fee_calculo_en_pesos').value ) )
-	form_data.append("pay_date", document.getElementById('land_fee_pay_date').value)
+	land_fee_data.form_data.append("interest", parseFloat( document.getElementById('land_fee_interest').value ) )
+	land_fee_data.form_data.append("adjust",  parseFloat( document.getElementById('land_fee_adjust').value ) )
+	land_fee_data.form_data.append("payment", parseFloat( document.getElementById('land_fee_payment').value ) )
+	land_fee_data.form_data.append("value_in_pesos", parseFloat( document.getElementById('land_fee_value_in_pesos').value ) )
+	land_fee_data.form_data.append("calculo_en_pesos", parseFloat( document.getElementById('land_fee_calculo_en_pesos').value ) )
+	land_fee_data.form_data.append("pay_date", document.getElementById('land_fee_pay_date').value)
 
 	let files = document.getElementById('land-fee-images')
   let totalFiles = files.files.length
   if (totalFiles > 0) {
   	for (let i = 0; i < totalFiles; i++) {
-	    form_data.append("images[]", files.files[i])
+	    land_fee_data.form_data.append("images[]", files.files[i])
 	  }
   }
 
-  if ( isNaN( form_data.get('payment') ) || form_data.get('payment') <= 0 ) {
+  if ( isNaN( land_fee_data.form_data.get('payment') ) || land_fee_data.form_data.get('payment') <= 0 ) {
   	noty_alert('error', 'Datos invalidos')
   	addClassInvalid(document.getElementById('land_fee_payment'))
   	return
   }
-  if ( isNaN( form_data.get('value_in_pesos') ) || form_data.get('value_in_pesos') <= 0 ) {
+  if ( isNaN( land_fee_data.form_data.get('value_in_pesos') ) || land_fee_data.form_data.get('value_in_pesos') <= 0 ) {
   	noty_alert('error', 'Datos invalidos')
   	addClassInvalid(document.getElementById('land_fee_value_in_pesos'))
   	return
   }
-  if ( isNaN( form_data.get('calculo_en_pesos') ) || form_data.get('calculo_en_pesos') <= 0 ) {
+  if ( isNaN( land_fee_data.form_data.get('calculo_en_pesos') ) || land_fee_data.form_data.get('calculo_en_pesos') <= 0 ) {
   	noty_alert('error', 'Datos invalidos')
   	addClassInvalid(document.getElementById('land_fee_calculo_en_pesos'))
   	return
   }
 
-  if ( isNaN( form_data.get('interest') ) ) {
+  if ( isNaN( land_fee_data.form_data.get('interest') ) ) {
   	noty_alert('error', 'Datos invalidos')
   	addClassInvalid(document.getElementById('land_fee_interest'))
   	return
   }
 
-  if ( document.getElementById('land_fee_aply_interest').checked && form_data.get('interest') <= 0 ) {
+  if ( document.getElementById('land_fee_aply_interest').checked && land_fee_data.form_data.get('interest') <= 0 ) {
   	noty_alert('error', 'Debe ingresar un valor en interes')
   	addClassInvalid(document.getElementById('land_fee_interest'))
   	return
   }
 
-  if ( isNaN( form_data.get('calculo_en_pesos') ) || form_data.get('calculo_en_pesos') <= 0 ) {
+  if ( isNaN( land_fee_data.form_data.get('calculo_en_pesos') ) || land_fee_data.form_data.get('calculo_en_pesos') <= 0 ) {
   	noty_alert('error', 'Datos invalidos')
   	addClassInvalid(document.getElementById('land_fee_calculo_en_pesos'))
   	return
   }
 
-  if ( form_data.get('pay_date') == ''  ) {
+  if ( land_fee_data.form_data.get('pay_date') == ''  ) {
   	noty_alert('error', 'Debe ingresar una fehca')
   	addClassInvalid(document.getElementById('land_fee_pay_date'))
   	return
@@ -210,34 +210,34 @@ document.getElementById('submit-form-field-pay-quote').addEventListener('click',
 
   let pay_data = document.querySelector('#pay-data')
 
-  pay_data.innerHTML += `<tr><td>Fecha de pago: ${ format_date(form_data.get('pay_date')) }</td></tr>` 
+  pay_data.innerHTML += `<tr><td>Fecha de pago: ${ format_date(land_fee_data.form_data.get('pay_date')) }</td></tr>` 
   if (document.getElementById('land_fee_aply_interest').checked) {
-  	pay_data.innerHTML += `<tr><td>Interes: $${ numberFormat.format( form_data.get('interest') )}</td></tr>` 
+  	pay_data.innerHTML += `<tr><td>Interes: $${ numberFormat.format( land_fee_data.form_data.get('interest') )}</td></tr>` 
   }
-  if ( form_data.get('adjust') > 0 ) {
-  	pay_data.innerHTML += `<tr><td>Ajuste: $${ numberFormat.format( form_data.get('adjust') )}</td></tr>` 
+  if ( land_fee_data.form_data.get('adjust') > 0 ) {
+  	pay_data.innerHTML += `<tr><td>Ajuste: $${ numberFormat.format( land_fee_data.form_data.get('adjust') )}</td></tr>` 
   }
 
   let currency_name = document.getElementById('currency_id')
   currency_name = currency_name.options[currency_name.selectedIndex].text
 
-  if ( form_data.get('currency_id') == 1 ) {
-  	pay_data.innerHTML += `<tr><td>Pagado: $${numberFormat.format( form_data.get('payment') )}</td></tr>` 
+  if ( land_fee_data.form_data.get('currency_id') == 1 ) {
+  	pay_data.innerHTML += `<tr><td>Pagado: $${numberFormat.format( land_fee_data.form_data.get('payment') )}</td></tr>` 
   } 
 
-  if( form_data.get('currency_id') == 2 || form_data.get('currency_id') == 3 ) {
+  if( land_fee_data.form_data.get('currency_id') == 2 || land_fee_data.form_data.get('currency_id') == 3 ) {
   	pay_data.innerHTML += `
-  		<tr><td>Ingresado:  ${currency_name}${numberFormat.format( form_data.get('payment') )}</td></tr>
-  		<tr><td>Tomado en:  $${numberFormat.format( form_data.get('value_in_pesos') )}</td></tr>
-  		<tr><td>Valor en pesos:  ${numberFormat.format( form_data.get('calculo_en_pesos') )}</td></tr>
+  		<tr><td>Ingresado:  ${currency_name}${numberFormat.format( land_fee_data.form_data.get('payment') )}</td></tr>
+  		<tr><td>Tomado en:  $${numberFormat.format( land_fee_data.form_data.get('value_in_pesos') )}</td></tr>
+  		<tr><td>Valor en pesos:  ${numberFormat.format( land_fee_data.form_data.get('calculo_en_pesos') )}</td></tr>
   	` 
   }
 
-  if (form_data.get('currency_id') > 3) {
+  if (land_fee_data.form_data.get('currency_id') > 3) {
   	pay_data.innerHTML += `
   		<tr><td>Forma de pago: ${currency_name}</td></tr>
-  		<tr><td>Ingresado:  $${numberFormat.format( form_data.get('payment') )}</td></tr>
-  		<tr><td>Detalle: ${form_data.get('name_pay')} </td></tr>
+  		<tr><td>Ingresado:  $${numberFormat.format( land_fee_data.form_data.get('payment') )}</td></tr>
+  		<tr><td>Detalle: ${land_fee_data.form_data.get('name_pay')} </td></tr>
   	` 
   }
 	$("#modal-pay-detail").modal('show')
@@ -245,12 +245,12 @@ document.getElementById('submit-form-field-pay-quote').addEventListener('click',
 })
 
 function pay_land_fee(){
-	fetch(`/land_fees/${id}`, {
+	fetch(`/land_fees/${land_fee_data.id}`, {
       method: 'PATCH',
       headers: {           
         'X-CSRF-Token': document.getElementsByName('csrf-token')[0].content,
       },
-      body: form_data,
+      body: land_fee_data.form_data,
     }
   )
   .then( response => response.json() )
