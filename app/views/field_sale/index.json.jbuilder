@@ -1,12 +1,8 @@
 json.data @land_fees do |b|
 	json.number b.number
 
-	if b.fee_value != b.total_value
-		json.fee_value "<b>$#{format_currency(b.total_value)}</b>"
-	else 
-		json.fee_value "$#{format_currency(b.total_value)}"
-	end
-	
+	json.fee_value "$#{format_currency(b.fee_value)}"
+	json.adjust "$#{format_currency(b.adjust)}"
 	json.due_date b.due_date.strftime('%d-%m-%y')
 	json.debe "$#{format_currency(b.owes)}"
 	json.haber "$#{format_currency(b.payment)}"
