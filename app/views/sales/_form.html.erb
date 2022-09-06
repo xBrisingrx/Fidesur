@@ -1,4 +1,4 @@
-<%= form_with( id: 'form-field-sale', class: 'needs-validation g-brd-around g-brd-gray-light-v4 g-pa-10 g-mb-10' ) do |form| %>
+<%= form_with(model: @sale, id: 'form-field-sale', class: 'needs-validation g-brd-around g-brd-gray-light-v4 g-pa-10 g-mb-10' ) do |form| %>
   
   <%= form.hidden_field :field_id, value: @field.id %>
   <%= form.hidden_field :total_cost, value: @field.price %>
@@ -30,7 +30,7 @@
     </div>
 
   </div>
-
+  
   <div class="mb-2 client-list">
     <!-- <ul class="client-list">  aca se muestran los clientes que van a comprar </ul> -->
   </div>
