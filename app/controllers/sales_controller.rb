@@ -6,6 +6,16 @@ class SalesController < ApplicationController
     @product = [ 'product_id' => params[:product_id], 'product_type' => params[:product_type] ]
     @currencies = Currency.select(:id, :name).where(active: true)
     @title_modal = ""
+    @sale = Sale.new
+    @product_type = params[:product_type]
+    @product_id = params[:product_id]
+    
+    case @product_type
+      when 'land'
+         @product = Land.find @product_id 
+      else 
+        raise "No es un producto reconocido"
+    end
   end
   
   def start_field_sale
