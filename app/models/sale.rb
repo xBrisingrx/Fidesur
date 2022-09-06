@@ -27,6 +27,15 @@ class Sale < ApplicationRecord
 	has_many :clients, through: :client_sales
 	has_many :fields, through: :field_sales
 
+	accepts_nested_attributes_for :sale_products, :client_sales
+
+	before_create :set_attributes 
+
+	def set_attributes
+		self.sale_date = Time.now.strftime("%Y/%m/%d") if self.sale_date.blank? 
+		self.due_date = 10 if self.due_date.blank? 
+	end
+	
 	def calculate_total_paid!
 		total_paid = self.sales_payments.sum(:value_in_pesos)
 		self.update( paid: total_paid )
