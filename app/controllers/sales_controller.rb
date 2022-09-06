@@ -14,6 +14,7 @@ class SalesController < ApplicationController
     @field = Field.find(params[:field_id])
     @title_modal = "Venta del lote #{@field.code}"
     @currencies = Currency.select(:id, :name).where(active: true)
+    @sale = Sale.new
   end
 
   def create 
@@ -21,16 +22,19 @@ class SalesController < ApplicationController
       return render json: {status: 'error', msg: 'No se han seleccionado clientes'}
     end
     ActiveRecord::Base.transaction do 
-      sale = Sale.new(
-        apply_arrear: params[:apply_arrear],
-        arrear: params[:arrear],
-        comment: params[:comment],
-        sale_date: (!params[:sale_date].blank?) ? params[:sale_date] : Time.now.strftime("%Y/%m/%d"),
-        due_date: ( !params[:due_date].blank? ) ? params[:due_date] : 10,
-        number_of_payments: params[:number_of_payments].to_i,
-        total_cost: 0
-      )
-
+      # sale = Sale.new(
+      #   apply_arrear: params[:apply_arrear],
+      #   arrear: params[:arrear],
+      #   comment: params[:comment],
+      #   sale_date: (!params[:sale_date].blank?) ? params[:sale_date] : Time.now.strftime("%Y/%m/%d"),
+      #   due_date: ( !params[:due_date].blank? ) ? params[:due_date] : 10,
+      #   number_of_payments: params[:number_of_payments].to_i,
+      #   total_cost: 0
+      # )
+      byebug
+      sale = Sale.new( sale_params )
+      byebug
+      raise "merequetengue"
       if sale.save! 
         params[:clients].uniq # me aseguro de que no haya ningun id repetido
         params[:clients].each do |client| # Generamos los registros de los clientes que hicieron la compra
@@ -111,10 +115,7 @@ class SalesController < ApplicationController
   end
 
   def pay
-    puts "esto es una B => #{params}"
-    puts "filtrado #{params[:data]}"
     cuota = LandFee.find(params[:data])
-
     render json: { 'data' => cuota, 'interest' => cuota.sale.arrear }
   end
 
@@ -126,8 +127,11 @@ class SalesController < ApplicationController
 
   private
 
-  # def sale_params
-  #    params.require(:sale).permit(:params)
-  #  end
+  def sale_params
+    params.require(:sale).permit(:total_cost, :apply_arrear, :arrear, :number_of_payments, 
+      :due_date, :sale_date, :comment,
+      client_sales_attributes: [:client_id],
+      sale_products_attributes: [:product_id])
+  end
 
 end
