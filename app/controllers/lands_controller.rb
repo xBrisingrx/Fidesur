@@ -2,6 +2,7 @@ class LandsController < ApplicationController
   before_action :set_land, only: %i[ edit update ]
   before_action :set_apple, only: %i[ index new create edit ]
   before_action :set_name_enums, only: %i[ index new edit ]
+
   def index
     @lands = Land.where(apple_id: params[:apple_id], active: true)
     @apple_id = params[:apple_id]
@@ -19,11 +20,10 @@ class LandsController < ApplicationController
   def create
     @apple = Apple.find(params[:apple_id])
     @land = @apple.lands.new(land_params)
-    @land.user_created = current_user.id
-    @land.user_updated = current_user.id
-    if params[:is_green_space] == 1
-      @land.land_type = :green_space
-    end
+    @user = User.find current_user.id
+    @land.user_created = @user
+    @land.user_updated = @user
+
     respond_to do |format|
       if @land.save
         format.json { render json: {status: 'success', msg: 'Lote registrado'} , status: :created }
@@ -76,6 +76,6 @@ class LandsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def land_params
-      params.require(:land).permit(:measures, :surface, :ubication, :price, :code, :status, :blueprint)
+      params.require(:land).permit(:measures, :surface, :ubication, :price, :code, :status, :blueprint, :land_type, :is_green_space)
     end
 end

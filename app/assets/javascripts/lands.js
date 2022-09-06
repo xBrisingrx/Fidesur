@@ -8,7 +8,7 @@ function modal_disable_land(id) {
 $(document).ready(function(){
   // const apple_id = document.getElementById('apple_id').value 
 	lands_table = $("#lands_table").DataTable({
-    'ajax':`lotes`,
+    'ajax':`lands`,
     'columns': [
     {'data': 'code'},
     {'data': 'measures'},

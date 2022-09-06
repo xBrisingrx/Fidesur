@@ -5,6 +5,7 @@
 #  id                                                                 :bigint           not null, primary key
 #  active                                                             :boolean          default(TRUE)
 #  code                                                               :string(255)
+#  is_green_space                                                     :boolean          default(FALSE)
 #  land_type                                                          :integer          default("habitable")
 #  measures                                                           :string(255)
 #  price                                                              :decimal(15, 2)   default(0.0)
@@ -32,8 +33,8 @@
 #
 class Land < ApplicationRecord
 	belongs_to :apple
-	belongs_to :user_created, class_name: "Users"
-	belongs_to :user_updated, class_name: "Users"
+	belongs_to :user_created, class_name: "User"
+	belongs_to :user_updated, class_name: "User"
 	has_one_attached :blueprint
 
 	# has_one :field_sale

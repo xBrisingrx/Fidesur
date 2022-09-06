@@ -18,7 +18,7 @@ json.data @lands do |f|
   								 :remote => true, 'data-toggle' =>  'modal',
       							'data-target' => '#modal-land', 
       							'class' => 'u-link-v5 g-color-gray-light-v6 g-color-secondary--hover g-text-underline--none--hover g-ml-12', title: 'Editar'}
-									#{link_to '<i class="hs-admin-money"></i>'.html_safe, start_land_sale_path(f.id), 
+									#{link_to '<i class="hs-admin-money"></i>'.html_safe, new_sale_path( product_type: :land, product_id: f.id ), 
   								 :remote => true, 'data-toggle' =>  'modal',
       							'data-target' => '#modal-land', 
       							'class' => 'u-link-v5 g-color-gray-light-v6 g-color-secondary--hover g-text-underline--none--hover g-ml-12', title: 'Vender'}
