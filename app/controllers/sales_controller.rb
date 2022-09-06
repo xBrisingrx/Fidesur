@@ -7,6 +7,8 @@ class SalesController < ApplicationController
     @currencies = Currency.select(:id, :name).where(active: true)
     @title_modal = ""
     @sale = Sale.new
+    @sale.sale_products.build
+    @sale.client_sales.build
     @product_type = params[:product_type]
     @product_id = params[:product_id]
     
@@ -29,7 +31,7 @@ class SalesController < ApplicationController
 
   def create 
     if params[:clients].blank?
-      return render json: {status: 'error', msg: 'No se han seleccionado clientes'}
+      return render json: {status: 'error', msg: 'No se han seleccionado clientes'}, status: 422
     end
     ActiveRecord::Base.transaction do 
       # sale = Sale.new(
@@ -141,7 +143,7 @@ class SalesController < ApplicationController
     params.require(:sale).permit(:total_cost, :apply_arrear, :arrear, :number_of_payments, 
       :due_date, :sale_date, :comment,
       client_sales_attributes: [:client_id],
-      sale_products_attributes: [:product_id])
+      sale_products_attributes: [:product_type,:product_id])
   end
 
 end

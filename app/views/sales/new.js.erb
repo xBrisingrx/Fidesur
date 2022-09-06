@@ -1,4 +1,45 @@
 $("#modal-land").html("<%= j (render 'layouts/modal_xl') %>")
-$('.select-2-client-land').select2({ width: '80%',theme: "bootstrap4" })
+$('.select-2-client-field').select2({ width: '80%',theme: "bootstrap4" })
+
+document.getElementById('add-client').addEventListener('click', function(e){
+	console.info('start => ', sale.client_index)
+	event.preventDefault()
+	let client = document.getElementById('sale_client_id')
+	let client_name =  $('#sale_client_id option:selected').text()
+	$('.client-list').append(`
+		<div class="row" id="${client.value}">
+			<div class="mb-2  mx-4 col-6">
+				<input type="text" value="${client_name}" class="client-id form-control rounded-0 " data-id=${client.value} disabled></input>
+			</div>
+			<div>
+				<button type="button" class="btn u-btn-red remove-client" onclick="remove_client(${client.value})" title="Quitar comprador"> <i class="fa fa-trash"></i> </button>
+			</div>
+		</div>
+	`)
+
+	$('#client-sales').append(`
+		<input type="hidden" name="sale[client_sales_attributes][${sale.client_index}][client_id]" 
+		id="sale_client_sales_attributes_${sale.client_index}_client_id" value="${client.value}">
+	`)
+
+	sale.client_index++
+	console.info('add => ', sale.client_index)
+	$('#sale_client_id option:selected').attr('disabled', 'disabled')
+	$('.select-2-client-field').val('').trigger('change')
+})
 
 $("#modal-land").modal('show')
+
+$("#form-field-sale").on("ajax:success", function(event) {
+    lands_table.ajax.reload(null,false)
+    let msg = JSON.parse(event.detail[2].response)
+    noty_alert(msg.status, msg.msg)
+    $("#modal-land").modal('hide')
+  }).on("ajax:error", function(event) {
+	let msg = JSON.parse( event.detail[2].response )
+	$.each( msg, function( key, value ) {
+		console.error(key, value)
+		$(`#form-field-sale #field_${key}`).addClass('is-invalid')
+		$(`#form-field-sale .field_${key}`).text( value ).show('slow')
+	})
+})

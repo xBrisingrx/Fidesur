@@ -6,7 +6,7 @@
 #  active          :boolean          default(TRUE)
 #  code            :string(255)
 #  field_type      :integer          default("habitable")
-#  is_green_space  :integer          default(0), not null
+#  is_green_space  :boolean          default(FALSE)
 #  measures        :string(255)
 #  price           :decimal(15, 2)   default(0.0)
 #  status          :integer          default("available")

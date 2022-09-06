@@ -31,6 +31,11 @@ class LandsController < ApplicationController
         format.json { render json: @land.errors, status: :unprocessable_entity }
       end
     end
+
+    rescue => e
+      @response = e.message.split(':')
+      puts "============================= raisaso"
+      render json: { @response[0] => @response[1] }, status: 402
   end
 
   def update
