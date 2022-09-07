@@ -22,6 +22,9 @@ class Sale < ApplicationRecord
 	has_many :sale_products, as: :product # vamos a reemplazar field_sale por esta relacion
 	
 	has_many :land_fees
+
+	has_many :fees #esto seria el reemplazo de land fees
+
 	has_many :sales_payments
 
 	has_many :clients, through: :client_sales
@@ -32,8 +35,10 @@ class Sale < ApplicationRecord
 	before_create :set_attributes 
 
 	def set_attributes
+		puts "\n\n\n antes de crear la venta -----"
 		self.sale_date = Time.now.strftime("%Y/%m/%d") if self.sale_date.blank? 
 		self.due_date = 10 if self.due_date.blank? 
+		byebug
 	end
 	
 	def calculate_total_paid!
@@ -46,4 +51,29 @@ class Sale < ApplicationRecord
 		total_value = self.sales_payments.sum(:value_in_pesos) + self.land_fees.sum(:total_value)
 		self.update( total_cost: total_value )
 	end
+
+	def generar_cuotas number_cuota_increase, valor_cuota_aumentada, valor_cuota
+  	aumenta_cuota = ( number_cuota_increase > 0 ) && ( valor_cuota_aumentada > 0 )
+  	due_date = Time.new(self.sale_date.year, self.sale_date.month, self.due_date)
+
+    for i in 1..self.number_of_payments
+      # genero mis cuotas
+      due_date += 1.month
+      # El valor de la cuota puede ser que cambie , el valor total incrementa
+      if aumenta_cuota && i >= number_cuota_increase
+        value = valor_cuota_aumentada
+      else
+        value = valor_cuota
+      end
+
+      self.fees.create!(
+      	due_date: due_date, 
+        value: value, 
+        number: i, 
+        owes: value, 
+        total_value: value
+      )
+    end
+	end # generar cuota
+
 end

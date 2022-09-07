@@ -30,7 +30,7 @@ class LandFeePayment < ApplicationRecord
 	belongs_to :currency
 	has_many_attached :images
 
-	validates :payment, presence: true,numericality: true
+	validates :payment, presence: true, numericality: true
 	# validates :payment, numericality: { greater_than: 0,  message: 'El pago debe ser mayor a cero' }
 	validates :pay_date, presence: true
 	# validate :check_owes, on: :create 
