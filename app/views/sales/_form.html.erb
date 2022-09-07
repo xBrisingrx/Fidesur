@@ -1,12 +1,12 @@
-<%= form_with(model: @sale, 
-      id: 'form-field-sale', 
+<%= form_with( id: 'form-field-sale', 
       class: 'needs-validation g-brd-around g-brd-gray-light-v4 g-pa-10 g-mb-10' ) do |form| %>
   
-  <%= form.hidden_field :field_id, value: @product_id %>
-  <%= form.hidden_field :total_cost, value: @product_type %>
+  <%= form.hidden_field :product_id, value: @product.id %>
+  <%= form.hidden_field :total_cost, value: @product.price %>
+  <%= form.hidden_field :product_type, value: @product_type %>
 
   <div class="mb-2">
-    <b><u>Valor del lote:</u> $ <%= format_currency(@product_price) %></b>
+    <b><u>Valor del lote:</u> $ <%= format_currency(@product.price) %></b>
   </div>
 
   <div class="form-group row">
@@ -26,19 +26,14 @@
     <div class="form-group col-8 col-ls-6">
       <%= form.select(:client_id, @clients.collect {|c| ["#{c.last_name} #{c.name}", c.id]}, 
                       {:include_blank => "Seleccione comprador"},
-                      class: 'select-2-client-field') %>
+                      class: 'select-2-client-land') %>
       <button id="add-client" class="btn u-btn-teal"> + </button>
       <div class="invalid-feedback client_id"></div>
     </div>
 
   </div>
-  <div id="client-sales">
-    <%= form.fields_for :client_sales do |client_form| %>
-    <% end %>
-  </div>
-  <div class="mb-2 client-list">
-    <!-- <ul class="client-list">  aca se muestran los clientes que van a comprar </ul> -->
-  </div>
+
+  <div class="mb-2 client-list"></div>
 
   <div class="form-group row payment-data" id="payment_detail_1">
     <%= form.label :paid, 'Primer entrega:' , class: 'col-3' %>
