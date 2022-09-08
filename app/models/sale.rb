@@ -19,7 +19,7 @@ class Sale < ApplicationRecord
 	has_many :client_sales
 
 	has_many :field_sales
-	has_many :sale_products, as: :product # vamos a reemplazar field_sale por esta relacion
+	has_many :sale_products
 	
 	has_many :land_fees
 
@@ -35,10 +35,8 @@ class Sale < ApplicationRecord
 	before_create :set_attributes 
 
 	def set_attributes
-		puts "\n\n\n antes de crear la venta -----"
 		self.sale_date = Time.now.strftime("%Y/%m/%d") if self.sale_date.blank? 
 		self.due_date = 10 if self.due_date.blank? 
-		byebug
 	end
 	
 	def calculate_total_paid!
