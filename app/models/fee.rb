@@ -51,5 +51,9 @@ class Fee < ApplicationRecord
   def has_debt?
     self.get_deuda > 0
   end
+
+  def calcular_primer_pago
+    self.update( payment: self.fee_payments.sum(:total) )
+  end
   
 end

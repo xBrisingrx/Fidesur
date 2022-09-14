@@ -78,6 +78,7 @@ class SalesController < ApplicationController
             end
             fee_payment.save!
           end
+          cuota_cero.calcular_primer_pago
         end
 
         # LandFee.create!(due_date: sale.due_date, 
