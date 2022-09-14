@@ -22,7 +22,7 @@
   </ul>
 </div>
 <div>
-  <% if false %>
+  <% if @sale.fees.where(number: 0).count > 0 %>
     <p><strong>Detalle primer entrega:</strong></p>
     <div class="row">
       <table class="table table-sm mx-4">
@@ -36,10 +36,10 @@
           </tr>
         </thead>
         <tbody>
-          <% @sale.sales_payments.each do |payment|%>
+          <% @sale.fees.where(number: 0).first.fee_payments.each do |payment|%>
             <tr>
               <td><%= payment.currency.name %></td>
-              <td><%= format_currency( payment.value ) %></td>
+              <td><%= format_currency( payment.payment ) %></td>
               <td><%= "$#{format_currency( payment.tomado_en ) }" %></td>
               <td><%= "$#{format_currency( payment.value_in_pesos ) }" %></td>
               <td>
