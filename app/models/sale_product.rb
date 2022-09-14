@@ -29,7 +29,7 @@ class SaleProduct < ApplicationRecord
   def update_product_status
     puts "\n\n\n\n ===================== entra al update \n\n\n\n\n"
     case self.product_type
-      when 'land'
+      when 'Land'
         product = Land.find self.product_id
         product.update(status: :bought)
       else 

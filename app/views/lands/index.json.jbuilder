@@ -6,7 +6,7 @@ json.data @lands do |f|
 	json.price "$ #{format_currency(f.price) }"
 	json.is_green_space (f.is_green_space)? 'Si' : 'No'
 	json.status "#{@status[f.status]}"
-	json.bought_date ( f.bought? ) ? f.land_sale.sale.sale_date.strftime('%d-%m-%y') : ''
+	json.bought_date ( f.bought? ) ? f.sale_product.sale.sale_date.strftime('%d-%m-%y') : ''
 	if f.blueprint.attached?
 		json.blueprint "#{link_to "<i class= 'hs-admin-file'></i>".html_safe, f.blueprint, target: '_blank', class: 'btn u-btn-indigo', title: 'Ver plano'}"
 	else
@@ -28,7 +28,7 @@ json.data @lands do |f|
 									<i class='hs-admin-trash' aria-hidden='true'></i></a>"
 	end 
 	if f.bought? 
-		json.actions "#{link_to '<i class="hs-admin-credit-card"></i>'.html_safe, show_land_sale_path(land_id:f.id), 
+		json.actions "#{link_to '<i class="hs-admin-credit-card"></i>'.html_safe, sale_product_detail_path(product_type: 'Land', product_id:f.id), 
       							'class' => 'u-link-v5 g-color-gray-dark-v2 g-color-secondary--hover g-text-underline--none--hover g-ml-12', title: 'Ver cuotas'}"
 	end
 end

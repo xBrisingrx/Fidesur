@@ -74,4 +74,8 @@ class Sale < ApplicationRecord
     end
 	end # generar cuota
 
+	def total_pagado
+		self.fees.where(payed: true).sum(:payment)
+	end
+
 end

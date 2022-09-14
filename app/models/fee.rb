@@ -36,4 +36,20 @@ class Fee < ApplicationRecord
 
   enum pay_status: [:pendiente, :pagado, :pago_parcial]
   
+  def expired?
+    self.due_date.strftime("%F")  < Time.new.strftime("%F") 
+  end
+
+  def apply_arrear?
+    self.expired? && self.sale.apply_arrear
+  end
+
+  def get_deuda
+    LandFee.where(sale_id: self.sale_id).where('number < ?', self.number).where( 'due_date < ?', Time.new.strftime("%F") ).where('owes > 0').sum('owes')
+  end
+
+  def has_debt?
+    self.get_deuda > 0
+  end
+  
 end

@@ -47,7 +47,8 @@
 Rails.application.routes.draw do
   
   resources :land_sale, only: [:index, :new, :create]
-  resources :sale_products, except: :destroy
+  resources :sale_products, except: [:destroy, :show]
+  get 'sale_product/:product_type/:product_id', to: 'sale_products#show', as: 'sale_product_detail'
   resources :land_fees do 
     get 'partial_payment/:land_fee_id', to: 'land_fee_payments#new', as: 'partial_payment'
     post 'partial_payment', to: 'land_fee_payments#create', as: 'register_partial_payment'
@@ -78,6 +79,8 @@ Rails.application.routes.draw do
 
   post 'sales/send_payments', to: 'sales#send_payments'
   get '/ver_todos_los_lotes', to: "field_sale#all_fields", as: 'ver_todos_los_lotes'
+
+  get 'fees/:sale_id', to: 'fees#index'
 
   localized do 
 

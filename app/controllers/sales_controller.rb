@@ -40,9 +40,7 @@ class SalesController < ApplicationController
         due_date: params[:due_date],
         number_of_payments: params[:number_of_payments],
         total_cost: 0 )
-      byebug
       if sale.save! 
-        byebug
         params[:clients].uniq # me aseguro de que no haya ningun id repetido
         params[:clients].each do |client| # Generamos los registros de los clientes que hicieron la compra
           sale.client_sales.create!(client_id: client)
@@ -51,8 +49,8 @@ class SalesController < ApplicationController
         #   field = Field.find(params[:field_id])
         #   field.update!(status: :bought)
         # end
-
-        sale.sale_products.create!(product_type: params[:product_type],product_id: params[:product_id]) # reg venta del producto
+        byebug
+        sale.sale_products.create!(product_type: params[:product_type].capitalize,product_id: params[:product_id]) # reg venta del producto
         
         if params[:num_pays].to_i > 0 # Se ingreso un primer pago
           cuota_cero = sale.fees.create(
