@@ -27,4 +27,80 @@ class FeesController < ApplicationController
       @total_a_pagar = @fee.value + @adeuda
     end
 	end
+
+  def update # Actualizar los valores de una cuota sigifica que se pago esa cuota
+    cuota = Fee.find(params[:id])
+    ActiveRecord::Base.transaction do 
+      # payment es lo que se pago, ese valor viene en calculo_en_pesos
+      cuota.payment = params[:calculo_en_pesos].to_f
+
+      # chequeamos si se le sumo intereses
+      if params[:interest].to_f > 0
+        # discrimino el interes aplicado en la cuota
+        cuota.interest = params[:interest].to_f
+      end
+
+      # Si agregaron algo al ajuste sumamos 
+      if params[:adjust].to_f > 0 
+        cuota.adjust += params[:adjust].to_f
+        cuota.aply_adjust(params[:adjust].to_f)
+      end
+      
+      cuota.comment_adjust = params[:comment_adjust]
+
+      # Calculo el total que se deberia haber pagado
+      # Aca no sumo el valor de cuotas anteriores
+      cuota.total_value = cuota.value + cuota.interest + cuota.adjust 
+
+      # Chequeo si se pago menos de lo que se debia, en caso de que haya sido asi pasa al atributo DEBE
+      if ( cuota.total_value >= cuota.payment )
+        cuota.owes = (cuota.total_value - cuota.payment).round(2)
+      else
+        cuota.owes = 0.0
+      end
+      cuota.pay_date = params[:pay_date]
+      cuota.payed = true
+      cuota.comment = params[:comment]
+
+      # si debe plata el status es pago parcial , sino pago total
+      cuota.pay_status = ( cuota.owes > 0 ) ? :pago_parcial : :pagado
+      # si el valor de la cuota cambia tenemos que actualizar el valor de la venta del lote
+      recalcular_valor_venta = cuota.total_value_changed?
+      if cuota.save!
+        cuota.sale.calculate_total_value! if recalcular_valor_venta
+        # este es el pago de la primer cuota 
+        pago_de_cuota = cuota.fee_payments.new( 
+            pay_date: cuota.pay_date, 
+            payment: params[:payment], 
+            tomado_en: params[:value_in_pesos],
+            total: params[:calculo_en_pesos],
+            pay_name: params[:name_pay],
+            currency_id: params[:currency_id],
+            comment: params[:comment] )
+        if !params[:images].nil?
+          pago_de_cuota.images = params[:images]
+        end
+
+        if pago_de_cuota.save!
+          # Lo abonado es mayor a lo que se debe de la cuota
+          cuota.pago_supera_cuota( cuota.payment - cuota.total_value, cuota.pay_date ) if ( cuota.total_value < cuota.payment )
+          render json: { status: 'success', msg: 'Pago registrado' }, status: 200
+        else
+          render json: { status: 'error', msg: 'No se pudo registrar el pago' }, status: 422
+        end
+      else
+        render json: { status: 'error', msg: 'No se pudo registrar el pago' }, status: 422
+      end
+      # raise 'lands fees/update'
+    end # end transaction
+    rescue => e
+      @response = e.message.split(':')
+      puts @response
+      render json: { status: 'error', msg: 'No se pudo registrar el pago' }, status: 402
+  end
+
+  def details
+    @cuota = Fee.find(params[:id])
+    @title_modal = 'Detalle del pago realizado'
+  end
 end

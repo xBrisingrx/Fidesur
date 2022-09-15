@@ -82,7 +82,12 @@ Rails.application.routes.draw do
 
   get 'fees/:sale_id', to: 'fees#index'
   get 'fees/detail/:id', to: 'fees#show', as: :fee_detail
-  resources :fees, only: [:create, :new, :update]
+  get 'detalle_pagos/:id', to: 'fees#details', as: 'detalle_pagos'
+  resources :fees, only: [:create, :new, :update] do
+    get 'partial_payment/:fee_id', to: 'fee_payments#new', as: 'partial_payment'
+    post 'partial_payment', to: 'fee_payments#create', as: 'register_partial_payment'
+    resources :fee_payments
+  end
 
   localized do 
 

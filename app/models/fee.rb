@@ -12,7 +12,7 @@
 #  number         :integer          not null
 #  owes           :decimal(15, 2)   default(0.0)
 #  pay_date       :date
-#  pay_status     :integer          default(0)
+#  pay_status     :integer          default("pendiente")
 #  payed          :boolean          default(FALSE)
 #  payment        :decimal(15, 2)   default(0.0)
 #  total_value    :decimal(15, 2)   default(0.0)
@@ -62,4 +62,16 @@ class Fee < ApplicationRecord
     self.update( payment: primer_pago , value: primer_pago ,total_value: primer_pago )
   end
   
+  def aply_adjust adjust
+    puts "\n\n\n\n\n ****************5 Aplicamos el ajuste a partir de la cuota #{self.number} \n"
+    cuotas = Fee.where(["sale_id = ? and number > ?", self.sale_id, self.number ])
+    cuotas.each do |cuota|
+      "\n Ajustamos en la cuota #{cuota.number} q tenia de ajuste #{cuota.adjust.to_f} \n"
+      cuota.adjust += adjust
+      cuota.total_value = cuota.value + cuota.interest + cuota.adjust
+      cuota.save
+      "\n Update exitoso #{cuota.adjust.to_f}"
+    end
+  end
+
 end

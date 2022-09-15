@@ -6,6 +6,7 @@
 #  active      :boolean          default(TRUE)
 #  comment     :text(65535)      default("''")
 #  pay_date    :date
+#  pay_name    :string(255)      default("")
 #  payment     :decimal(15, 2)   default(0.0)
 #  tomado_en   :decimal(15, 2)   default(1.0)
 #  total       :decimal(15, 2)   default(0.0)

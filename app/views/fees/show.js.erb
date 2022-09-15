@@ -2,8 +2,8 @@ $("#modal-fidesur").html("<%= j (render 'layouts/modal_xl') %>")
 $("#modal-fidesur").modal('show')
 
 
-fee_data.valor_cuota = parseFloat(<%= @fee.value%>)
-fee_data.total_a_pagar = parseFloat(<%= @fee.value %>)
+fee_data.valor_cuota = parseFloat(<%= @fee.total_value%>)
+fee_data.total_a_pagar = parseFloat(<%= @fee.total_value %>)
 fee_data.ajuste = parseFloat(document.getElementById('fee_adjust').value)
 fee_data.adeuda = parseFloat(<%= @adeuda %>)
 fee_data.reset()
@@ -201,7 +201,7 @@ document.getElementById('submit-form-field-pay-quote').addEventListener('click',
   }
 
   if ( fee_data.form_data.get('pay_date') == ''  ) {
-  	noty_alert('error', 'Debe ingresar una fehca')
+  	noty_alert('error', 'Debe ingresar una fecha')
   	addClassInvalid(document.getElementById('fee_pay_date'))
   	return
   }
@@ -240,12 +240,12 @@ document.getElementById('submit-form-field-pay-quote').addEventListener('click',
   		<tr><td>Detalle: ${fee_data.form_data.get('name_pay')} </td></tr>
   	` 
   }
-	$("#modal-pay-detail").modal('show')
+	$("#modal-pay-confirm").modal('show')
 	
 })
 
 function pay_land_fee(){
-	fetch(`/land_fees/${fee_data.id}`, {
+	fetch(`/fees/${fee_data.id}`, {
       method: 'PATCH',
       headers: {           
         'X-CSRF-Token': document.getElementsByName('csrf-token')[0].content,

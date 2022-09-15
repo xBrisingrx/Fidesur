@@ -22,7 +22,7 @@ json.data @fees do |b|
 											g-font-size-default g-color-white g-rounded-50 '>#{@status[b.pay_status]}</span> "
 	end
 	
-	btn_detalle_pago = link_to "<i class='hs-admin-eye'></i>".html_safe, detalle_pago_cuota_path(b.id), 
+	btn_detalle_pago = link_to "<i class='hs-admin-eye'></i>".html_safe, detalle_pagos_path(b.id), 
 		                   :remote => true, 'data-toggle' =>  'modal', 'data-target' => '#modal-sales', 
 		                    class: ' u-link-v5 g-color-white g-color-gray-dark-v2 g-color-secondary--hover g-text-underline--none--hover', 
 		                    title: 'Detalle del pago de cuota'
@@ -33,7 +33,7 @@ json.data @fees do |b|
                     class: ' u-link-v5 g-color-gray-dark-v2 g-color-secondary--hover g-text-underline--none--hover', title: 'Pagar cuota'}"
 	elsif b.pago_parcial?
 		json.actions "#{btn_detalle_pago}
-                  #{link_to "<i class='hs-admin-money'></i>".html_safe, land_fee_partial_payment_path(b.id),
+                  #{link_to "<i class='hs-admin-money'></i>".html_safe, fee_partial_payment_path(b.id),
                   	:remote => true, 'data-toggle' =>  'modal', 'data-target' => '#modal-sales', 
                   	class: 'ml-4 u-link-v5 g-color-white g-color-gray-dark-v2 g-color-secondary--hover g-text-underline--none--hover', 
                     title: 'Pago parcial' }"
