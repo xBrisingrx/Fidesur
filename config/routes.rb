@@ -81,6 +81,8 @@ Rails.application.routes.draw do
   get '/ver_todos_los_lotes', to: "field_sale#all_fields", as: 'ver_todos_los_lotes'
 
   get 'fees/:sale_id', to: 'fees#index'
+  get 'fees/detail/:id', to: 'fees#show', as: :fee_detail
+  resources :fees, only: [:create, :new, :update]
 
   localized do 
 

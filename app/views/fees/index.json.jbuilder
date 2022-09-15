@@ -28,7 +28,7 @@ json.data @fees do |b|
 		                    title: 'Detalle del pago de cuota'
 
 	if !b.payed?
-		json.actions "#{link_to "<i class='hs-admin-money'></i>".html_safe, land_fee_path(b.id), 
+		json.actions "#{link_to "<i class='hs-admin-money'></i>".html_safe, fee_detail_path(b.id), 
                    :remote => true, 'data-toggle' =>  'modal', 'data-target' => '#modal-sales', 
                     class: ' u-link-v5 g-color-gray-dark-v2 g-color-secondary--hover g-text-underline--none--hover', title: 'Pagar cuota'}"
 	elsif b.pago_parcial?

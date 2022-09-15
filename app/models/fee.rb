@@ -31,6 +31,11 @@
 #
 class Fee < ApplicationRecord 
   # modelo de cuotas
+  # value es el valor de la cuota cuando se creo
+  # total_value es el valor de la cuota sumando ajuste y mora. Este es el valor que se debe pagar de forma total
+  # number es el numero de cuota
+  # payment es lo que se pago 
+  # owes es lo que se adeuda de la cuota, nos ayuda para saber si la cuota se pago entera o de forma parcial
   belongs_to :sale
   has_many :fee_payments
 
@@ -45,7 +50,7 @@ class Fee < ApplicationRecord
   end
 
   def get_deuda
-    LandFee.where(sale_id: self.sale_id).where('number < ?', self.number).where( 'due_date < ?', Time.new.strftime("%F") ).where('owes > 0').sum('owes')
+    Fee.where(sale_id: self.sale_id).where('number < ?', self.number).where( 'due_date < ?', Time.new.strftime("%F") ).where('owes > 0').sum('owes')
   end
 
   def has_debt?
@@ -53,7 +58,8 @@ class Fee < ApplicationRecord
   end
 
   def calcular_primer_pago
-    self.update( payment: self.fee_payments.sum(:total) )
+    primer_pago = self.fee_payments.sum(:total)
+    self.update( payment: primer_pago , value: primer_pago ,total_value: primer_pago )
   end
   
 end

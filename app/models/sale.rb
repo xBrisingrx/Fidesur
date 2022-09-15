@@ -40,14 +40,14 @@ class Sale < ApplicationRecord
 	end
 	
 	def calculate_total_paid!
-		total_paid = self.sales_payments.sum(:value_in_pesos)
-		self.update( paid: total_paid )
+		self.update( paid: self.get_primer_pago )
 	end
 
 	def calculate_total_value!
 		# Se calcula el valor final de la venta, al momento de vender el lote
-		total_value = self.sales_payments.sum(:value_in_pesos) + self.land_fees.sum(:total_value)
-		self.update( total_cost: total_value )
+		# total_value = self.sales_payments.sum(:value_in_pesos) + self.land_fees.sum(:total_value)
+		valor_venta = self.fees.sum(:total_value)
+		self.update( total_cost: valor_venta )
 	end
 
 	def generar_cuotas number_cuota_increase, valor_cuota_aumentada, valor_cuota
@@ -76,6 +76,10 @@ class Sale < ApplicationRecord
 
 	def total_pagado
 		self.fees.where(payed: true).sum(:payment)
+	end
+
+	def get_primer_pago
+		self.fees.where(number: 0).first.payment
 	end
 
 end

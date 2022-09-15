@@ -7,7 +7,7 @@
 
 <input type="hidden" id="sale_id" value="<%= @sale.id %>">
 <div class="row mb-2">
-  <%= render(partial: 'card_pay', locals: { color: 'lightblue-v3', paid: @sale.paid, detail: 'Primer entrega' })%>
+  <%= render(partial: 'card_pay', locals: { color: 'lightblue-v3', paid: @sale.get_primer_pago, detail: 'Primer entrega' })%>
   <%= render(partial: 'card_pay', locals: { color: 'teal-v2', paid: @total_pagado, detail: 'Pagado' })%>
   <%= render(partial: 'card_pay', locals: { color: 'lightred-v2', paid: @total_adeudado, detail: 'Adeuda' })%>
   <%= render(partial: 'card_pay', locals: { color: 'indigo', paid: @product_value, detail: 'Valor del lote' })%>
@@ -41,7 +41,7 @@
               <td><%= payment.currency.name %></td>
               <td><%= format_currency( payment.payment ) %></td>
               <td><%= "$#{format_currency( payment.tomado_en ) }" %></td>
-              <td><%= "$#{format_currency( payment.value_in_pesos ) }" %></td>
+              <td><%= "$#{format_currency( payment.total ) }" %></td>
               <td>
                 <%payment.images.each do |img| %>
                   <%= link_to img, target: '_blank' do %>
@@ -80,13 +80,13 @@
 
 
 <!-- Modal pagar cuota -->
-<div class="modal fade" id="modal-field-sale" role="dialog"
+<div class="modal fade" id="modal-sale-product" role="dialog"
      aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 </div>
 <!-- End modal -->
 
 <!-- Modal detalle de pago -->
-<div class="modal fade" id="modal-pay-detail" role="dialog"
+<div class="modal fade" id="modal-pay-confirm" role="dialog"
      aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 </div>
 <!-- End modal -->
