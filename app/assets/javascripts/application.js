@@ -37,6 +37,7 @@
 //= require land_fee_payments
 //= require lands
 //= require sale_products
+//= require fees
 
 // require_tree .
 
