@@ -174,15 +174,12 @@ function calcular_monto_pagado(){
 	let entrega = 0
 	// recorremos y sumamos las entregas
 	for (let pay of payments) {
-		console.log( pay )
 		let currency_id = pay.querySelector('#currency_id').value
 		if (currency_id == '2' || currency_id == '3' ) {
 			// si este no es null es que es dolar o euro
 			entrega += parseFloat( pay.querySelector('#calculo_en_pesos').value )
-			console.log( entrega, parseFloat( pay.querySelector('#calculo_en_pesos').value) ,currency_id )
 		} else {
 			entrega += parseFloat( pay.querySelector('#paid').value )
-			console.log(entrega, parseFloat( pay.querySelector('#paid').value) ,currency_id)
 		}
 	}
 	if (isNaN(entrega)) {
@@ -385,8 +382,8 @@ document.getElementById('submit-form-field-sale').addEventListener('click', (eve
   .then( response => response.json() )
   .then( response => {
   	if (response.status === 'success') {
-  		fields_table.ajax.reload(null,false)
-	    $("#modal-field").modal('hide')
+  		lands_table.ajax.reload(null,false)
+	    $("#modal-land").modal('hide')
   	}
   	noty_alert(response.status, response.msg)
   } )

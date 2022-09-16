@@ -32,6 +32,7 @@
             <th>Ingresado</th>
             <th>Tomado en</th>
             <th>Total</th>
+            <th>Detalle</th>
             <th>Adjunto</th>
           </tr>
         </thead>
@@ -42,6 +43,7 @@
               <td><%= format_currency( payment.payment ) %></td>
               <td><%= "$#{format_currency( payment.tomado_en ) }" %></td>
               <td><%= "$#{format_currency( payment.total ) }" %></td>
+              <td><%= payment.pay_name %></td>
               <td>
                 <%payment.images.each do |img| %>
                   <%= link_to img, target: '_blank' do %>

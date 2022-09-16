@@ -80,14 +80,17 @@ Rails.application.routes.draw do
   post 'sales/send_payments', to: 'sales#send_payments'
   get '/ver_todos_los_lotes', to: "field_sale#all_fields", as: 'ver_todos_los_lotes'
 
+  # Fees routes
   get 'fees/:sale_id', to: 'fees#index'
   get 'fees/detail/:id', to: 'fees#show', as: :fee_detail
   get 'detalle_pagos/:id', to: 'fees#details', as: 'detalle_pagos'
+  get 'partial_payment/:fee_id', to: 'fee_payments#new', as: 'pago_parcial'
   resources :fees, only: [:create, :new, :update] do
     get 'partial_payment/:fee_id', to: 'fee_payments#new', as: 'partial_payment'
     post 'partial_payment', to: 'fee_payments#create', as: 'register_partial_payment'
     resources :fee_payments
   end
+  # End fees routes 
 
   localized do 
 

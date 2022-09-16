@@ -40,14 +40,11 @@ class FeesController < ApplicationController
         cuota.interest = params[:interest].to_f
       end
 
-      # Si agregaron algo al ajuste sumamos 
-      if params[:adjust].to_f > 0 
-        cuota.adjust += params[:adjust].to_f
-        cuota.aply_adjust(params[:adjust].to_f)
+      if params[:adjust].to_f > 0 # Si agregaron algo al ajuste 
+        cuota.adjust += params[:adjust].to_f # sumamos a esta cuota 
+        cuota.aply_adjust(params[:adjust].to_f) # y las siguientes
       end
-      
       cuota.comment_adjust = params[:comment_adjust]
-
       # Calculo el total que se deberia haber pagado
       # Aca no sumo el valor de cuotas anteriores
       cuota.total_value = cuota.value + cuota.interest + cuota.adjust 
@@ -68,7 +65,7 @@ class FeesController < ApplicationController
       recalcular_valor_venta = cuota.total_value_changed?
       if cuota.save!
         cuota.sale.calculate_total_value! if recalcular_valor_venta
-        # este es el pago de la primer cuota 
+        # este es el primer pago de esta cuota
         pago_de_cuota = cuota.fee_payments.new( 
             pay_date: cuota.pay_date, 
             payment: params[:payment], 

@@ -27,7 +27,6 @@ class SaleProduct < ApplicationRecord
   after_create :update_product_status
 
   def update_product_status
-    puts "\n\n\n\n ===================== entra al update \n\n\n\n\n"
     case self.product_type
       when 'Land'
         product = Land.find self.product_id
@@ -35,7 +34,6 @@ class SaleProduct < ApplicationRecord
       else 
         raise "model sale_product: producto no reconocido"
     end
-    byebug
   end
   
 end

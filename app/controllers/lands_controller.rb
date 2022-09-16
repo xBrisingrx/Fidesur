@@ -34,7 +34,6 @@ class LandsController < ApplicationController
 
     rescue => e
       @response = e.message.split(':')
-      puts "============================= raisaso"
       render json: { @response[0] => @response[1] }, status: 402
   end
 
