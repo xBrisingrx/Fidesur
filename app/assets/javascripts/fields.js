@@ -8,7 +8,7 @@ function modal_disable_field(id) {
 $(document).ready(function(){
   // const apple_id = document.getElementById('apple_id').value 
 	fields_table = $("#fields_table").DataTable({
-    'ajax':`lotes`,
+    'ajax':`fields`,
     'columns': [
     {'data': 'code'},
     {'data': 'measures'},

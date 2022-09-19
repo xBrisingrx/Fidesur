@@ -78,7 +78,12 @@ class Sale < ApplicationRecord
 	end
 
 	def get_primer_pago
-		self.fees.where(number: 0).first.payment
+		first_pay = self.fees.where(number: 0).first
+		if first_pay.nil?
+			0
+		else 
+			first_pay.payment
+		end
 	end
 
 end

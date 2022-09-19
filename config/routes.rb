@@ -107,8 +107,8 @@ Rails.application.routes.draw do
       post '/sectors/disable'
       
       resources :apples do
-        resources :fields
         resources :lands, only: [:index, :new, :create, :edit, :update]
+        resources :fields
       end
       post '/apples/disable'
       post '/fields/disable'

@@ -24,7 +24,7 @@ class SaleProductsController < ApplicationController
     @total_adeudado = @sale.total_cost - @total_pagado
 
     @cant_vencidas = @fees.where( "due_date < ?", Time.new ).where(payed: false).count
-    @cuotas_pagadas =  @fees.where(payed: true).count
+    @cuotas_pagadas =  @fees.where('number != 0').where(payed: true).count
     @total_cuotas = @fees.count
     @status = { 'pendiente' => 'Pendiente', 'pagado' => 'Pagada', 'pago_parcial' => 'Pago parcial'}
 

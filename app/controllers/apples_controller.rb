@@ -4,7 +4,32 @@ class ApplesController < ApplicationController
   # GET /apples or /apples.json
   def index
     @apples = Apple.where( active: true ).includes(:sector)
-  end
+    # ventas = Sale.all 
+    # ventas.each do |venta|
+    #   if venta.sales_payments.count > 0
+    #     cuota_cero = venta.fees.create(
+    #       due_date: venta.sale_date,
+    #       pay_date: venta.sale_date,
+    #       value: 1,
+    #       number:0, 
+    #       payed: true,
+    #       pay_status: :pagado,
+    #       comment: "Primer entrega",
+    #       created_at: venta.created_at, 
+    #       updated_at: venta.updated_at)
+    #     venta.sales_payments.each do |pago|
+    #       cuota_cero.fee_payments.create(
+    #         currency_id: pago.currency_id,
+    #         payment: pago.value,
+    #         tomado_en: pago.tomado_en,
+    #         total: pago.value_in_pesos,
+    #         pay_name: pago.pay_name
+    #       )
+    #       cuota_cero.calcular_primer_pago
+    #     end #each pagos
+    #   end # if ventas.sales_pay > 0
+    # end # each ventas
+  end # index
 
   # GET /apples/1 or /apples/1.json
   def show

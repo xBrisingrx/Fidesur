@@ -3,8 +3,8 @@ es:
     apples: manzanas
     apple: manzana
     sectors: sectores
-    fields: lotes
-    field: lote
+    lands: lotes
+    land: lote
     client: cliente
     clients: clientes
   activerecord:
