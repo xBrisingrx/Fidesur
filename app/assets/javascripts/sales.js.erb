@@ -9,7 +9,20 @@ let sale = {
   cant_payment_files:0,
   currencies: '',
   form: '',
-  client_index: 0
+  entrega: 0,
+  client_index: 0,
+  suma_cuotas_manual: 0,
+  set_cuotas(cantidad_cuotas, nodo_id){
+    cantidad_cuotas++
+    for (let i = 1; i < cantidad_cuotas; i++) {
+       $(`#${nodo_id}`).append(`
+        <div class="form-group row">
+          <label class="col-3">Cuota #${i}</label>
+          <input id="cuota_n_${i}" type="number" value="" required placeholder="Ingresar valor de la cuota..." class="form-control rounded-0 col-3 cuota_n"></input>
+        </div>
+      `)
+    }
+  }
 }
 
 function modal_disable_sale_field(id) {

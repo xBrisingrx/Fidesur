@@ -12,7 +12,7 @@ sale.cuotas = 0
 sale.resto =  <%= @product.price %>;
 sale.cant_payments = 0;
 sale.cant_payment_files = 0;
-sale.form = []
+sale.form = new FormData()
 
 setInputDate("#sale_date")
 
@@ -52,6 +52,16 @@ function get_clients() {
 		compradores.push(lista[i].dataset.id)
 	}
 	return compradores
+}
+
+function get_clients_names() {
+	let names = '<ul>'
+	let lista = document.getElementsByClassName('client-id')
+	for (let i = lista.length - 1; i >= 0; i--) {
+		names += `<li>${lista[i].value}</li>`
+	}
+	names += '</ul>'
+	return names
 }
 
 /*JS payments*/
@@ -171,28 +181,28 @@ function calcular_monto_pagado(){
 	$('#valor_restante').html('')
 	// seleccionamos los pagos
 	const payments = document.getElementsByClassName('payment-data')
-	let entrega = 0
+	sale.entrega = 0
 	// recorremos y sumamos las entregas
 	for (let pay of payments) {
 		let currency_id = pay.querySelector('#currency_id').value
 		if (currency_id == '2' || currency_id == '3' ) {
 			// si este no es null es que es dolar o euro
-			entrega += parseFloat( pay.querySelector('#calculo_en_pesos').value )
+			sale.entrega += parseFloat( pay.querySelector('#calculo_en_pesos').value )
 		} else {
-			entrega += parseFloat( pay.querySelector('#paid').value )
+			sale.entrega += parseFloat( pay.querySelector('#paid').value )
 		}
 	}
-	if (isNaN(entrega)) {
+	if (isNaN(sale.entrega)) {
 		sale.resto = sale.precio
 	} else {
-		sale.resto = sale.precio - entrega
+		sale.resto = sale.precio - sale.entrega
 	}
 
-	if (entrega > 0 &&  !isNaN(entrega) && entrega <= sale.precio) {
+	if (sale.entrega > 0 &&  !isNaN(sale.entrega) && sale.entrega <= sale.precio) {
 		paid.parentElement.classList.remove('u-has-error-v1')
 		$('#valor_restante').append(`A pagar en cuotas: <b>$${sale.resto}</b>`)
 		calular_valor_cuota()
-	} else if ( entrega > sale.precio ) {
+	} else if ( sale.entrega > sale.precio ) {
 		paid.parentElement.classList.add('u-has-error-v1')
 		$('#valor_restante').append(`<p class='text-danger ml-4'> Ingreso un valor mayor al del lote </>`)
 	}
@@ -289,94 +299,70 @@ function calular_valor_cuota() {
 	}
 }
 
+document.getElementById('setear_cuotas').addEventListener('click', function(e){
+	let cantidad_de_cuotas = document.getElementById('number_of_payments')
+	if ( this.checked ) {
+		if (cantidad_de_cuotas.value == '' || cantidad_de_cuotas.value < 1) {
+			cantidad_de_cuotas.classList.add('is-invalid')
+			noty_alert('error', 'Debe ingresar una cantidad de cuotas')
+			return
+		} else {
+			cantidad_de_cuotas.classList.remove('is-invalid')
+		}
+		document.getElementById('cuotas_automaticas').style.display = 'none'
+		sale.set_cuotas( cantidad_de_cuotas.value, 'cuotas_manual' )
+		cantidad_de_cuotas.disabled = true
+	} else {
+		document.getElementById('cuotas_manual').innerHTML = ''
+		cantidad_de_cuotas.classList.remove('is-invalid')
+		cantidad_de_cuotas.disabled = false
+		document.getElementById('cuotas_automaticas').style.display = 'block'
+	}
+})
+
+function get_cuotas_manual() {
+	let cuotas = []
+	let cantidad_de_cuotas = parseInt( document.getElementById('number_of_payments').value ) + 1
+
+	for (let i = 1; i < cantidad_de_cuotas; i++) {
+		let valor_cuota = parseFloat( document.getElementById(`cuota_n_${i}`).value )
+		if (valor_cuota == '' || isNaN(valor_cuota)) {
+			document.getElementById(`cuota_n_${i}`).classList.add('is-invalid')
+			return null
+		} else {
+			document.getElementById(`cuota_n_${i}`).classList.remove('is-invalid')
+		}
+		cuotas.push( valor_cuota )
+	}
+	return cuotas
+}
+
 document.getElementById('apply_arrear').addEventListener('click', function(e){
 	document.getElementById('arrear').required = this.checked
 })
 
-document.getElementById('submit-form-field-sale').addEventListener('click', (event) => {
+document.getElementById('submit-form-land-sale').addEventListener('click', (event) => {
 	event.preventDefault()
-	let form_data = new FormData()
-	form_data.append('clients[]', get_clients())
-	// product
-	form_data.append("product_id", document.getElementById('product_id').value)
-	form_data.append("product_type", document.getElementById('product_type').value)
+	
+	set_form_sale()
 
-	form_data.append("comment", document.getElementById('comment').value)
-	form_data.append("apply_arrear", document.getElementById('apply_arrear').checked)
-	form_data.append("arrear", document.getElementById('arrear').value)
-	form_data.append("due_date", document.getElementById('due_date').value)
-	// form_data.append("paid", parseFloat( document.getElementById('paid').value) )
-	form_data.append("total_cost", document.getElementById('total_cost').value)
-	form_data.append("number_of_payments", document.getElementById('number_of_payments').value )
-  form_data.append("valor_cuota", parseFloat( document.getElementById('valor_cuota').value))
-  form_data.append("sale_date", document.getElementById('sale_date').value )
-  form_data.append("number_cuota_increase", document.getElementById('number_cuota_increase').value )
-  form_data.append("valor_cuota_aumentada", document.getElementById('valor_cuota_aumentada').value )
-
-  all_payments(form_data)
-
-	// validaciones aqui
-	if ($('#fecha_compra').val() === '') {
-		noty_alert( 'error', 'Debe seleccionar una fecha' )
-		// return
-	}
-
-	if (form_data.get('clients[]').length == 0) {
-		noty_alert( 'error', 'No ha seleccionado clientes.' )
+	if ( validaciones_sale_form() ) {
 		return
 	}
 
-	if (form_data.get('number_of_payments') == '' ) {
-		document.getElementById('number_of_payments').parentElement.classList.add('u-has-error-v1')
-		$('#msg_number_of_payment').html('')
-		$('#msg_number_of_payment').append(`<p class='text-danger ml-4'> Debe ingresar las cuotas </>`)
-		return
-	} else {
-		document.getElementById('number_of_payments').parentElement.classList.remove('u-has-error-v1')
-		$('#msg_number_of_payment').html('')
-	}
+	$("#modal-land-sale-confirm").html("<%= j (render 'modal_confirm') %>")
+	populate_land_sale_confirm()
+	$("#modal-land-sale-confirm").modal('show')
+	
+})
 
-	if ( form_data.get("number_cuota_increase") > 0 ) {
-		if ( form_data.get("valor_cuota_aumentada") == '' ) {
-			noty_alert( 'error', 'Debe ingresar el valor aumentado de la cuota.' )
-			return
-		}
-		if ( parseInt( form_data.get("number_cuota_increase") ) > parseInt( form_data.get('number_of_payments') ) ) {
-			document.getElementById('number_cuota_increase').classList.add('u-has-error-v1')
-			noty_alert( 'error', 'Cuota de aumento es mayor a la cantidad de cuotas' )
-			return
-		} else 
-			document.getElementById('number_cuota_increase').classList.remove('u-has-error-v1')
-	}
-
-	if ( form_data.get("number_cuota_increase") == '' && form_data.get("valor_cuota_aumentada") > 0 ) {
-		noty_alert( 'error', 'Debe ingresar a partir de que cuota aumenta el valor.' )
-		return
-	}
-
-	// if ( parseInt(form_data.get("number_cuota_increase")) > 0 && (  ) ) {
-	// 	noty_alert( 'error', 'Cuota de aumento es mayor a las cuotas.' )
-	// 	console.log(  parseInt(form_data.get("number_cuota_increase")) + 8  ,  form_data.get('number_of_payments')  )
-	// 	console.warn( form_data.get("number_cuota_increase") > form_data.get('number_of_payments') )
-	// 	return
-	// }
-
-	if (document.getElementById('apply_arrear').checked && document.getElementById('arrear').value == '') {
-		noty_alert('error', 'Debe ingresar % de mora')
-		return
-	}
-
-	if ( ( document.getElementsByClassName('payment-data').length != form_data.get("num_pays") ) && document.getElementsByClassName('payment-data').length > 1 ) {
-		noty_alert('error', 'Datos invalidos en primer pago')
-		return
-	}
-
+function send_sale(){
 	fetch('/sales/', {
       method: 'POST',
       headers: {           
         'X-CSRF-Token': document.getElementsByName('csrf-token')[0].content,
       },
-      body: form_data
+      body: sale.form
     }
   )
   .then( response => response.json() )
@@ -388,4 +374,128 @@ document.getElementById('submit-form-field-sale').addEventListener('click', (eve
   	noty_alert(response.status, response.msg)
   } )
   .catch( error => noty_alert('error', 'Ocurrio un error, no se pudo registrar la venta') )
-})
+}
+
+function set_form_sale() {
+	// let form_data = new FormData()
+	sale.form.append('clients[]', get_clients())
+	// product
+	sale.form.append("product_id", document.getElementById('product_id').value)
+	sale.form.append("product_type", document.getElementById('product_type').value)
+
+	sale.form.append("comment", document.getElementById('comment').value)
+	sale.form.append("apply_arrear", document.getElementById('apply_arrear').checked)
+	sale.form.append("arrear", document.getElementById('arrear').value)
+	sale.form.append("due_date", document.getElementById('due_date').value)
+	// sale.form.append("paid", parseFloat( document.getElementById('paid').value) )
+	sale.form.append("total_cost", document.getElementById('total_cost').value)
+	sale.form.append("sale_date", document.getElementById('sale_date').value )
+	sale.form.append("number_of_payments", document.getElementById('number_of_payments').value )
+	sale.form.append("setear_cuotas_manual", document.getElementById('setear_cuotas').checked )
+
+	if ( sale.form.get('setear_cuotas_manual') == 'true' ) {
+  	sale.form.append("valores_cuota[]", get_cuotas_manual() )
+	} else {
+		sale.form.append("valor_cuota", parseFloat( document.getElementById('valor_cuota').value))
+	  sale.form.append("number_cuota_increase", document.getElementById('number_cuota_increase').value )
+	  sale.form.append("valor_cuota_aumentada", document.getElementById('valor_cuota_aumentada').value )
+	}
+
+  all_payments(sale.form)
+}
+
+function validaciones_sale_form() {
+
+	// validaciones aqui
+	if ($('#fecha_compra').val() === '') {
+		noty_alert( 'error', 'Debe seleccionar una fecha' )
+		// return
+	}
+
+	if (sale.form.get('clients[]').length == 0) {
+		noty_alert( 'error', 'No ha seleccionado clientes.' )
+		return false
+	}
+
+	if (sale.form.get('number_of_payments') == '' ) {
+		document.getElementById('number_of_payments').parentElement.classList.add('u-has-error-v1')
+		$('#msg_number_of_payment').html('')
+		$('#msg_number_of_payment').append(`<p class='text-danger ml-4'> Debe ingresar las cuotas </>`)
+		return false
+	} else {
+		document.getElementById('number_of_payments').parentElement.classList.remove('u-has-error-v1')
+		$('#msg_number_of_payment').html('')
+	}
+
+	if ( sale.form.get('setear_cuotas_manual') == 'true' ) {
+		if ( sale.form.get("valores_cuota[]") == 'null' ) {
+			noty_alert('error', 'Debe ingresar el valor válido a cada cuota')
+			return false
+		}
+	} else {
+		// validaciones cuotas manual
+		if ( sale.form.get("number_cuota_increase") > 0 ) {
+			if ( sale.form.get("valor_cuota_aumentada") == '' ) {
+				noty_alert( 'error', 'Debe ingresar el valor aumentado de la cuota.' )
+				return false
+			}
+			if ( parseInt( sale.form.get("number_cuota_increase") ) > parseInt( sale.form.get('number_of_payments') ) ) {
+				document.getElementById('number_cuota_increase').classList.add('u-has-error-v1')
+				noty_alert( 'error', 'Cuota de aumento es mayor a la cantidad de cuotas' )
+				return false
+			} else 
+				document.getElementById('number_cuota_increase').classList.remove('u-has-error-v1')
+		}
+
+		if ( sale.form.get("number_cuota_increase") == '' && sale.form.get("valor_cuota_aumentada") > 0 ) {
+			noty_alert( 'error', 'Debe ingresar a partir de que cuota aumenta el valor.' )
+			return false
+		}
+
+		if (document.getElementById('apply_arrear').checked && document.getElementById('arrear').value == '') {
+			noty_alert('error', 'Debe ingresar % de mora')
+			return false
+		}
+
+		if ( ( document.getElementsByClassName('payment-data').length != sale.form.get("num_pays") ) && document.getElementsByClassName('payment-data').length > 1 ) {
+			noty_alert('error', 'Datos invalidos en primer pago', sale.form.get("num_pays"))
+			return false
+		}
+	}
+
+	return true
+}
+
+function populate_land_sale_confirm(){
+	populate_land_sale_data('Valor del lote', sale.precio)
+	populate_land_sale_data('Fecha de la compra', sale.form.get("sale_date"))
+	populate_land_sale_data('Compradores', get_clients_names() )
+	populate_land_sale_data('Primer entrega', `$${sale.entrega}` )
+	populate_land_sale_data('Cuotas', sale.form.get("number_of_payments") )
+	populate_land_sale_data('Suma valor cuotas', suma_cuotas_sale_land() )
+}
+
+
+function populate_land_sale_data(name, info){
+	const tbody = document.getElementById('sale-data')
+	tbody.innerHTML += `
+		<tr>
+			<td>${name}</td>
+			<td>${info}</td>
+		</tr>
+	`
+}
+
+function suma_cuotas_sale_land(){
+	let suma = 0
+	console.log(sale.form.get('setear_cuotas_manual'))
+	if ( sale.form.get('setear_cuotas_manual') == 'true' ) {
+		let cuotas = document.getElementsByClassName('cuota_n')
+		for (let cuota of cuotas) {
+			suma += parseFloat(cuota.value)
+		}
+	} else {
+		suma = 230890
+	}
+	return suma
+}

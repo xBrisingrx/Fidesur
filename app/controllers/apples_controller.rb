@@ -4,6 +4,17 @@ class ApplesController < ApplicationController
   # GET /apples or /apples.json
   def index
     @apples = Apple.where( active: true ).includes(:sector)
+  end # index
+
+  # GET /apples/1 or /apples/1.json
+  def show
+  end
+
+  # GET /apples/new
+  def new
+    @title_modal = "Agregar manzana"
+    @sectors = Sector.where(active: :true)
+    @apple = Apple.new
     # ventas = Sale.all 
     # ventas.each do |venta|
     #   if venta.sales_payments.count > 0
@@ -17,6 +28,7 @@ class ApplesController < ApplicationController
     #       comment: "Primer entrega",
     #       created_at: venta.created_at, 
     #       updated_at: venta.updated_at)
+
     #     venta.sales_payments.each do |pago|
     #       cuota_cero.fee_payments.create(
     #         currency_id: pago.currency_id,
@@ -29,17 +41,6 @@ class ApplesController < ApplicationController
     #     end #each pagos
     #   end # if ventas.sales_pay > 0
     # end # each ventas
-  end # index
-
-  # GET /apples/1 or /apples/1.json
-  def show
-  end
-
-  # GET /apples/new
-  def new
-    @title_modal = "Agregar manzana"
-    @sectors = Sector.where(active: :true)
-    @apple = Apple.new
   end
 
   # GET /apples/1/edit

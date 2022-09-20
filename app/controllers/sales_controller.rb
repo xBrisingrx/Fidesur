@@ -32,6 +32,7 @@ class SalesController < ApplicationController
       return render json: {status: 'error', msg: 'No se han seleccionado clientes'}, status: 422
     end
     ActiveRecord::Base.transaction do 
+      raise 'lalala'
       sale = Sale.new(
         apply_arrear: params[:apply_arrear],
         arrear: params[:arrear],
