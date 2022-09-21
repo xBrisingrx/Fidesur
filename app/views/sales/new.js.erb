@@ -12,7 +12,7 @@ sale.cuotas = 0
 sale.resto =  <%= @product.price %>;
 sale.cant_payments = 0;
 sale.cant_payment_files = 0;
-sale.form = new FormData()
+sale.entrega = 0;
 
 setInputDate("#sale_date")
 
@@ -347,13 +347,10 @@ document.getElementById('submit-form-land-sale').addEventListener('click', (even
 	set_form_sale()
 
 	if ( validaciones_sale_form() ) {
-		return
+		$("#modal-land-sale-confirm").html("<%= j (render 'modal_confirm') %>")
+		populate_land_sale_confirm()
+		$("#modal-land-sale-confirm").modal('show')
 	}
-
-	$("#modal-land-sale-confirm").html("<%= j (render 'modal_confirm') %>")
-	populate_land_sale_confirm()
-	$("#modal-land-sale-confirm").modal('show')
-	
 })
 
 function send_sale(){
@@ -370,6 +367,7 @@ function send_sale(){
   	if (response.status === 'success') {
   		lands_table.ajax.reload(null,false)
 	    $("#modal-land").modal('hide')
+	    $("#modal-land-sale-confirm").modal('hide')
   	}
   	noty_alert(response.status, response.msg)
   } )
@@ -377,7 +375,7 @@ function send_sale(){
 }
 
 function set_form_sale() {
-	// let form_data = new FormData()
+	sale.form = new FormData()
 	sale.form.append('clients[]', get_clients())
 	// product
 	sale.form.append("product_id", document.getElementById('product_id').value)
@@ -391,8 +389,7 @@ function set_form_sale() {
 	sale.form.append("total_cost", document.getElementById('total_cost').value)
 	sale.form.append("sale_date", document.getElementById('sale_date').value )
 	sale.form.append("number_of_payments", document.getElementById('number_of_payments').value )
-	sale.form.append("setear_cuotas_manual", document.getElementById('setear_cuotas').checked )
-
+	sale.form.append("setear_cuotas_manual", document.getElementById('setear_cuotas').checked)
 	if ( sale.form.get('setear_cuotas_manual') == 'true' ) {
   	sale.form.append("valores_cuota[]", get_cuotas_manual() )
 	} else {
@@ -467,12 +464,12 @@ function validaciones_sale_form() {
 }
 
 function populate_land_sale_confirm(){
-	populate_land_sale_data('Valor del lote', sale.precio)
-	populate_land_sale_data('Fecha de la compra', sale.form.get("sale_date"))
+	populate_land_sale_data('Valor del lote', `$${numberFormat.format(sale.precio)}`)
+	populate_land_sale_data('Fecha de la compra', format_date(sale.form.get("sale_date")))
 	populate_land_sale_data('Compradores', get_clients_names() )
-	populate_land_sale_data('Primer entrega', `$${sale.entrega}` )
+	populate_land_sale_data('Primer entrega', `$${numberFormat.format(sale.entrega)}` )
 	populate_land_sale_data('Cuotas', sale.form.get("number_of_payments") )
-	populate_land_sale_data('Suma valor cuotas', suma_cuotas_sale_land() )
+	populate_land_sale_data('A pagar en cuotas', `$${numberFormat.format(suma_cuotas_sale_land()) }` )
 }
 
 
@@ -488,14 +485,18 @@ function populate_land_sale_data(name, info){
 
 function suma_cuotas_sale_land(){
 	let suma = 0
-	console.log(sale.form.get('setear_cuotas_manual'))
 	if ( sale.form.get('setear_cuotas_manual') == 'true' ) {
 		let cuotas = document.getElementsByClassName('cuota_n')
 		for (let cuota of cuotas) {
 			suma += parseFloat(cuota.value)
 		}
 	} else {
-		suma = 230890
+		if ( (sale.form.get('number_cuota_increase') > 0) && (sale.form.get('valor_cuota_aumentada') > 0) ) {
+			suma = (sale.form.get('number_cuota_increase') - 1) * sale.form.get('valor_cuota')
+			suma += ( sale.form.get('number_of_payments') - sale.form.get('number_cuota_increase') + 1 ) * sale.form.get('valor_cuota_aumentada')
+		} else {
+			suma = sale.form.get('number_of_payments') * sale.form.get('valor_cuota')
+		}
 	}
 	return suma
 }

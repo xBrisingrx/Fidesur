@@ -73,6 +73,25 @@ class Sale < ApplicationRecord
     end
 	end # generar cuota
 
+	def generar_cuotas_manual valores_cuotas
+		due_date = Time.new(self.sale_date.year, self.sale_date.month, self.due_date)
+		i = 0
+		myArray = valores_cuotas[0].split(',')
+		myArray.each do |valor|
+			i += 1
+			due_date += 1.month
+			self.fees.create!(
+      	due_date: due_date, 
+        value: valor.to_f, 
+        number: i, 
+        owes: valor.to_f, 
+        total_value: valor.to_f
+      )
+      byebug
+      puts "\n\n\n #{valor} \n\n\n"
+		end
+	end
+
 	def total_pagado
 		self.fees.where(payed: true).sum(:payment)
 	end

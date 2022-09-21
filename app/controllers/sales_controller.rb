@@ -32,7 +32,6 @@ class SalesController < ApplicationController
       return render json: {status: 'error', msg: 'No se han seleccionado clientes'}, status: 422
     end
     ActiveRecord::Base.transaction do 
-      raise 'lalala'
       sale = Sale.new(
         apply_arrear: params[:apply_arrear],
         arrear: params[:arrear],
@@ -84,8 +83,12 @@ class SalesController < ApplicationController
 
         # Fecha de vencimiento si venciera ESTE mes, en base a eso saco las siguientes fechas de vencimiento
         due_date = Time.new(today.year, today.month, sale.due_date.to_i)
-
-        sale.generar_cuotas( params[:number_cuota_increase].to_i, params[:valor_cuota_aumentada].to_f, params[:valor_cuota].to_f )
+        if params[:setear_cuotas_manual] == "true"
+           sale.generar_cuotas_manual( params[:valores_cuota] )
+        else
+          sale.generar_cuotas( params[:number_cuota_increase].to_i, params[:valor_cuota_aumentada].to_f, params[:valor_cuota].to_f )
+        end
+        
         sale.calculate_total_value!
         render json: {status: 'success', msg: 'Venta exitosa'}, status: :ok
       else
