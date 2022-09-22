@@ -93,7 +93,7 @@ class SalesController < ApplicationController
         render json: {status: 'success', msg: 'Venta exitosa'}, status: :ok
       else
         render json: {status: 'errors', msg: 'No se pudo registrar la venta'}, status: :unprocessable_entity
-      end #end if
+      end #end ifcd 
     end # transaction
     rescue => e
       puts "Excepcion => #{e.message}"

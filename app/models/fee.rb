@@ -37,7 +37,7 @@ class Fee < ApplicationRecord
   # payment es lo que se pago 
   # owes es lo que se adeuda de la cuota, nos ayuda para saber si la cuota se pago entera o de forma parcial
   belongs_to :sale
-  has_many :fee_payments
+  has_many :fee_payments, dependent: :destroy
 
   enum pay_status: [:pendiente, :pagado, :pago_parcial]
   

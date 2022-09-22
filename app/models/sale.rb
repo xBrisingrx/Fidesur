@@ -16,16 +16,16 @@
 #  updated_at         :datetime         not null
 #
 class Sale < ApplicationRecord
-	has_many :client_sales
+	has_many :client_sales, dependent: :destroy
 
-	has_many :field_sales
-	has_many :sale_products
+	has_many :field_sales, dependent: :destroy
+	has_many :sale_products, dependent: :destroy
 	
 	has_many :land_fees
 
-	has_many :fees #esto seria el reemplazo de land fees
+	has_many :fees, dependent: :destroy  #esto seria el reemplazo de land fees
 
-	has_many :sales_payments
+	has_many :sales_payments, dependent: :destroy
 
 	has_many :clients, through: :client_sales
 	has_many :fields, through: :field_sales

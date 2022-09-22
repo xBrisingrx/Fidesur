@@ -25,12 +25,23 @@ class SaleProduct < ApplicationRecord
   belongs_to :product, polymorphic: true
 
   after_create :update_product_status
+  after_destroy :free_product
 
   def update_product_status
     case self.product_type
       when 'Land'
         product = Land.find self.product_id
         product.update(status: :bought)
+      else 
+        raise "model sale_product: producto no reconocido"
+    end
+  end
+
+  def free_product
+    case self.product_type
+      when 'Land'
+        product = Land.find self.product_id
+        product.update(status: :available)
       else 
         raise "model sale_product: producto no reconocido"
     end
