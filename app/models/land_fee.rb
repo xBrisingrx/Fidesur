@@ -37,7 +37,7 @@ class LandFee < ApplicationRecord
 	# owes es lo que se adeuda de la cuota cuando se hace un pago parcial
 	
 	belongs_to :sale
-	has_many :land_fee_payments
+	has_many :land_fee_payments, dependent: :destroy
 
 	#  hay que chequear este dato
 	# validates :owes, numericality: { greater_than_or_equal_to: 0,  message: 'Lo adeudado no puede ser menor a cero' }, on: :update
