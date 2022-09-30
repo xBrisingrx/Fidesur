@@ -1,0 +1,103 @@
+<%= form_with(model: project, id: "form-project",
+  class: 'needs-validation g-brd-around g-brd-gray-light-v4 g-pa-10 g-mb-10') do |form| %>
+  
+  <div class="form-group row">
+    <div class="col-2">
+      <%= form.label :number, "Número:" %>
+    </div>
+    <%= form.number_field :number,class: 'form-control rounded-0 col-4 col-md-2' %>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-2">
+      <%= form.label :project_type_id, 'Proveedor/es' %>
+    </div>
+    <div class="form-group col-6">
+      <%= form.select(:project_type_id, @project_type.collect {|p| [p.name, p.id]}, 
+                      {:include_blank => "Seleccione tipo"},
+                      class: 'select-2-project-type', 
+                      required: true) %>
+      <div class="invalid-feedback project_type_id"></div>
+    </div>
+
+  </div>
+
+  <div class="form-group row">
+    <div class="col-2">
+      <%= form.label :name, "Nombre:" %>
+    </div>
+    <%= form.text_field :name,class: 'form-control rounded-0 col-4 col-md-2' %>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-2">
+      <%= form.label :tecnical_direction, "Dirección técnica:" %>
+    </div>
+    <%= form.text_field :tecnical_direction,class: 'form-control rounded-0 col-4 col-md-2' %>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-2">
+      <%= form.label :price, 'Precio:'%>
+    </div>
+    <%= form.number_field :price, class: 'form-control form-control-md rounded-0 col-4 col-md-2', step:'0.01' %>
+    <div class="invalid-feedback field_price"></div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-2">
+      <%= form.label :provider_id, 'Proveedor/es' %>
+    </div>
+    <div class="form-group col-6">
+      <%= form.select(:provider_id, @providers.collect {|p| [p.name, p.id]}, 
+                      {:include_blank => "Seleccione proveedor"},
+                      class: 'select-2-project-provider') %>
+      <button id="add-provider" class="btn u-btn-teal" onclick="project.add_provider()"> + </button>
+      <div class="invalid-feedback provider_id"></div>
+    </div>
+
+  </div>
+  <div class="provider-list"></div>
+
+  <div class="form-group row">
+    <div class="col-2">
+      <%= form.label :material_id, 'Materiales' %>
+    </div>
+    <div class="col-2">
+      <%= form.select(:material_id, @materials.collect {|p| [p.name, p.id]}, 
+                      {:include_blank => "Seleccione material"},
+                      class: 'select-2-project-material') %>
+      <div class="invalid-feedback material_id"></div>
+    </div>
+    <div class="col-2">
+      <input type="number" placeholder="Unidades" id="material_units" class='form-control rounded-0 '>
+    </div>
+    <div class="col-2">
+      <input type="number" placeholder="Valor por unidad" id="material_price" class='form-control rounded-0'>
+    </div>
+    <div class="col-2">
+      <button id="add-material" class="btn u-btn-teal" onclick="project.add_material()"> + </button>
+    </div>
+
+  </div>
+  <table class="table table-sm mx-auto">
+    <thead class="thead-dark">
+      <tr>
+        <th>Material</th>
+        <th>Unidades</th>
+        <th>Precio unitario</th>
+        <th>Total</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody id="material-list" class="project-material-body">
+      
+    </tbody>
+  </table>
+
+
+  <div class="mt-4">
+    <button type="button" class="btn u-btn-teal mr-2" onclick="project.submit()"> Guatdar </button>
+    <%= link_to "Cancelar", projects_path, class:"btn u-btn-red"%>
+  </div>
+<% end %>

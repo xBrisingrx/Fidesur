@@ -46,6 +46,9 @@
 
 Rails.application.routes.draw do
   
+  resources :projects
+  resources :project_types
+  resources :materials
   resources :providers
   post '/providers/disable'
   resources :land_sale, only: [:index, :new, :create]

@@ -39,6 +39,7 @@
 //= require sale_products
 //= require fees
 //= require providers
+//= require projects
 
 // require_tree .
 
