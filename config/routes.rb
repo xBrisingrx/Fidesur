@@ -72,7 +72,8 @@ Rails.application.routes.draw do
 
   get 'sales/new/:product_type/:product_id', to: 'sales#new', as: 'new_sale'
   post 'sales', to: 'sales#create'
-  get 'detalle_venta_lote/:field_id', to: 'field_sale#index', as: 'show_field_sale'
+  # get 'detalle_venta_lote/:field_id', to: 'field_sale#index', as: 'show_field_sale'
+  get 'detalle_venta_lote/:product_id', to: 'sale_products#index', as: 'show_land_sale'
   get 'get_totales_cuota/:field_id', to: 'field_sale#get_totales_cuota', as: 'get_totales_cuota'
   get 'start_field_sale/:field_id', to: 'sales#start_field_sale', as: 'start_field_sale'
   get 'pay_sale/:data', to: 'sales#pay', as: 'pay_land'
@@ -80,7 +81,7 @@ Rails.application.routes.draw do
   # get 'lotes_cliente/:client_id', to: 'sales#lotes_cliente', as: 'lotes_cliente'
 
   post 'sales/send_payments', to: 'sales#send_payments'
-  get '/ver_todos_los_lotes', to: "field_sale#all_fields", as: 'ver_todos_los_lotes'
+  get '/ver_todos_los_lotes', to: "sale_products#all_lands", as: 'ver_todos_los_lotes'
 
   # Fees routes
   get 'fees/:sale_id', to: 'fees#index'

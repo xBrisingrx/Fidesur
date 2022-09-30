@@ -83,7 +83,7 @@ document.getElementById('currency_id').addEventListener('change', function(e) {
 	nodo.querySelector('#fee_name_pay').value = ''
 	value_in_pesos.style.display = 'none'
 	calculo_en_pesos.style.display = 'none'
-	nodo.querySelector('#fee_name_pay').style.display = 'none'
+	// nodo.querySelector('#fee_name_pay').style.display = 'none'
 	let entrega = parseInt(e.target.value)
 	if (entrega == 2) {
 		value_in_pesos.placeholder = "1 US$ en $"
@@ -96,7 +96,7 @@ document.getElementById('currency_id').addEventListener('change', function(e) {
 		calculo_en_pesos.style.display = 'block'
 	}
 	if (entrega > 3) {
-		nodo.querySelector('#fee_name_pay').style.display = 'block'
+		// nodo.querySelector('#fee_name_pay').style.display = 'block'
 	}
 })
 

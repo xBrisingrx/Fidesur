@@ -92,6 +92,10 @@ class SaleProductsController < ApplicationController
     end
   end
 
+  def all_lands
+    @lands = SaleProduct.where( active: true, product_type: 'Land' )
+  end
+
   private
     def set_sale_product
       @sale_product = SaleProduct.find(params[:id])

@@ -1,0 +1,27 @@
+<h1> Lotes vendidos </h1>
+
+<table class="table hover dt-responsive w-100" id="all_lands">
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>Manzana</th>
+          <th>Lote</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @lands.each do |land|%>
+          <tr>
+            <td>
+              <ul>
+                <% land.sale.clients.each do |client| %>
+                  <li><%= "#{client.fullname} - #{client.dni}" %></li>
+                <% end %>
+              </ul>
+            </td>
+            <td><%= land.product.apple.code %></td>
+            <td><%= land.product.code %> <%= link_to '<i class="icon-real-estate-044 u-line-icon-pro"></i>'.html_safe, sale_product_detail_path(product_type: 'Land', product_id:land.product_id) ,
+                          class: 'u-link-v5 g-color-gray-light-v10 g-color-secondary--hover g-text-underline--none--hover g-ml-12', title: 'Ir a detalle de venta'  %></td>
+          </tr>
+        <%end%>
+      </tbody>  
+    </table>

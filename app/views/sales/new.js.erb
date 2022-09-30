@@ -2,7 +2,7 @@ $("#modal-land").html("<%= j (render 'layouts/modal_xl') %>")
 $('.select-2-client-land').select2({ width: '80%',theme: "bootstrap4" })
 
 document.getElementById('value_in_pesos').style.display = 'none'
-document.getElementById('name_pay').style.display = 'none'
+// document.getElementById('name_pay').style.display = 'none'
 document.getElementById('calculo_en_pesos').style.display = 'none'
 
 $("#modal-land").modal('show')
@@ -76,8 +76,7 @@ document.getElementById('add-payment').addEventListener('click', (e) => {
 	}
 
 	$('#payment-list').append(`
-		<div class="row mt-2 payment-data" id="payment_detail_${cant}">
-			<label class="col-3">Entrega: </label>
+		<div class="row mt-2 payment-data ml-4" id="payment_detail_${cant}">
 			<select name="currency_id" id="currency_id" class="col-1 mr-2 form-control rounded-0 currency" onchange="cambio_moneda()" >
 	      <option value="1">$</option>
 	      <option value="2">USD</option>
@@ -89,7 +88,7 @@ document.getElementById('add-payment').addEventListener('click', (e) => {
 	    <input type="number" step='0.01' value="" class="form-control rounded-0 col-2 " id='paid' name='paid' onchange="calculo_de_entrega()"></input>
 	    <input type="number" step='0.01' value="" class="form-control rounded-0 col-2 ml-2" id='value_in_pesos' name='value_in_pesos' style="display:none" onchange="calculo_de_entrega()"></input>
 	    <input type="text" value="" class="form-control rounded-0 col-2 ml-2" id="calculo_en_pesos" name="calculo_en_pesos" style="display:none" disabled></input>
-	    <input type="text" value="" class="form-control rounded-0 col-2 ml-2" id='name_pay' name='name_pay' style="display:none" placeholder='Detalle entrega...'></input>
+	    <input type="text" value="" class="form-control rounded-0 col-2 ml-2" id='name_pay' name='name_pay' placeholder='Detalle entrega...'></input>
 	    <label class="u-file-attach-v2 g-color-gray-dark-v5 mb-0 ml-2">
 	      <input id="fileAttachment" name="file-attachment[]" type="file" multiple>
 	      <i class="icon-cloud-upload g-font-size-16 g-pos-rel g-top-2 g-mr-5"></i>
@@ -115,7 +114,7 @@ function cambio_moneda(){
 	nodo.querySelector('#name_pay').value = ''
 	value_in_pesos.style.display = 'none'
 	calculo_en_pesos.style.display = 'none'
-	nodo.querySelector('#name_pay').style.display = 'none'
+	// nodo.querySelector('#name_pay').style.display = 'none'
 	let entrega = parseInt(event.target.value)
 	switch (entrega) {
 		case 1:
@@ -137,11 +136,11 @@ function cambio_moneda(){
 			calcular_monto_pagado()
 		break;
 		case 5:
-			nodo.querySelector('#name_pay').style.display = 'block'
+			// nodo.querySelector('#name_pay').style.display = 'block'
 			calcular_monto_pagado()
 			break;
 		case 6:
-			nodo.querySelector('#name_pay').style.display = 'block'
+			// nodo.querySelector('#name_pay').style.display = 'block'
 			calcular_monto_pagado()
 			break;
 		default:
