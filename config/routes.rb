@@ -46,6 +46,8 @@
 
 Rails.application.routes.draw do
   
+  resources :providers
+  post '/providers/disable'
   resources :land_sale, only: [:index, :new, :create]
   resources :sale_products, except: [:destroy, :show]
   get 'sale_product/:product_type/:product_id', to: 'sale_products#show', as: 'sale_product_detail'

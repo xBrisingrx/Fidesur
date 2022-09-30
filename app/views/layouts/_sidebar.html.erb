@@ -34,6 +34,7 @@
                 <%= link_to '<span class="d-flex align-self-center g-mr-15 g-mt-minus-1"> <i class="hs-admin-widgetized"></i> </span>
                   <span class="media-body align-self-center">Lotes</span>'.html_safe, ver_todos_los_lotes_path, class:"media u-side-nav--second-level-menu-link g-px-15 g-py-12 active" %>
               </li>
+              
               <!-- End Dashboards v2 -->
 
               <!-- Dashboards v3 -->
@@ -65,6 +66,11 @@
           <li class="u-sidebar-navigation-v1-menu-item u-side-nav--top-level-menu-item">
             <%= link_to '<span class="d-flex align-self-center g-font-size-18 g-mr-18"><i class="hs-admin-user"></i></span><span class="media-body align-self-center">Clientes</span>'.html_safe, clients_path, 
                 class: "media u-side-nav--top-level-menu-link u-side-nav--hide-on-hidden g-px-15 g-py-12 active"%>
+          </li>
+          <li class="u-sidebar-navigation-v1-menu-item u-side-nav--top-level-menu-item">
+                <%= link_to '<span class="d-flex align-self-center g-mr-15 g-mt-minus-1"> <i class="fa fa-handshake-o"></i> </span>
+                  <span class="media-body align-self-center">Proveedores</span>'.html_safe, providers_path, 
+                  class:"media u-side-nav--top-level-menu-link u-side-nav--hide-on-hidden g-px-15 g-py-12" %>
           </li>
           <!-- End Clientes -->
         </ul>

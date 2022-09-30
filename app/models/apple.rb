@@ -27,5 +27,7 @@ class Apple < ApplicationRecord
   has_many :lands
   has_one_attached :blueprint
   
-  validates :code, uniqueness: { case_sensitive: false, message: "Ya existe una manzana con esta denominación" }
+  validates :code, presence: true,
+    uniqueness: { case_sensitive: false, message: "Ya existe una manzana con esta denominación" }
+
 end
