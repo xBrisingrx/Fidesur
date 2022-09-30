@@ -21,7 +21,7 @@ class Sale < ApplicationRecord
 	has_many :field_sales, dependent: :destroy
 	has_many :sale_products, dependent: :destroy
 	
-	has_many :land_fees
+	has_many :land_fees, dependent: :destroy
 
 	has_many :fees, dependent: :destroy  #esto seria el reemplazo de land fees
 
