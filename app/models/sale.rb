@@ -87,8 +87,6 @@ class Sale < ApplicationRecord
         owes: valor.to_f, 
         total_value: valor.to_f
       )
-      byebug
-      puts "\n\n\n #{valor} \n\n\n"
 		end
 	end
 
