@@ -40,7 +40,7 @@
     <div class="col-2">
       <%= form.label :price, 'Precio:'%>
     </div>
-    <%= form.number_field :price, class: 'form-control form-control-md rounded-0 col-4 col-md-2', step:'0.01' %>
+    <%= form.number_field :price, class: 'form-control rounded-0 col-4 col-md-2', step:'0.01' %>
     <div class="invalid-feedback field_price"></div>
   </div>
 
@@ -95,9 +95,26 @@
     </tbody>
   </table>
 
+  <div class="form-group row">
+    <div class="col-2">
+      <%= form.label :final_price, 'Precio final:'%>
+    </div>
+    <%= form.text_field :final_price, class: 'form-control rounded-0 col-4 col-md-2', disabled: true %>
+    <div class="invalid-feedback field_price"></div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-2">
+      <%= form.label :description, 'Descripción del proyecto:'%>
+    </div>
+    <%= form.text_area :description, class: 'col-6 form-control form-control-md g-brd-gray-light-v7 g-brd-gray-light-v3--focus g-rounded-20' %>
+    <div class="invalid-feedback field_price"></div>
+  </div>
 
   <div class="mt-4">
     <button type="button" class="btn u-btn-teal mr-2" onclick="project.submit()"> Guatdar </button>
     <%= link_to "Cancelar", projects_path, class:"btn u-btn-red"%>
   </div>
 <% end %>
+
+

@@ -4,6 +4,7 @@
 #
 #  id                 :bigint           not null, primary key
 #  active             :boolean          default(TRUE)
+#  description        :text(65535)
 #  name               :string(255)
 #  number             :integer          not null
 #  price              :decimal(15, 2)   default(0.0), not null
