@@ -46,17 +46,9 @@ class Land < ApplicationRecord
 		uniqueness: { scope: :apple_id,case_sensitive: false, message: "Ya existe un lote con esta denominación" }
 
 	enum status: [:available, :bought, :canceled]
-	enum land_type: [:habitable, :no_habitable, :green_space]
+	enum land_type: [:habitable, :no_habitable, :green_space]	
 
-	# before_save :assign_user
-	# # before_update :assign_user
-
-	# # private
-
-	# def assign_user
-	# 	puts "=========================================== usuario"
-	# 	self.user_created ||= current_user.id
-	# 	self.user_updated = current_user.id
-	# end
-	
+	def reset_status
+		self.status = :available
+	end
 end

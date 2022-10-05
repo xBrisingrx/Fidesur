@@ -121,6 +121,26 @@ class SalesController < ApplicationController
     puts @sale.count
   end
 
+  def destroy 
+    sale = Sale.find params[:id]
+    case sale.sale_products.first.product_type
+    when 'Land'
+      product = Land.find sale.sale_products.first.product_id
+    end
+
+    ActiveRecord::Base.transaction do 
+      if sale.destroy && product.reset_status
+        render json: {status: 'success', msg: 'Se elimino la venta'}, status: :ok 
+      else
+        render json: {status: 'errors', msg: 'Ocurrio un error eliminando esta venta'}, status: :unprocessable_entity
+      end
+    end
+    rescue => e
+      puts "Excepcion => #{e.message}"
+      @response = e.message.split(':')
+      render json: {status: 'error', msg: 'Error: no se pudo realizar la eliminacion de venta'}, status: 402
+  end
+
   private
 
   def sale_params
