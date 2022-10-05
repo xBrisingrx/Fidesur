@@ -74,6 +74,7 @@ Rails.application.routes.draw do
   #   post '/clients/disable'
 
   get 'sales/new/:product_type/:product_id', to: 'sales#new', as: 'new_sale'
+  post 'sales/reset_payments/:sale_id', to: 'sales#reset_payments', as: 'reset_payments'
   resources :sales, only: [:create, :destroy]
   # get 'detalle_venta_lote/:field_id', to: 'field_sale#index', as: 'show_field_sale'
   get 'detalle_venta_lote/:product_id', to: 'sale_products#index', as: 'show_land_sale'

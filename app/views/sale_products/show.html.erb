@@ -59,9 +59,18 @@
   <% end %>
 </div>
 
-<div class="row ml-2 mb-4" id="cant_cuotas_pagadas">
-  <strong class="mr-1">Cuotas pagadas: </strong> <%= "#{@cuotas_pagadas}/#{@total_cuotas}" %>
-  <strong class="ml-4 mr-1">Cuotas vencidas: </strong> <%= @cant_vencidas %>
+<div class="row ml-2 mb-4 justify-content-between" id="cant_cuotas_pagadas">
+  <div class="col-auto mr-auto">
+    <strong class="mr-1">Cuotas pagadas: </strong> <%= "#{@cuotas_pagadas}/#{@total_cuotas}" %>
+    <strong class="ml-4 mr-1">Cuotas vencidas: </strong> <%= @cant_vencidas %>
+  </div>
+  <div class="col-auto">
+    <a href="#"
+      onclick="sale.modal_reset_payments(<%= @sale.id %>)" 
+      class="btn u-btn-outline-pink u-btn-hover-v1-2 g-font-weight-600 g-letter-spacing-0_5 g-brd-2 g-rounded-10 g-mr-10 g-mb-15"> Eliminar pagos
+      <i class="fa fa-trash g-ml-3"></i>
+    </a>
+  </div>
 </div>
 <table id="sale_product_table" class="table hover dt-responsive w-100">
   <thead>
@@ -93,3 +102,30 @@
 </div>
 <!-- End modal -->
 
+<!-- Modal para resetear pagos -->
+<div class="modal fade" id="modal-reset-payments" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">¿ Esta seguro de eliminar los pagos ?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger" role="alert">
+          Los pagos eliminados seran irrecuperables.
+        </div>
+        <%= form_with(url: '#', id: 'form-reset-payments') %>
+          <input type="hidden" id="sale_id" name="sale[id]" value="">
+          <button type="button" 
+            onclick="sale.reset_payments()" 
+            class="btn u-btn-red g-mr-10">Eliminar
+          </button>
+          <button type="button" data-dismiss="modal" class="btn u-btn-teal g-mr-10"> Cerrar </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Fin modal -->

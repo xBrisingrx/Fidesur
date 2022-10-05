@@ -141,6 +141,15 @@ class SalesController < ApplicationController
       render json: {status: 'error', msg: 'Error: no se pudo realizar la eliminacion de venta'}, status: 402
   end
 
+  def reset_payments #reseteo las cuotas a como cuando fueron creadas y elimino todos los pagos
+    sale = Sale.find params[:sale_id]
+    if sale.reset_payments
+      render json: {status: 'success', msg: 'Se eliminaron todos los pagos'}, status: :ok 
+    else
+      render json: {status: 'errors', msg: 'Ocurrio un error eliminando los pagos'}, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def sale_params

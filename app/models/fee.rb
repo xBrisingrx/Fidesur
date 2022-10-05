@@ -117,5 +117,19 @@ class Fee < ApplicationRecord
     end # cuotas_a_pagar.each
   end # pago_supera_cuota
 
+  def reset_payments
+    self.fee_payments.destroy_all
+    self.update(
+      owes: self.value,
+      total_value: self.value,
+      comment: '',
+      comment_adjust:'',
+      adjust: 0,
+      pay_status: :pendiente,
+      payment: 0,
+      payed: 0,
+      interest: 0
+    )
+  end
 end
 # debe C1 = $40.612,50

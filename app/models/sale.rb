@@ -103,4 +103,10 @@ class Sale < ApplicationRecord
 		end
 	end
 
+	def reset_payments
+		self.fees.where('number > 0').each do |fee|
+			fee.reset_payments
+		end
+	end
+
 end

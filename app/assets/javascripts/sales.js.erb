@@ -45,6 +45,24 @@ let sale = {
     } )
     .catch( error => noty_alert('error', 'Ocurrio un error, no se pudo registrar la venta') )
   },
+  modal_reset_payments(sale_id){
+    document.querySelector('#form-reset-payments #sale_id').value = sale_id
+    $('#modal-reset-payments').modal('show')
+  },
+  reset_payments(){
+    const sale_id = document.querySelector('#form-reset-payments #sale_id').value
+    fetch(`/sales/reset_payments/${sale_id}`, {
+      method: 'POST',
+      headers: {           
+          'X-CSRF-Token': document.getElementsByName('csrf-token')[0].content,
+      }
+    })
+    .then( response => response.json() )
+    .then( response => {
+      location.reload()
+    } )
+    .catch( error => noty_alert('error', 'Ocurrio un error, no se pudo registrar la venta') )
+  }
 }
 
 function modal_disable_sale_field(id) {
