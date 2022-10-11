@@ -1,7 +1,7 @@
 let sale_product_table
 
 async function get_totales_cuota(id) {
-  let data = await fetch('/get_totales_cuota/' + id)
+  let data = await fetch('/get_totales_cuota/Land/' + id)
   let totales = await data.json()
 
   $('#total_debe').html(`Debe <b> ($${totales.debe}) </b>`)

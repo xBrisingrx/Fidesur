@@ -78,7 +78,9 @@ Rails.application.routes.draw do
   resources :sales, only: [:create, :destroy]
   # get 'detalle_venta_lote/:field_id', to: 'field_sale#index', as: 'show_field_sale'
   get 'detalle_venta_lote/:product_id', to: 'sale_products#index', as: 'show_land_sale'
-  get 'get_totales_cuota/:field_id', to: 'field_sale#get_totales_cuota', as: 'get_totales_cuota'
+  
+  get 'get_totales_cuota/:product_type/:product_id', to: 'sale_products#get_totales_cuota', as: 'get_totales_cuota'
+  
   get 'start_field_sale/:field_id', to: 'sales#start_field_sale', as: 'start_field_sale'
   get 'pay_sale/:data', to: 'sales#pay', as: 'pay_land'
   get 'detalle_pago_cuota/:id', to: 'land_fees#detalle_pago_cuota', as: 'detalle_pago_cuota'

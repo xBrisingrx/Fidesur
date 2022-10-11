@@ -13,36 +13,16 @@ class SaleProductsController < ApplicationController
 
     @sale = Sale.find(@sale_product.sale_id)
 
-    @fees = @sale.fees #obtengo cuotas
+    @fees = @sale.fees.where('number != 0') #obtengo cuotas descartando el pago inicial
     @total_pagado = @sale.total_pagado
-    # (@land_fees.sum(:payment) + @sale_product.sale.paid)
 
-    # if @sale_product.sale.total_cost == 0.0
-    #   @sale_product.sale.calculate_total_value!
-    # end
     @product_value = @sale.total_cost
     @total_adeudado = @sale.total_cost - @total_pagado
 
     @cant_vencidas = @fees.where( "due_date < ?", Time.new ).where(payed: false).count
-    @cuotas_pagadas =  @fees.where('number != 0').where(payed: true).count
+    @cuotas_pagadas =  @fees.where(payed: true).count
     @total_cuotas = @fees.count
     @status = { 'pendiente' => 'Pendiente', 'pagado' => 'Pagada', 'pago_parcial' => 'Pago parcial'}
-
-    # puts "\n\n rollback"
-    # venta_lote = FieldSale.find_by( field_id: 408 )
-    # cuotas = venta_lote.sale.land_fees
-    # cuotas.each do |cuota|
-    #   cuota.land_fee_payments.destroy_all
-    #   cuota.update(
-    #     pay_date: nil,
-    #     owes: cuota.fee_value,
-    #     payment: 0,
-    #     pay_status: :pendiente,
-    #     payed: false,
-    #     comment: ''
-    #   )
-    # end
-    # puts "\n\n End rollback"
 
     respond_to do |format|
       format.html
@@ -94,6 +74,22 @@ class SaleProductsController < ApplicationController
 
   def all_lands
     @lands = SaleProduct.where( active: true, product_type: 'Land' )
+  end
+
+  def get_totales_cuota
+    product = SaleProduct.find_by( product_id: params[:product_id], product_type: params[:product_type] )
+    cuotas = product.sale.fees.where('number > 0')
+    total_pagado = ( cuotas.sum(:payment) )
+    total_adeudado = product.product.price - total_pagado
+    cuotas_pagadas = cuotas.where(payed:true).count
+    cant_cuotas = cuotas.count
+
+    render json: {'debe' => cuotas.sum(:owes), 
+                  'haber' => cuotas.sum(:payment), 
+                  'total_pagado' => total_pagado, 
+                  'total_adeudado' => total_adeudado,
+                  'cuotas_pagadas' => cuotas_pagadas,
+                  'cant_cuotas' => cant_cuotas}
   end
 
   private
