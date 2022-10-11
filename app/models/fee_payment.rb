@@ -43,7 +43,7 @@ class FeePayment < ApplicationRecord
         cuota.owes = 0
         cuota.pago_supera_cuota( payment, self.pay_date )
       else 
-        cuota.owes = cuota.total_value - cuota.payment 
+        cuota.owes -= self.total 
       end
       if cuota.total_value <= cuota.payment
         cuota.pay_status = :pagado
