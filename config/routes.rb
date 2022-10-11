@@ -54,11 +54,11 @@ Rails.application.routes.draw do
   resources :land_sale, only: [:index, :new, :create]
   resources :sale_products, except: [:destroy, :show]
   get 'sale_product/:product_type/:product_id', to: 'sale_products#show', as: 'sale_product_detail'
-  resources :land_fees do 
-    get 'partial_payment/:land_fee_id', to: 'land_fee_payments#new', as: 'partial_payment'
-    post 'partial_payment', to: 'land_fee_payments#create', as: 'register_partial_payment'
-    resources :land_fee_payments
-  end
+  # resources :land_fees do 
+  #   get 'partial_payment/:land_fee_id', to: 'land_fee_payments#new', as: 'partial_payment'
+  #   post 'partial_payment', to: 'land_fee_payments#create', as: 'register_partial_payment'
+  #   resources :land_fee_payments
+  # end
   # resources :land_payments
   resources :sessions, only: [:new, :create, :destroy]  
   get 'signup', to: 'users#new', as: 'signup'

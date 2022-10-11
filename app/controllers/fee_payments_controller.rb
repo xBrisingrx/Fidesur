@@ -21,7 +21,6 @@ class FeePaymentsController < ApplicationController
     if !params[:images].nil?
       fee_payments.images = params[:images]
     end
-    
     respond_to do |format|
       # create tiene un callback para actualizar fee
       if fee_payments.save!

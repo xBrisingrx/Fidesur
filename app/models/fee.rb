@@ -76,15 +76,11 @@ class Fee < ApplicationRecord
   end
 
   def pago_supera_cuota payment, pay_date
-    puts "\n ######### EXTRA #{payment.to_f} ######### \n"
-    puts "\n ========================  Pago de otras cuotas ============================= \n"
     # Obtengo todas las cuotas que no estan pagadas distintas a la que se esta pagando en este momento
     cuotas_a_pagar = Fee.where(sale_id: self.sale_id).where('number != ?', self.number).where('owes > 0').order('id ASC')
-    puts "\n *** Cantidad de cuotas encontradas #{ cuotas_a_pagar.count } \n"
     cuotas_a_pagar.each do |cuota| 
       puts "\n Payment menor a cero => #{payment.to_f} \n" if payment <= 0.0
       return if payment <= 0.0
-      puts "De la cuota #{ cuota.number } debe #{ cuota.owes.to_f }"
       # pago a registrar, se deja en cero el monto porque es para lleva el registro de adelantos/pago deuda
       pago = cuota.fee_payments.new(
         pay_date: pay_date, 
@@ -94,7 +90,6 @@ class Fee < ApplicationRecord
         currency_id: 1)
       owes = cuota.owes #lo que se adeuda de esta cuota
       if payment < cuota.owes
-        puts "\n *** #{cuota.id} "
         cuota.update!(owes: cuota.owes - payment, pay_status: :pago_parcial, payed: true )
 
         if cuota.due_date < pay_date 
@@ -102,7 +97,6 @@ class Fee < ApplicationRecord
         else 
           pago.comment = "Se realizo un adelanto parcial de esta cuota por un monto de $#{payment.to_f}, cuando se pago la cuota ##{self.number}" 
         end
-        puts "\n ===> payment #{payment} "
       else
         cuota.update!(owes: 0.0, pay_status: :pagado, payed: true)
         if cuota.due_date < pay_date 
