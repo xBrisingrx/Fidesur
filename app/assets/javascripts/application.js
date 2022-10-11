@@ -38,6 +38,7 @@
 //= require lands
 //= require sale_products
 //= require fees
+//= require fee_payments
 //= require providers
 //= require projects
 
