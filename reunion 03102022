@@ -1,0 +1,29 @@
+*** Presupuesto de obras
+
+= Los proveedores son intervinientes con roles ( direccion tecnica, habia uno de inspeccion, proveedor, documentacion como casa de pierda , etc )
+= cuando agregas a un interviniente al presupuesto debes tener los campos
+	- interviniente , rol, como cobra [ un monto , % de otro proveedor o del monto de la obra], IVA [ el iba q usa este interviniente.. si 10, 21.. ] , % que significa este interviniente en el precio de la obra ( X interviniente significa el 10% del precio de la obra ) 
+= El presupuesto tiene el total de los fijos y un total de fijos + los que cobran % 
+	- los % se toman siempre del total de los fijos, sino se haria un loop de calculo 
+= El presupuesto debe seleccionar una manzana a donde se aplica la obra 
+	- al seleccionar manzana debe permitir elegir si se cobra diferente a las esquinas
+	- una vez finalizado el presupuesto este queda PENDIENTE en cada lote y de ahi se ira uno por uno pactando el plan de pagos 
+==============================================
+
+*** LOTES
+= se le debe sumar si es esquina
+
+======
+
+*** Manzanas
+= La manzana tiene un condominio ( crud )
+------
+
+*** Detalle pagos del lote 
+= El detalle pago sera una vista que tendra una tabla por cada item [tierra, cloaca, agua, cordon cuneta. etc]
+	- cada tabla debe tener el resumen de debe, intereses aplicados, haber y saldo
+	- el titulo debe ser: manzana - lote - condominio
+	- debajo del titulo debe estar el resumen general de DEBE, AJUSTE, HABER, SALDO
+SALDO es DEUDA
+HABER es lo que ya paso
+	!! boton para resetear la venta de un lote 

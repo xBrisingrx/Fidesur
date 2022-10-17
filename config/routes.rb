@@ -46,24 +46,29 @@
 
 Rails.application.routes.draw do
   
+  resources :sessions, only: [:new, :create, :destroy]  
+  get 'signup', to: 'users#new', as: 'signup'
+  get 'login', to: 'sessions#new', as: 'login'
+  get 'logout', to: 'sessions#destroy', as: 'logout'
+
   resources :projects
   resources :project_types
   resources :materials
   resources :providers
   post '/providers/disable'
-  resources :land_sale, only: [:index, :new, :create]
+
   resources :sale_products, except: [:destroy, :show]
   get 'sale_product/:product_type/:product_id', to: 'sale_products#show', as: 'sale_product_detail'
+  get 'detalle_venta_lote/:product_id', to: 'sale_products#index', as: 'show_land_sale'
+  get 'get_totales_cuota/:product_type/:product_id', to: 'sale_products#get_totales_cuota', as: 'get_totales_cuota'
+  get '/ver_todos_los_lotes', to: "sale_products#all_lands", as: 'ver_todos_los_lotes'
+  # resources :land_sale, only: [:index, :new, :create]
   # resources :land_fees do 
   #   get 'partial_payment/:land_fee_id', to: 'land_fee_payments#new', as: 'partial_payment'
   #   post 'partial_payment', to: 'land_fee_payments#create', as: 'register_partial_payment'
   #   resources :land_fee_payments
   # end
   # resources :land_payments
-  resources :sessions, only: [:new, :create, :destroy]  
-  get 'signup', to: 'users#new', as: 'signup'
-  get 'login', to: 'sessions#new', as: 'login'
-  get 'logout', to: 'sessions#destroy', as: 'logout'
 
   # resources :apples do
   #   resources :fields
@@ -72,22 +77,17 @@ Rails.application.routes.draw do
   #   post '/fields/disable'
   # resources :clients
   #   post '/clients/disable'
-
+  # get 'detalle_venta_lote/:field_id', to: 'field_sale#index', as: 'show_field_sale'
+  # resources :field_sale
   get 'sales/new/:product_type/:product_id', to: 'sales#new', as: 'new_sale'
   post 'sales/reset_payments/:sale_id', to: 'sales#reset_payments', as: 'reset_payments'
-  resources :sales, only: [:create, :destroy]
-  # get 'detalle_venta_lote/:field_id', to: 'field_sale#index', as: 'show_field_sale'
-  get 'detalle_venta_lote/:product_id', to: 'sale_products#index', as: 'show_land_sale'
-  
-  get 'get_totales_cuota/:product_type/:product_id', to: 'sale_products#get_totales_cuota', as: 'get_totales_cuota'
-  
-  get 'start_field_sale/:field_id', to: 'sales#start_field_sale', as: 'start_field_sale'
-  get 'pay_sale/:data', to: 'sales#pay', as: 'pay_land'
-  get 'detalle_pago_cuota/:id', to: 'land_fees#detalle_pago_cuota', as: 'detalle_pago_cuota'
-  # get 'lotes_cliente/:client_id', to: 'sales#lotes_cliente', as: 'lotes_cliente'
-
   post 'sales/send_payments', to: 'sales#send_payments'
-  get '/ver_todos_los_lotes', to: "sale_products#all_lands", as: 'ver_todos_los_lotes'
+  get 'pay_sale/:data', to: 'sales#pay', as: 'pay_land'
+  get 'start_field_sale/:field_id', to: 'sales#start_field_sale', as: 'start_field_sale'
+  resources :sales, only: [:create, :destroy]
+  
+  get 'detalle_pago_cuota/:id', to: 'land_fees#detalle_pago_cuota', as: 'detalle_pago_cuota'
+
 
   # Fees routes
   get 'fees/:sale_id', to: 'fees#index'
@@ -108,36 +108,19 @@ Rails.application.routes.draw do
     
     resources :users
     resources :client_fields
-    # scope '(:locale)', locale: /es/ do
-      # Sectores
-      # get '/sectores', to:'sectors#index', as: 'sectors'
-      # get '/sector/:id', to: 'sectors#show', as: 'sector'
-      resources :sectors #, only: [:new, :create, :edit, :update]
-      post '/sectors/disable'
+    resources :sectors
+    post '/sectors/disable'
       
-      resources :apples do
-        resources :lands, only: [:index, :new, :create, :edit, :update]
-        resources :fields
-      end
-      post '/apples/disable'
-      post '/fields/disable'
-      resources :clients
-        post '/clients/disable'
-        get '/clients/:id/lotes_cliente', to: 'clients#lotes_cliente', as: 'lotes_cliente'
+    resources :apples do
+      resources :lands, only: [:index, :new, :create, :edit, :update]
+      resources :fields
+    end
+    post '/apples/disable'
+    post '/fields/disable'
+    resources :clients
+      post '/clients/disable'
+      get '/clients/:id/lotes_cliente', to: 'clients#lotes_cliente', as: 'lotes_cliente'
     # end
-
-    resources :field_sale
-      
-    # get 'signup', to: 'users#new', as: 'signup'
-    # get 'login', to: 'sessions#new', as: 'login'
-    # get 'logout', to: 'sessions#destroy', as: 'logout'
 
   end # end localized
 end 
-
-
-# scope "(:locale)", locale: /en|es/ do
-#   get'/hola', to: 'welcome#hola', as: :hola
-#   root 'welcome#index'
-# end
-

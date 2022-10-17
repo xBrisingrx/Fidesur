@@ -1,0 +1,56 @@
+# == Schema Information
+#
+# Table name: projects
+#
+#  id                 :bigint           not null, primary key
+#  active             :boolean          default(TRUE)
+#  description        :text(65535)
+#  name               :string(255)
+#  number             :integer          not null
+#  price              :decimal(15, 2)   default(0.0), not null
+#  status             :integer
+#  tecnical_direction :string(255)
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  material_id        :bigint
+#  project_type_id    :bigint
+#  provider_id        :bigint
+#  user_created_id    :bigint
+#  user_updated_id    :bigint
+#
+# Indexes
+#
+#  index_projects_on_material_id      (material_id)
+#  index_projects_on_project_type_id  (project_type_id)
+#  index_projects_on_provider_id      (provider_id)
+#  index_projects_on_user_created_id  (user_created_id)
+#  index_projects_on_user_updated_id  (user_updated_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (material_id => materials.id)
+#  fk_rails_...  (project_type_id => project_types.id)
+#  fk_rails_...  (provider_id => providers.id)
+#  fk_rails_...  (user_created_id => users.id)
+#  fk_rails_...  (user_updated_id => users.id)
+#
+
+one:
+  number: 1
+  name: MyString
+  tecnical_direction: MyString
+  provider: one
+  material: one
+  active: false
+  price: 9.99
+  status: 1
+
+two:
+  number: 1
+  name: MyString
+  tecnical_direction: MyString
+  provider: two
+  material: two
+  active: false
+  price: 9.99
+  status: 1

@@ -80,6 +80,6 @@ class LandsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def land_params
-      params.require(:land).permit(:measures, :surface, :ubication, :price, :code, :status, :blueprint, :land_type, :is_green_space)
+      params.require(:land).permit(:measures, :surface, :ubication, :price, :code, :status, :blueprint, :land_type, :is_green_space, :is_corner)
     end
 end

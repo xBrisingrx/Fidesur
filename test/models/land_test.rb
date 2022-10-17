@@ -32,24 +32,10 @@
 #  fk_rails_...  (user_created_id => users.id)
 #  fk_rails_...  (user_updated_id => users.id)
 #
-class Land < ApplicationRecord
-	belongs_to :apple
-	belongs_to :user_created, class_name: "User"
-	belongs_to :user_updated, class_name: "User"
-	has_one_attached :blueprint
+require 'test_helper'
 
-	# has_one :field_sale
-	has_one :sale_product, as: :product # relacion entre venta y lote
-
-	# Los lotes de una misma manzana no pueden llamarse igual
-	validates :code, 
-		presence: true,
-		uniqueness: { scope: :apple_id,case_sensitive: false, message: "Ya existe un lote con esta denominación" }
-
-	enum status: [:available, :bought, :canceled]
-	enum land_type: [:habitable, :no_habitable, :green_space]	
-
-	def reset_status
-		self.status = :available
-	end
+class LandTest < ActiveSupport::TestCase
+  # test "the truth" do
+  #   assert true
+  # end
 end

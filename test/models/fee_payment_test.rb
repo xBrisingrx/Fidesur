@@ -1,33 +1,33 @@
 # == Schema Information
 #
-# Table name: land_fee_payments
+# Table name: fee_payments
 #
 #  id          :bigint           not null, primary key
 #  active      :boolean          default(TRUE)
-#  comment     :text(65535)
+#  comment     :text(65535)      default("''")
 #  pay_date    :date
-#  pay_name    :string(255)
+#  pay_name    :string(255)      default("")
 #  payment     :decimal(15, 2)   default(0.0)
-#  tomado_en   :decimal(15, 2)   default(0.0), not null
-#  total       :decimal(15, 2)   default(0.0), not null
+#  tomado_en   :decimal(15, 2)   default(1.0)
+#  total       :decimal(15, 2)   default(0.0)
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  currency_id :bigint
-#  land_fee_id :bigint
+#  fee_id      :bigint
 #
 # Indexes
 #
-#  index_land_fee_payments_on_currency_id  (currency_id)
-#  index_land_fee_payments_on_land_fee_id  (land_fee_id)
+#  index_fee_payments_on_currency_id  (currency_id)
+#  index_fee_payments_on_fee_id       (fee_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (currency_id => currencies.id)
-#  fk_rails_...  (land_fee_id => land_fees.id)
+#  fk_rails_...  (fee_id => fees.id)
 #
 require 'test_helper'
 
-class LandFeePaymentTest < ActiveSupport::TestCase
+class FeePaymentTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
