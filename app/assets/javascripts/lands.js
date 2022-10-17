@@ -11,7 +11,6 @@ $(document).ready(function(){
     'ajax':`lotes`,
     'columns': [
     {'data': 'code'},
-    {'data': 'measures'},
     {'data': 'surface'},
     {'data': 'ubication'},
     {'data': 'price'},

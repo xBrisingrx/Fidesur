@@ -1,6 +1,5 @@
 json.data @lands do |f|
 	json.code f.code
-	json.measures f.measures
 	json.surface "#{f.surface} m²"
 	json.ubication f.ubication
 	json.price "$ #{format_currency(f.price) }"
