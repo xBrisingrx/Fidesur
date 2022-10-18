@@ -1,32 +1,23 @@
-<%= form_with(model: condominium, local: true) do |form| %>
-  <% if condominium.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(condominium.errors.count, "error") %> prohibited this condominium from being saved:</h2>
+<%= form_with(model: @condominium, id: 'form-condominium', class: 'needs-validation g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30') do |form| %>
 
-      <ul>
-      <% condominium.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+  <div class="form-group row">
+    <div class="col-3">
+      <%= form.label :name, 'Nombre (*):'%>
     </div>
-  <% end %>
-
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
+    <div class="col-6">
+      <%= form.text_field :name, class: 'form-control form-control-sm rounded-0', required: true %>
+      <div class="invalid-feedback sector_name"></div>
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :description %>
-    <%= form.text_field :description %>
+  <div class="form-group">
+    <%= form.text_area :description, 
+        placeholder: "Descripción",
+        class: "form-control form-control-md u-textarea-expandable g-brd-gray-light-v7 g-brd-gray-light-v3--focus rounded-0 g-resize-none g-overflow-hidden" %>
   </div>
 
-  <div class="field">
-    <%= form.label :active %>
-    <%= form.check_box :active %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
+  <div class="mt-4">
+    <%= form.submit 'Guardar', class: 'btn u-btn-teal mr-2'  %>
+    <button type="button" class="btn u-btn-darkred" data-dismiss="modal">Cerrar</button>
   </div>
 <% end %>

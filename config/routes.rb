@@ -46,7 +46,7 @@
 
 Rails.application.routes.draw do
   
-  resources :condominia
+
   resources :sessions, only: [:new, :create, :destroy]  
   get 'signup', to: 'users#new', as: 'signup'
   get 'login', to: 'sessions#new', as: 'login'
@@ -57,7 +57,8 @@ Rails.application.routes.draw do
   resources :materials
   resources :providers
   post '/providers/disable'
-
+  resources :condominia 
+  post '/condominia/disable'
   resources :sale_products, except: [:destroy, :show]
   get 'sale_product/:product_type/:product_id', to: 'sale_products#show', as: 'sale_product_detail'
   get 'detalle_venta_lote/:product_id', to: 'sale_products#index', as: 'show_land_sale'
@@ -114,7 +115,7 @@ Rails.application.routes.draw do
       
     resources :apples do
       resources :lands, only: [:index, :new, :create, :edit, :update]
-      resources :fields
+      # resources :fields
     end
     post '/apples/disable'
     post '/fields/disable'

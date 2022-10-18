@@ -3,7 +3,7 @@ class CondominiaController < ApplicationController
 
   # GET /condominia or /condominia.json
   def index
-    @condominia = Condominium.all
+    @condominia = Condominium.where(active:true)
   end
 
   # GET /condominia/1 or /condominia/1.json
@@ -25,10 +25,8 @@ class CondominiaController < ApplicationController
 
     respond_to do |format|
       if @condominium.save
-        format.html { redirect_to condominium_url(@condominium), notice: "Condominium was successfully created." }
-        format.json { render :show, status: :created, location: @condominium }
+        format.json { render json: { status: 'success', msg: 'Condominio registrado' }, status: :created }
       else
-        format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @condominium.errors, status: :unprocessable_entity }
       end
     end
@@ -38,10 +36,8 @@ class CondominiaController < ApplicationController
   def update
     respond_to do |format|
       if @condominium.update(condominium_params)
-        format.html { redirect_to condominium_url(@condominium), notice: "Condominium was successfully updated." }
-        format.json { render :show, status: :ok, location: @condominium }
+        format.json { render json: { status: 'success', msg: 'Datos actualizados' }, status: :ok }
       else
-        format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @condominium.errors, status: :unprocessable_entity }
       end
     end
@@ -55,6 +51,19 @@ class CondominiaController < ApplicationController
       format.html { redirect_to condominia_url, notice: "Condominium was successfully destroyed." }
       format.json { head :no_content }
     end
+  end
+
+  def disable
+    @condominium = Condominium.find(params[:condominium][:id])
+    if @condominium.update(active:false)
+      render json: { status: 'success', msg: 'Condominio eliminado' }, status: :ok
+    else
+      render json: { status: 'error', msg: 'Ocurrio un error al realizar la operación' }, status: :unprocessable_entity
+    end
+
+    rescue => e
+      @response = e.message.split(':')
+      render json: { @response[0] => @response[1] }, status: 402
   end
 
   private
