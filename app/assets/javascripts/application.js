@@ -41,6 +41,7 @@
 //= require fee_payments
 //= require providers
 //= require projects
+//= require condominia
 
 // require_tree .
 

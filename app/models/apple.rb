@@ -11,18 +11,22 @@
 #  value                                                                 :float(24)        default(0.0)
 #  created_at                                                            :datetime         not null
 #  updated_at                                                            :datetime         not null
+#  condominium_id                                                        :bigint           default(1)
 #  sector_id                                                             :bigint
 #
 # Indexes
 #
-#  index_apples_on_sector_id  (sector_id)
+#  index_apples_on_condominium_id  (condominium_id)
+#  index_apples_on_sector_id       (sector_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (condominium_id => condominia.id)
 #  fk_rails_...  (sector_id => sectors.id)
 #
 class Apple < ApplicationRecord
   belongs_to :sector
+  belongs_to :condominium
   has_many :fields
   has_many :lands
   has_one_attached :blueprint

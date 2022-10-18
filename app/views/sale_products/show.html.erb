@@ -1,4 +1,4 @@
-<h1> Detalle de venta del lote <%= @sale_product.product.code %> </h1>
+<h1> Lote <%= @sale_product.product.code %> - <%= @sale_product.product.apple.code %> - <%= @sale_product.product.apple.condominium.name %> </h1>
 
 <%= link_to '<i class= "hs-admin-back-left"></i> Volver a manzanas'.html_safe, 
   apples_path, class: 'btn u-btn-blue mb-2 mr-2'%>

@@ -10,4 +10,5 @@
 #  updated_at  :datetime         not null
 #
 class Condominium < ApplicationRecord
+	has_many :apples
 end
