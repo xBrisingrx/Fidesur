@@ -89,6 +89,7 @@ document.getElementById('add-payment').addEventListener('click', (e) => {
 	    <input type="number" step='0.01' value="" class="form-control rounded-0 col-2 ml-2" id='value_in_pesos' name='value_in_pesos' style="display:none" onchange="calculo_de_entrega()"></input>
 	    <input type="text" value="" class="form-control rounded-0 col-2 ml-2" id="calculo_en_pesos" name="calculo_en_pesos" style="display:none" disabled></input>
 	    <input type="text" value="" class="form-control rounded-0 col-2 ml-2" id='name_pay' name='name_pay' placeholder='Detalle entrega...'></input>
+	    <input type="date" class="form-control rounded-0 col-2 ml-2" id='pay_date' name='pay_date'></input>
 	    <label class="u-file-attach-v2 g-color-gray-dark-v5 mb-0 ml-2">
 	      <input id="fileAttachment" name="file-attachment[]" type="file" multiple>
 	      <i class="icon-cloud-upload g-font-size-16 g-pos-rel g-top-2 g-mr-5"></i>
@@ -248,7 +249,7 @@ function all_payments(form_data) {
 			let value_in_pesos = parseFloat( pay.querySelector('#value_in_pesos').value )
 			let tomado_en = pay.querySelector('#calculo_en_pesos').value
 			let detail = pay.querySelector('#name_pay')
-			
+			let date = pay.querySelector('#pay_date').value
 			form_data.append( `currency_id_${i}`, currency_selected )
 	    form_data.append( `payment_${i}`, ( !isNaN( paid ) ) ? paid : '' );
 	    if ( currency_selected == 2 || currency_selected == 3 ) {
