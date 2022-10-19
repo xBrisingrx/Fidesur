@@ -15,6 +15,7 @@ $(document).ready(function(){
 	    {'data': 'location'},
 	    {'data': 'value'},
 	    {'data': 'sector'},
+      {'data': 'condominium'},
 	    {'data': 'actions'}
     ],
     'language': {'url': "/assets/plugins/datatables_lang_spa.json"}

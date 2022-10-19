@@ -30,15 +30,22 @@
   </div>
 
   <div class="form-group">
-    <div class="col-sm-2 col-form-label">
+    <div class="col-sm-4 col-form-label">
       <%= form.label :sector_id, 'Sector (*)' %>
     </div>
     <div class="col-8 col-sm col-lg-9">
-      <select id="apple_sector_id" name="apple[sector_id]" class='form-control select-2-apple' required>
-        <% @sectors.each do |sector| %>
-          <option value="<%= sector.id %>" > <%= sector.name %></option>
-        <% end %>
-      </select>
+      <%= form.select(:sector_id, @sectors.collect {|s| ["#{s.name}", s.id]}, { include_blank: true},
+                      class: 'form-control select-2-apple', required: true) %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-4 col-form-label">
+      <%= form.label :condominium_id, 'Condominio (*)' %>
+    </div>
+    <div class="col-8 col-sm col-lg-9">
+      <%= form.select(:condominium_id, @condominia.collect {|c| ["#{c.name}", c.id]}, { include_blank: true},
+                      class: 'form-control select-2-condominium', required: true) %>
     </div>
   </div>
 

@@ -13,7 +13,8 @@ class ApplesController < ApplicationController
   # GET /apples/new
   def new
     @title_modal = "Agregar manzana"
-    @sectors = Sector.where(active: :true)
+    @sectors = Sector.where(active: true)
+    @condominia = Condominium.where(active: true)
     @apple = Apple.new
   end
 
@@ -21,6 +22,7 @@ class ApplesController < ApplicationController
   def edit
     @title_modal = "Editar manzana"
     @sectors = Sector.where(active: :true)
+    @condominia = Condominium.where(active: true)
   end
 
   # POST /apples or /apples.json
@@ -79,6 +81,6 @@ class ApplesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def apple_params
-      params.require(:apple).permit(:hectares, :location, :value, :code, :sector_id,:space_not_available, :blueprint)
+      params.require(:apple).permit(:hectares, :location, :value, :code, :sector_id,:condominium_id,:space_not_available, :blueprint)
     end
 end
