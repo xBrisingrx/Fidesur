@@ -251,6 +251,7 @@ function all_payments(form_data) {
 			let detail = pay.querySelector('#name_pay')
 			let date = pay.querySelector('#pay_date').value
 			form_data.append( `currency_id_${i}`, currency_selected )
+
 	    form_data.append( `payment_${i}`, ( !isNaN( paid ) ) ? paid : '' );
 	    if ( currency_selected == 2 || currency_selected == 3 ) {
 	    	if ( isNaN(value_in_pesos) ) {
@@ -262,6 +263,7 @@ function all_payments(form_data) {
 	    form_data.append( `tomado_en_${i}`, ( pay.querySelector('#value_in_pesos') !== null ) ? parseFloat( pay.querySelector('#value_in_pesos').value ) : '' )
 	    form_data.append( `value_in_pesos_${i}`, ( pay.querySelector('#calculo_en_pesos') !== null ) ? parseFloat( pay.querySelector('#calculo_en_pesos').value ) : '' )
 	    form_data.append( `detail_${i}`, ( pay.querySelector('#name_pay') !== null ) ? pay.querySelector('#name_pay').value : '' )
+	    form_data.append( `pay_date_${i}`, date )
 			let files = pay.querySelector('#fileAttachment')
 			if (files !== null) {
 				let totalFiles = files.files.length
