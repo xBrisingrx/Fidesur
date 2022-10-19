@@ -109,4 +109,12 @@ class Sale < ApplicationRecord
 		end
 	end
 
+	def corregir_fecha_primer_pago
+		self.fees.where(number: 0).first.fee_payments.each do |payment|
+			if payment.pay_date.nil?
+				payment.update(pay_date: self.sale_date)
+			end
+		end
+	end
+
 end

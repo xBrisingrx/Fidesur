@@ -12,7 +12,7 @@ class SaleProductsController < ApplicationController
     @id = params[:product_id]
 
     @sale = Sale.find(@sale_product.sale_id)
-
+    @sale.corregir_fecha_primer_pago
     @fees = @sale.fees.where('number != 0') #obtengo cuotas descartando el pago inicial
     @total_pagado = @sale.total_pagado
 

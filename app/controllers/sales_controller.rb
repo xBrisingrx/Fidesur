@@ -67,7 +67,8 @@ class SalesController < ApplicationController
               payment: paid,
               total: ( ( currency_id == 2) || ( currency_id == 3) ) ? value_in_pesos : paid,
               tomado_en: params["tomado_en_#{i}".to_sym].to_f,
-              pay_name: params["detail_#{i}".to_sym]
+              pay_name: params["detail_#{i}".to_sym],
+              pay_date: ( params["pay_date_#{i}".to_sym].empty? ) ? sale.sale_date : params["pay_date_#{i}".to_sym]
             )
             if !params["files_#{i}".to_sym].blank?
               fee_payment.images = params["files_#{i}".to_sym]

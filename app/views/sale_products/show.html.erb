@@ -28,6 +28,7 @@
       <table class="table table-sm mx-4">
         <thead class="thead-light">
           <tr>
+            <th>Fecha</th>
             <th>Moneda</th>
             <th>Ingresado</th>
             <th>Tomado en</th>
@@ -39,6 +40,7 @@
         <tbody>
           <% @sale.fees.where(number: 0).first.fee_payments.each do |payment|%>
             <tr>
+              <td> <%= payment.pay_date.strftime('%d-%m-%y') %> </td>
               <td><%= payment.currency.name %></td>
               <td><%= format_currency( payment.payment ) %></td>
               <td><%= "$#{format_currency( payment.tomado_en ) }" %></td>
