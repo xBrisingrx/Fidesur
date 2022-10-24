@@ -1,5 +1,7 @@
 $("#modal-client").html("<%= j (render 'modal') %>")
 
+$('.select2-client-marital-status').select2({ width: '100%',theme: "bootstrap4" })
+
 $("#modal-client").modal('show')
 
 $("#form-client").on("ajax:success", function(event) {
