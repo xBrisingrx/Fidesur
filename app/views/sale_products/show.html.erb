@@ -10,9 +10,11 @@
   <% @sale.clients.each do |client| %>
     <div class="u-shadow-v2 g-brd-around g-brd-gray-light-v4 g-line-height-2 g-pa-10 g-mb-30 col-3 g-mr-5" role="alert">
       <h3 class="h3 g-font-weight-300 g-mb-5"><%= client.fullname %></h3>
-      <p class="mb-0"><strong>Estado civil:</strong> <%= client.marital_status %></p>
-      <p class="mb-0"><strong>Email:</strong> <%= client.email %></p>
+      <p class="mb-0"><strong>DNI:</strong> <%= client.dni %></p>
+      <p class="mb-0"><strong>Dirección:</strong> <%= client.direction %></p>
       <p class="mb-0"><strong>Tel:</strong> <%= client.phone %></p>
+      <p class="mb-0"><strong>Email:</strong> <%= client.email %></p>
+      <p class="mb-0"><strong>Estado civil:</strong> <%= client.marital_status %></p>
     </div>
   <% end %>
 </div>
