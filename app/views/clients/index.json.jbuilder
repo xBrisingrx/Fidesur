@@ -3,6 +3,7 @@ json.data @clients do |c|
 	json.last_name c.last_name
 	json.name c.name
 	json.dni c.dni
+	json.marital_status c.marital_status
 	json.direction c.direction
 	json.email c.email
 	json.phone c.phone

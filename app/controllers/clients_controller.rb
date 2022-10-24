@@ -1,5 +1,6 @@
 class ClientsController < ApplicationController
   before_action :set_client, only: %i[ show edit update destroy lotes_cliente]
+  before_action :marital_status, only: %i[ new update]
 
   # GET /clients or /clients.json
   def index
@@ -78,6 +79,10 @@ class ClientsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_client
       @client = Client.find(params[:id])
+    end
+
+    def marital_status
+      @marital_status = ['Soltero', 'Casado', 'Divorciado', 'Viudo']
     end
 
     # Only allow a list of trusted parameters through.
