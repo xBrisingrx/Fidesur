@@ -39,16 +39,25 @@
 
   <div class="form-group row">
     <div class="col-2">
-      <%= form.label :provider_id, 'Invervinientes' %>
+      <%= form.label :provider_id, 'Invervinientes:' %>
     </div>
-    <div class="form-group col-6">
+    <div class="form-group col-4">
+      <%= form.select(:provider_id, @providers.collect {|p| [p.name, p.id]}, 
+                      {:include_blank => "Seleccione proveedor"},
+                      class: 'select-2-project-provider') %>
+      <div class="invalid-feedback provider_id"></div>
+    </div>
+
+    <div class="col-2">
+      <%= form.label :provider_id, 'Función:' %>
+    </div>
+    <div class="form-group col-4">
       <%= form.select(:provider_id, @providers.collect {|p| [p.name, p.id]}, 
                       {:include_blank => "Seleccione proveedor"},
                       class: 'select-2-project-provider') %>
       <button id="add-provider" class="btn u-btn-teal" onclick="project.add_provider()"> + </button>
       <div class="invalid-feedback provider_id"></div>
     </div>
-
   </div>
   <div class="provider-list"></div>
 
