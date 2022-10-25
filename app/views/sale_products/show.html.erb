@@ -8,7 +8,7 @@
 <input type="hidden" id="sale_id" value="<%= @sale.id %>">
 <div class="row">
   <% @sale.clients.each do |client| %>
-    <div class="u-shadow-v2 g-brd-around g-brd-gray-light-v4 g-line-height-2 g-pa-10 g-mb-30 col-3 g-mr-5" role="alert">
+    <div class="g-brd-blue-left u-shadow-v2 g-brd-around g-brd-gray-light-v4 g-line-height-2 g-pa-10 g-mb-30 col-3 g-mr-5" role="alert">
       <h3 class="h3 g-font-weight-300 g-mb-5"><%= client.fullname %></h3>
       <p class="mb-0"><strong>DNI:</strong> <%= client.dni %></p>
       <p class="mb-0"><strong>Dirección:</strong> <%= client.direction %></p>
