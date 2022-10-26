@@ -2,14 +2,14 @@
   class: 'needs-validation g-brd-around g-brd-gray-light-v4 g-pa-10 g-mb-10') do |form| %>
   
   <div class="form-group row">
-    <div class="col-2">
+    <div class="col-2 col-md-1">
       <%= form.label :number, "Número:" %>
     </div>
     <%= form.number_field :number,class: 'form-control rounded-0 col-4 col-md-2' %>
   </div>
 
   <div class="form-group row">
-    <div class="col-2">
+    <div class="col-2 col-md-1">
       <%= form.label :project_type_id, 'Proyecto' %>
     </div>
     <div class="form-group col-6 dropdown">
@@ -22,7 +22,7 @@
   </div>
 
   <div class="form-group row">
-    <div class="col-2">
+    <div class="col-2 col-md-1">
       <%= form.label :sector_id, 'Sector' %>
     </div>
     <div class="form-group col-2">
@@ -34,7 +34,7 @@
       <div class="invalid-feedback sector_id"></div>
     </div>
     <div class="form-group col-2">
-      <select id="apple_list" class="form-control select-2-apple-list">
+      <select id="apple_list" class="form-control select-2-apple-list" onchange="project.select_apple()">
         <option value=""> Elegir manzana </option>
       </select>
     </div>
@@ -46,16 +46,33 @@
       Diferenciar precio en esquinas
     </label>
   </div>
+  <div class="form-group row">
+    <div class="col-2 col-md-1">
+      <%= form.label :land_price, 'Precio por lote' %>
+    </div>
+    <div class="col-2">
+       <%= form.number_field :land_price, class: 'form-control', step:'0.01', placeholder: 'Precio unitario por lote' %>
+    </div>
+  </div>
 
   <div class="form-group row">
+    <div class="col-2 col-md-1">
+      <%= form.label :land_corner_price, 'Precio por lote' %>
+    </div>
     <div class="col-2">
+       <%= form.number_field :land_corner_price, class: 'form-control', step:'0.01', placeholder: 'Precio esquinas' %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-2 col-md-1">
       <%= form.label :name, "Nombre:" %>
     </div>
     <%= form.text_field :name,class: 'form-control rounded-0 col-4 col-md-2' %>
   </div>
 
   <div class="form-group row">
-    <div class="col-2">
+    <div class="col-2 col-md-1">
       <%= form.label :price, 'Precio:'%>
     </div>
     <%= form.number_field :price, class: 'form-control rounded-0 col-4 col-md-2', step:'0.01', onchange: 'project.validate_price()' %>
@@ -119,7 +136,7 @@
   </table>
 
   <div class="form-group row">
-    <div class="col-2">
+    <div class="col-2 col-md-1">
       <%= form.label :material_id, 'Materiales' %>
     </div>
     <div class="col-2">
@@ -155,7 +172,7 @@
   </table>
 
   <div class="form-group row">
-    <div class="col-2">
+    <div class="col-2 col-md-1">
       <%= form.label :final_price, 'Precio final:'%>
     </div>
     <%= form.text_field :final_price, class: 'form-control rounded-0 col-4 col-md-2', disabled: true %>
@@ -163,7 +180,7 @@
   </div>
 
   <div class="form-group row">
-    <div class="col-2">
+    <div class="col-2 col-md-1">
       <%= form.label :description, 'Descripción del proyecto:'%>
     </div>
     <%= form.text_area :description, class: 'col-6 form-control form-control-md g-brd-gray-light-v7 g-brd-gray-light-v3--focus g-rounded-20' %>

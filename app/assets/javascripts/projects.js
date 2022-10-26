@@ -3,6 +3,9 @@ let project = {
 	materials_list:[],
 	providers_list:[],
 	price: '',
+	final_price: 0,
+	apples:[],
+	cant_lands:0,
 	form: new FormData(),
 	add_provider(){
 		event.preventDefault()
@@ -30,6 +33,7 @@ let project = {
 				provider_porcent: porcentaje_representa_proveedor
 			}
 			this.providers_list.push( data )
+			this.calculate_final_price()
 			table_body.innerHTML += `
 				<tr id="row-${provider_id}">
 					<td>${provider_name}</td>
@@ -52,6 +56,7 @@ let project = {
 	remove_provider( id ) {
 		event.preventDefault()
 		this.providers_list = this.providers_list.filter( p => p.provider_id != id )
+		this.calculate_final_price()
 		let element = document.querySelector(`#provider-list #row-${id}`)
 		element.remove()
 		$(`#project_provider_id option[value='${id}']`).attr('disabled', false)
@@ -189,8 +194,12 @@ let project = {
 		event.stopPropagation()
 		this.form.append('number', document.getElementById('project_number').value )
 		this.form.append('name', document.getElementById('project_name').value )
-		this.form.append('providers[]', this.providers_list )
-		this.form.append('materials[]', this.materials_list)
+		this.form.append('price', project.price )
+		this.form.append('final_price', this.final_price )
+		this.form.append('description', document.getElementById('project_description').value )
+		this.form.append('project_type_id', document.getElementById('project_project_type_id').value )
+		this.form.append('apple_id', document.getElementById('apple_list').value )
+		this.form.append('apply_corner', document.getElementById('project_apply_corner').checked )
 		this.add_providers()
 		this.add_materials()
 		fetch('/projects/', {
@@ -214,14 +223,13 @@ let project = {
 	charge_apples(){
 		const node = event.target
 		const sector_id = parseInt(node.value)
-		let  lands
 		fetch(`/manzanas/filter_for_sector/${sector_id}.json`).then( response => response.json() ).then( r => {
 			let apple_list = document.querySelector('#apple_list')
 			apple_list.innerHTML = '<option value=""> Elegir manzana </option>'
-
-			for (let lote in r){
+			this.apples = r.data
+			for (let lote in this.apples){
 			  apple_list.innerHTML += `
-			  	<option value='${r[lote][0]}'> ${r[lote][1]} </option>
+			  	<option value='${this.apples[lote].id}' data-cant='${this.apples[lote].lands}'> ${this.apples[lote].code} </option>
 			  `
 			} 
 		})
@@ -278,6 +286,7 @@ let project = {
 			return false
 		} else {
 			document.querySelector('#form-project #add-provider').disabled = false
+			this.calculate_final_price()
 			return true
 		}
 	},
@@ -288,6 +297,7 @@ let project = {
 		return `${porcentaje_representa}%`
 	},
 	add_providers(){
+		this.form.append(`cant_providers`, this.providers_list.length)
 		for (let i = 0; i < this.providers_list.length; i++){
 			this.form.append(`provider_id_${i}`, this.providers_list[i].provider_id)
 			this.form.append(`provider_role_id_${i}`, this.providers_list[i].provider_role)
@@ -299,10 +309,28 @@ let project = {
 		}
 	},
 	add_materials(){
+		this.form.append(`cant_materials`, this.materials_list.length)
 		for (let i = 0; i < this.materials_list.length; i++){
 			this.form.append(`material_id_${i}`, this.materials_list[i].id)
 			this.form.append(`material_units_${i}`, this.materials_list[i].units)
 			this.form.append(`material_price_${i}`, this.materials_list[i].material_price)
+		}
+	},
+	calculate_final_price(){
+		this.final_price = this.price 
+		for (let i = 0; i < this.providers_list.length; i++){
+			this.final_price += this.providers_list[i].provider_price_calculate
+		}
+		document.getElementById('project_final_price').value = this.final_price
+		this.calculate_price_lands()
+	},
+	select_apple(){
+		let apple_selected = this.apples.filter( apple => apple.id == document.getElementById('apple_list').value )
+		this.cant_lands = apple_selected[0].lands
+	},
+	calculate_price_lands(){
+		if (!isNaN(this.cant_lands) && this.cant_lands > 0 ) {
+			document.getElementById('project_land_price').value = (this.final_price/this.cant_lands).toFixed(2)
 		}
 	}
 }
