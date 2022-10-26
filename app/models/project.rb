@@ -5,11 +5,11 @@
 #  id              :bigint           not null, primary key
 #  active          :boolean          default(TRUE)
 #  description     :text(65535)
+#  final_price     :decimal(10, )
 #  name            :string(255)
 #  number          :integer          not null
 #  price           :decimal(15, 2)   default(0.0), not null
 #  status          :integer
-#  total           :decimal(10, )
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  project_type_id :bigint
@@ -31,6 +31,10 @@
 class Project < ApplicationRecord
   has_many :project_providers
   has_many :project_materials
+
+  has_many :providers, through: :project_providers
+  has_many :materials, through: :project_materials
+
   belongs_to :project_type
   belongs_to :user_created, class_name: "User"
   belongs_to :user_updated, class_name: "User"
@@ -38,4 +42,6 @@ class Project < ApplicationRecord
   scope :actives, -> { where(active: true) }
   
   enum status: [:proceso, :terminado]
+
+  validates :number, presence: true
 end

@@ -150,6 +150,8 @@ let project = {
 		this.materials_list.push( data )
 		$('#project_material_id option:selected').attr('disabled', 'disabled')
 		$('.select-2-project-material').val('').trigger('change')
+		document.getElementById('material_units').value = 0
+		document.getElementById('material_price').value = 0
 	},
 	remove_material(material_id){
 		event.preventDefault()
@@ -175,9 +177,6 @@ let project = {
 			}
 		}
 	},
-	calcular_segun_porcentaje(){
-		console.log('calculando')
-	},
 	remove_inputs(nodo) {
 		if (nodo.querySelector(`#provider_price`) != null) {
 			nodo.querySelector(`#provider_price`).remove()
@@ -195,7 +194,7 @@ let project = {
 		this.form.append('number', document.getElementById('project_number').value )
 		this.form.append('name', document.getElementById('project_name').value )
 		this.form.append('price', project.price )
-		this.form.append('final_price', this.final_price )
+		this.form.append('final_price', parseFloat( this.final_price ) )
 		this.form.append('description', document.getElementById('project_description').value )
 		this.form.append('project_type_id', document.getElementById('project_project_type_id').value )
 		this.form.append('apple_id', document.getElementById('apple_list').value )
@@ -212,11 +211,9 @@ let project = {
 	  .then( response => response.json() )
 	  .then( response => {
 	  	if (response.status === 'success') {
-	  		// lands_table.ajax.reload(null,false)
-		    // $("#modal-land").modal('hide')
-		    // $("#modal-land-sale-confirm").modal('hide')
+	  		noty_alert(response.status, response.msg)
+	  		window.location.replace("/projects");	
 	  	}
-	  	noty_alert(response.status, response.msg)
 	  } )
 	  .catch( error => noty_alert('error', 'Ocurrio un error, no se pudo registrar la venta') )
 	},
@@ -291,10 +288,14 @@ let project = {
 		}
 	},
 	calcular_porcentaje_representa(project_price, provider_value){
-		console.log(project_price, provider_value)
-		let porcentaje_representa = (provider_value*100) / project_price
-		porcentaje_representa = porcentaje_representa.toFixed(2)
-		return `${porcentaje_representa}%`
+		if (project_price > 0 ) {
+			let porcentaje_representa = (provider_value*100) / project_price
+			porcentaje_representa = porcentaje_representa.toFixed(2)
+			return `${porcentaje_representa}%`
+		} else {
+			noty_alert('warning', 'El valor del lote debe ser mayor a 0')
+			return `Valor de proyecto invalido`
+		}
 	},
 	add_providers(){
 		this.form.append(`cant_providers`, this.providers_list.length)
@@ -313,7 +314,7 @@ let project = {
 		for (let i = 0; i < this.materials_list.length; i++){
 			this.form.append(`material_id_${i}`, this.materials_list[i].id)
 			this.form.append(`material_units_${i}`, this.materials_list[i].units)
-			this.form.append(`material_price_${i}`, this.materials_list[i].material_price)
+			this.form.append(`material_price_${i}`, this.materials_list[i].price)
 		}
 	},
 	calculate_final_price(){

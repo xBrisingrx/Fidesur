@@ -28,22 +28,38 @@ class ProjectsController < ApplicationController
 
   # POST /projects or /projects.json
   def create
+    @user = User.find current_user.id
     ActiveRecord::Base.transaction do 
-      project = Project.create(
-        number: params[:number],
-        name: params[:name],
-        project_type_id: params[:project_type_id],
-        description: params[:description],
-        price: params[:price],
-        final_price: params[:final_price]
-      )
+      puts 'ingreso'
+
+      @project = Project.new
+      @project.number = params[:number].to_i
+      @project.name = params[:name]
+      @project.project_type_id = params[:project_type_id].to_i
+      @project.description = params[:description]
+      @project.price = params[:price].to_f
+      @project.final_price = params[:final_price].to_f
+      @project.user_created = @user
+      @project.user_updated = @user
+      @project.status = :proceso
+      puts "\n\n asigno"
+      puts @project
+      byebug
+      if @project.save!
+        puts @project.errors.messages
+      else
+        puts @project.errors.messages
+      end
+
       if params[:cant_materials].to_i > 0
         materials = params[:cant_materials].to_i - 1
         for i in 0..materials do 
-          project.project_materials.create(
+          @project.project_materials.create!(
             material_id: params["material_id_#{i}".to_sym].to_i,
             units: params["material_units_#{i}".to_sym].to_i,
-            price: params["material_price__#{i}".to_sym].to_i
+            price: params["material_price__#{i}".to_sym].to_i,
+            user_created: @user,
+            user_updated: @user
           )
         end
       end
@@ -51,18 +67,29 @@ class ProjectsController < ApplicationController
       if params[:cant_providers].to_i > 0
         providers = params[:cant_providers].to_i - 1
         for i in 0..providers do 
-          project.project_providers.create(
+          @coso = @project.project_providers.new(
             provider_id: params["provider_id_#{i}".to_sym].to_i,
             provider_roles_id: params["provider_role_id_#{i}".to_sym].to_i,
             payment_methods_id: params["payment_method_id_#{i}".to_sym].to_i,
             price: params["provider_price_#{i}".to_sym].to_i,
             iva: params["provider_iva_#{i}".to_sym].to_i,
             price_calculate: params["provider_price_calculate_#{i}".to_sym].to_i,
-            porcent: params["provider_porcent_#{i}".to_sym].to_i
+            porcent: params["provider_porcent_#{i}".to_sym].to_i,
+            user_created: @user,
+            user_updated: @user
           )
+          puts @coso
+          if !@coso.save!
+            puts @coso.errors.messages
+          end
         end
       end
-
+      raise 'cantidades'
+      apple = Apple.find(params[:apple_id])
+      apple.lands.each do |land|
+        LandProject.create( land_id: land.id, project_id: @project.id, status: :pending )
+      end
+      render json: {status: 'success', msg: 'Proyecto registrado con exito'}, status: :ok
     end # transaction
 
     rescue => e
@@ -102,6 +129,6 @@ class ProjectsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def project_params
-      params.require(:project).permit(:number, :name, :tecnical_direction, :provider_id, :material_id, :active, :price, :status)
+      params.require(:project).permit(:number, :name, :tecnical_direction,:active, :price, :status)
     end
 end

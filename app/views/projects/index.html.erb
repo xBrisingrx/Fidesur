@@ -1,20 +1,14 @@
-<h1>Projects</h1>
-<%= link_to 'Agregar projecto', new_project_path, {:remote => true, 'data-toggle' =>  "modal",
-      'data-target' => '#modal-project', 'class' => 'btn u-btn-teal justify-content-end mb-2'} %>
+<h1>Proyectos</h1>
 <%= link_to 'Agregar projecto', new_project_path,'class' => 'btn u-btn-primary justify-content-end mb-2' %>
 
 <table class="table table-responsive">
   <thead>
     <tr>
-      <th>Number</th>
-      <th>Name</th>
-      <th>Tecnical direction</th>
-      <th>Provider</th>
-      <th>Material</th>
-      <th>Active</th>
-      <th>Price</th>
-      <th>Status</th>
-      <th colspan="3"></th>
+      <th>#</th>
+      <th>Nombre</th>
+      <th>Inverfinientes/Funcion</th>
+      <th>Materiales</th>
+      <th >Acciones</th>
     </tr>
   </thead>
 
@@ -23,15 +17,9 @@
       <tr>
         <td><%= project.number %></td>
         <td><%= project.name %></td>
-        <td><%= project.tecnical_direction %></td>
-        <td><%= project.provider %></td>
-        <td><%= project.material %></td>
-        <td><%= project.active %></td>
-        <td><%= project.price %></td>
-        <td><%= project.status %></td>
-        <td><%= link_to 'Show', project %></td>
-        <td><%= link_to 'Edit', edit_project_path(project) %></td>
-        <td><%= link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= project.providers.first %></td>
+        <td><%= project.materials.first %></td>
+        <td>btn</td>
       </tr>
     <% end %>
   </tbody>
