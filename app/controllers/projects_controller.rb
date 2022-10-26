@@ -28,18 +28,47 @@ class ProjectsController < ApplicationController
 
   # POST /projects or /projects.json
   def create
-    # @project = Project.new(project_params)
+    ActiveRecord::Base.transaction do 
+      project = Project.create(
+        number: params[:number],
+        name: params[:name],
+        project_type_id: params[:project_type_id],
+        description: params[:description],
+        price: params[:price],
+        final_price: params[:final_price]
+      )
+      if params[:cant_materials].to_i > 0
+        materials = params[:cant_materials].to_i - 1
+        for i in 0..materials do 
+          project.project_materials.create(
+            material_id: params["material_id_#{i}".to_sym].to_i,
+            units: params["material_units_#{i}".to_sym].to_i,
+            price: params["material_price__#{i}".to_sym].to_i
+          )
+        end
+      end
 
-    # respond_to do |format|
-    #   if @project.save
-    #     format.html { redirect_to project_url(@project), notice: "Project was successfully created." }
-    #     format.json { render :show, status: :created, location: @project }
-    #   else
-    #     format.html { render :new, status: :unprocessable_entity }
-    #     format.json { render json: @project.errors, status: :unprocessable_entity }
-    #   end
-    # end
-    byebug
+      if params[:cant_providers].to_i > 0
+        providers = params[:cant_providers].to_i - 1
+        for i in 0..providers do 
+          project.project_providers.create(
+            provider_id: params["provider_id_#{i}".to_sym].to_i,
+            provider_roles_id: params["provider_role_id_#{i}".to_sym].to_i,
+            payment_methods_id: params["payment_method_id_#{i}".to_sym].to_i,
+            price: params["provider_price_#{i}".to_sym].to_i,
+            iva: params["provider_iva_#{i}".to_sym].to_i,
+            price_calculate: params["provider_price_calculate_#{i}".to_sym].to_i,
+            porcent: params["provider_porcent_#{i}".to_sym].to_i
+          )
+        end
+      end
+
+    end # transaction
+
+    rescue => e
+      @response = e.message.split(':')
+      render json: {status: 'error', msg: 'No se pudo registrar el proyecto'}, status: 402
+      byebug
   end
 
   # PATCH/PUT /projects/1 or /projects/1.json

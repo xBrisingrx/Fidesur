@@ -9,6 +9,7 @@
 #  number          :integer          not null
 #  price           :decimal(15, 2)   default(0.0), not null
 #  status          :integer
+#  total           :decimal(10, )
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  project_type_id :bigint
@@ -28,8 +29,8 @@
 #  fk_rails_...  (user_updated_id => users.id)
 #
 class Project < ApplicationRecord
-  has_many :providers
-  has_many :materials
+  has_many :project_providers
+  has_many :project_materials
   belongs_to :project_type
   belongs_to :user_created, class_name: "User"
   belongs_to :user_updated, class_name: "User"
