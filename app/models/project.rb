@@ -11,25 +11,19 @@
 #  status          :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  material_id     :bigint
 #  project_type_id :bigint
-#  provider_id     :bigint
 #  user_created_id :bigint
 #  user_updated_id :bigint
 #
 # Indexes
 #
-#  index_projects_on_material_id      (material_id)
 #  index_projects_on_project_type_id  (project_type_id)
-#  index_projects_on_provider_id      (provider_id)
 #  index_projects_on_user_created_id  (user_created_id)
 #  index_projects_on_user_updated_id  (user_updated_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (material_id => materials.id)
 #  fk_rails_...  (project_type_id => project_types.id)
-#  fk_rails_...  (provider_id => providers.id)
 #  fk_rails_...  (user_created_id => users.id)
 #  fk_rails_...  (user_updated_id => users.id)
 #
