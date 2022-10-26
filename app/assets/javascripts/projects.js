@@ -2,37 +2,57 @@ let inputaso
 let project = {
 	materials_list:[],
 	providers_list:[],
+	price: '',
+	form: new FormData(),
 	add_provider(){
 		event.preventDefault()
-		let provider = document.getElementById('project_provider_id')
-		if (provider.value != null && provider.value != '') {
+		let table_body = document.querySelector('#provider-list')
+		let provider_id = parseInt( document.getElementById('project_provider_id').value )
+		let role_id = parseInt( document.getElementById('project_provider_role').value )
+		let payment_method_id = parseInt( document.getElementById('project_payment_method').value )
+		let provider_price = parseFloat(document.getElementById('project_provider_price').value)
+		let provider_iva = parseFloat( document.getElementById('provider_iva').value )
+
+		if ( this.provider_validations(provider_id, role_id,payment_method_id,provider_price, provider_iva) ) {
 			let provider_name =  $('#project_provider_id option:selected').text()
-			$('.provider-list').append(`
-				<div class="row mb-2" id="${provider.value}">
-					<div class="mb-2  mx-4 col-2">
-						<input type="text" value="${provider_name}" class="provider-id form-control form-control-sm rounded-0 " data-id=${provider.value} disabled></input>
-					</div>
-					<div class="col-2">
-            <select class="" required="required" onchange="project.change_method_cobro()">
-              <option value="0" selected>Metodo de cobro</option>
-              <option value="fix_number">Ingresar monto</option>
-              <option value="porcent">Porcentaje</option>
-            </select>
-          </div>
-					<div id="delete_provider_${provider.value}">
-						<button type="button" class="btn u-btn-red remove-provider" onclick="project.remove_provider(${provider.value})" title="Quitar comprador"> <i class="fa fa-trash"></i> </button>
-					</div>
-				</div>
-			`)
-			$('#project_provider_id option:selected').attr('disabled', 'disabled')
-			$('.select-2-project-provider').val('').trigger('change')
-		} else {
-			noty_alert('error', 'Error al agregar el proveedor a la lista')
+			let role_name =  $('#project_provider_role option:selected').text()
+			let payment_method_name =  $('#project_payment_method option:selected').text()
+			let provider_price_text = (payment_method_id == 1 ) ? `$${provider_price}` : `${provider_price}%`
+			let precio_proveedor_calculado = this.calcular_precio_proveedor( parseInt(payment_method_id), provider_price )
+			let porcentaje_representa_proveedor = this.calcular_porcentaje_representa( this.price, precio_proveedor_calculado )
+			let data = {
+				provider_id: provider_id,
+				provider_role: role_id,
+				payment_method_id: payment_method_id,
+				provider_price: provider_price,
+				provider_iva: provider_iva,
+				provider_price_calculate: precio_proveedor_calculado,
+				provider_porcent: porcentaje_representa_proveedor
+			}
+			this.providers_list.push( data )
+			table_body.innerHTML += `
+				<tr id="row-${provider_id}">
+					<td>${provider_name}</td>
+					<td>${role_name}</td>
+					<td>${payment_method_name}</td>
+					<td>${provider_iva}</td>
+					<td>${provider_price_text}</td>
+					<td> $${precio_proveedor_calculado} </td>
+					<td> ${porcentaje_representa_proveedor} </td>
+					<td><button type="button" class="btn u-btn-red remove-provider" onclick="project.remove_provider(${provider_id})" 
+					title="Quitar interviniente"> <i class="fa fa-trash"></i> </button></td>
+				</tr>
+			`
+			this.disabled_and_reset_select('project_provider_id' , 'select-2-project-provider')
+			$(`.select-2-provider-role`).val('').trigger('change')
+			$(`.select-2-payment-method`).val('').trigger('change')
+			document.getElementById('project_provider_price').value = ''
 		}
 	},
 	remove_provider( id ) {
 		event.preventDefault()
-		let element = document.getElementById(id)
+		this.providers_list = this.providers_list.filter( p => p.provider_id != id )
+		let element = document.querySelector(`#provider-list #row-${id}`)
 		element.remove()
 		$(`#project_provider_id option[value='${id}']`).attr('disabled', false)
 	},
@@ -93,7 +113,7 @@ let project = {
 		let material_price = parseFloat( document.getElementById('material_price').value )
 
 		if (material.value == null || material.value == '') {
-			noty_alert('error', 'Error al agregar el proveedor a la lista')
+			noty_alert('error', 'Error al agregar el material a la lista')
 			return
 		}
 		if ( units == null || isNaN(units)) {
@@ -101,7 +121,7 @@ let project = {
 			return
 		}
 		if ( material_price == null || isNaN(material_price) ) {
-			noty_alert('error', 'El precio es un numero')
+			noty_alert('error', 'El precio debe ser un numero')
 			return
 		}
 
@@ -116,20 +136,22 @@ let project = {
 					title="Quitar material"> <i class="fa fa-trash"></i> </button></td>
 			</tr>
 		`)
-		$('#project_material_id option:selected').attr('disabled', 'disabled')
-		$('.select-2-project-material').val('').trigger('change')
+
 		let data = {
-			id: material.value,
+			id: parseInt(material.value),
 			units: units,
 			price: material_price
 		}
 		this.materials_list.push( data )
+		$('#project_material_id option:selected').attr('disabled', 'disabled')
+		$('.select-2-project-material').val('').trigger('change')
 	},
 	remove_material(material_id){
 		event.preventDefault()
 		let element = document.getElementById(`row-${material_id}`)
 		element.remove()
 		$(`#project_material_id option[value='${material_id}']`).attr('disabled', false)
+		this.materials_list = this.materials_list.filter( m => m.id != material_id )
 	},
 	add_number_input(nodo,delete_btn, disabled, className, input_id, placeholder = ''){
 		let newNode = document.createElement("input");
@@ -165,19 +187,18 @@ let project = {
 	submit(){
 		event.preventDefault()
 		event.stopPropagation()
-		let form = new FormData()
-		form.append('number', document.getElementById('project_number').value )
-		form.append('name', document.getElementById('project_name').value )
-		form.append('tecnical_direction', document.getElementById('project_tecnical_direction').value )
-		form.append('providers[]', this.get_id_providers() )
-		form.append('materials[]', this.materials_list)
-
+		this.form.append('number', document.getElementById('project_number').value )
+		this.form.append('name', document.getElementById('project_name').value )
+		this.form.append('providers[]', this.providers_list )
+		this.form.append('materials[]', this.materials_list)
+		this.add_providers()
+		this.add_materials()
 		fetch('/projects/', {
       method: 'POST',
       headers: {           
         'X-CSRF-Token': document.getElementsByName('csrf-token')[0].content,
       },
-      body: form
+      body: this.form
     })
 	  .then( response => response.json() )
 	  .then( response => {
@@ -189,11 +210,108 @@ let project = {
 	  	noty_alert(response.status, response.msg)
 	  } )
 	  .catch( error => noty_alert('error', 'Ocurrio un error, no se pudo registrar la venta') )
+	},
+	charge_apples(){
+		const node = event.target
+		const sector_id = parseInt(node.value)
+		let  lands
+		fetch(`/manzanas/filter_for_sector/${sector_id}.json`).then( response => response.json() ).then( r => {
+			let apple_list = document.querySelector('#apple_list')
+			apple_list.innerHTML = '<option value=""> Elegir manzana </option>'
+
+			for (let lote in r){
+			  apple_list.innerHTML += `
+			  	<option value='${r[lote][0]}'> ${r[lote][1]} </option>
+			  `
+			} 
+		})
+	},
+	provider_validations(provider, role,payment_method,provider_price, provider_iva){
+		if (isNaN(provider)) {
+			noty_alert('error', 'Debe seleccionar un proveedor')
+			provider.classList.add('g-brd-pink-v2--error')
+			return false
+		}
+		if ( isNaN(role) ) {
+			noty_alert('error', 'Debe seleccionar funcion')
+			return false
+		}
+		if ( isNaN(payment_method) ) {
+			noty_alert('error', 'Debe seleccionar metodo de pago')
+			return false
+		}
+		if ( isNaN( provider_price ) ) {
+			noty_alert('error', 'Debe ingresar monto valido')
+			return false
+		}
+		if ( isNaN( provider_iva ) ) {
+			noty_alert('error', 'Debe seleccionar el IVA')
+			return false
+		}
+
+		if ( !this.validate_price() ) {
+			noty_alert('warning', 'Por favor, vuelva a ingresar el valor del proyecto')
+			return false
+		}
+
+		return true
+	},
+	disabled_and_reset_select(select_id, select_class){
+		$(`#${select_id} option:selected`).attr('disabled', 'disabled')
+		$(`.${select_class}`).val('').trigger('change')
+	},
+	calcular_precio_proveedor(payment_method, provider_price){
+		if (payment_method == 2) {
+			// porcentaje
+			const project_price = parseFloat( document.querySelector('#form-project #project_price').value )
+			const porcent = provider_price/100
+			return (project_price*porcent)
+		} else {
+			return provider_price
+		}
+	},
+	validate_price(){
+		this.price = parseFloat( document.querySelector('#form-project #project_price').value )
+		if (isNaN(this.price)) {
+			noty_alert('warning', 'El valor ingresado del proyecto no es valido')
+			document.querySelector('#form-project #add-provider').disabled = true
+			return false
+		} else {
+			document.querySelector('#form-project #add-provider').disabled = false
+			return true
+		}
+	},
+	calcular_porcentaje_representa(project_price, provider_value){
+		console.log(project_price, provider_value)
+		let porcentaje_representa = (provider_value*100) / project_price
+		porcentaje_representa = porcentaje_representa.toFixed(2)
+		return `${porcentaje_representa}%`
+	},
+	add_providers(){
+		for (let i = 0; i < this.providers_list.length; i++){
+			this.form.append(`provider_id_${i}`, this.providers_list[i].provider_id)
+			this.form.append(`provider_role_id_${i}`, this.providers_list[i].provider_role)
+			this.form.append(`payment_method_id_${i}`, this.providers_list[i].payment_method_id)
+			this.form.append(`provider_price_${i}`, this.providers_list[i].provider_price)
+			this.form.append(`provider_iva_${i}`, this.providers_list[i].provider_iva)
+			this.form.append(`provider_price_calculate_${i}`, this.providers_list[i].provider_price_calculate)
+			this.form.append(`provider_porcent_${i}`, this.providers_list[i].provider_porcent)
+		}
+	},
+	add_materials(){
+		for (let i = 0; i < this.materials_list.length; i++){
+			this.form.append(`material_id_${i}`, this.materials_list[i].id)
+			this.form.append(`material_units_${i}`, this.materials_list[i].units)
+			this.form.append(`material_price_${i}`, this.materials_list[i].material_price)
+		}
 	}
 }
 
 $(document).ready(function(){
-	$('.select-2-project-provider').select2({ width: '30%',theme: "bootstrap4" })	
+	$('.select-2-project-provider').select2({ width: '100%',theme: "bootstrap4" })	
+	$('.select-2-provider-role').select2({ width: '100%',theme: "bootstrap4" })	
+	$('.select-2-payment-method').select2({ width: '100%',theme: "bootstrap4" })	
 	$('.select-2-project-material').select2({ width: '100%',theme: "bootstrap4" })	
 	$('.select-2-project-type').select2({ width: '30%',theme: "bootstrap4" })	
+	$('.select-2-apple-list').select2({ width: '100%',theme: "bootstrap4" })
 })

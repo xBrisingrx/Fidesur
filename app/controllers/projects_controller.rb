@@ -17,6 +17,9 @@ class ProjectsController < ApplicationController
     @project_type = ProjectType.actives
     @materials = Material.actives
     @providers = Provider.actives
+    @sectors = Sector.where(active: true)
+    @provider_roles = ProviderRole.where(active: true)
+    @payment_methods = PaymentMethod.where(active: true)
   end
 
   # GET /projects/1/edit
@@ -36,6 +39,7 @@ class ProjectsController < ApplicationController
     #     format.json { render json: @project.errors, status: :unprocessable_entity }
     #   end
     # end
+    byebug
   end
 
   # PATCH/PUT /projects/1 or /projects/1.json

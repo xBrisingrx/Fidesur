@@ -4,6 +4,8 @@
 #
 #  id              :bigint           not null, primary key
 #  active          :boolean          default(TRUE)
+#  price           :decimal(10, )
+#  units           :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  material_id     :bigint
