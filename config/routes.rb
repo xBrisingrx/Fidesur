@@ -47,6 +47,7 @@
 Rails.application.routes.draw do
   
 
+  resources :payment_methods
   resources :provider_roles
   resources :sessions, only: [:new, :create, :destroy]  
   get 'signup', to: 'users#new', as: 'signup'
@@ -113,11 +114,12 @@ Rails.application.routes.draw do
     resources :client_fields
     resources :sectors
     post '/sectors/disable'
-      
+    
     resources :apples do
       resources :lands, only: [:index, :new, :create, :edit, :update]
       # resources :fields
     end
+    get '/apples/filter_for_sector/:sector_id', to: 'apples#filter_for_sector'
     post '/apples/disable'
     post '/fields/disable'
     resources :clients
