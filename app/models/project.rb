@@ -2,21 +2,20 @@
 #
 # Table name: projects
 #
-#  id                 :bigint           not null, primary key
-#  active             :boolean          default(TRUE)
-#  description        :text(65535)
-#  name               :string(255)
-#  number             :integer          not null
-#  price              :decimal(15, 2)   default(0.0), not null
-#  status             :integer
-#  tecnical_direction :string(255)
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  material_id        :bigint
-#  project_type_id    :bigint
-#  provider_id        :bigint
-#  user_created_id    :bigint
-#  user_updated_id    :bigint
+#  id              :bigint           not null, primary key
+#  active          :boolean          default(TRUE)
+#  description     :text(65535)
+#  name            :string(255)
+#  number          :integer          not null
+#  price           :decimal(15, 2)   default(0.0), not null
+#  status          :integer
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  material_id     :bigint
+#  project_type_id :bigint
+#  provider_id     :bigint
+#  user_created_id :bigint
+#  user_updated_id :bigint
 #
 # Indexes
 #
