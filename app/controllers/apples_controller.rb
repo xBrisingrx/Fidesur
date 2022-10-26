@@ -11,8 +11,10 @@ class ApplesController < ApplicationController
   end
 
   def filter_for_sector
-    apple = Apple.where( sector_id: params[:sector_id] ).where( active: true ).pluck(:id, :code)
-    render json: apple
+    @apples = Apple.where( sector_id: params[:sector_id] ).where( active: true )
+    # respond_to do |format|
+    #   format.json
+    # end
   end
 
   # GET /apples/new
