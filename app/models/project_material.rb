@@ -30,4 +30,7 @@
 class ProjectMaterial < ApplicationRecord
   belongs_to :project
   belongs_to :material
+
+  belongs_to :user_created, class_name: "User"
+  belongs_to :user_updated, class_name: "User"
 end
