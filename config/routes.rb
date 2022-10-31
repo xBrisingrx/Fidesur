@@ -73,6 +73,7 @@ Rails.application.routes.draw do
   get 'get_totales_cuota/:product_type/:product_id', to: 'sale_products#get_totales_cuota', as: 'get_totales_cuota'
   get '/ver_todos_los_lotes', to: "sale_products#all_lands", as: 'ver_todos_los_lotes'
   get 'sale_products/modal_apply_adjust/:sale_id', to: "sale_products#modal_apply_adjust", as: 'modal_apply_adjust'
+  post 'sale_products/apply_adjust', to: "sale_products#apply_adjust", as: 'apply_adjust'
   # resources :land_sale, only: [:index, :new, :create]
   # resources :land_fees do 
   #   get 'partial_payment/:land_fee_id', to: 'land_fee_payments#new', as: 'partial_payment'

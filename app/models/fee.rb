@@ -65,17 +65,32 @@ class Fee < ApplicationRecord
     primer_pago = self.fee_payments.sum(:total)
     self.update( payment: primer_pago , value: primer_pago ,total_value: primer_pago )
   end
+
+  def increase_adjust adjust
+    self.adjust += adjust
+    self.total_value = self.value + self.interest + self.adjust
+    self.owes += self.adjust
+    self.save
+  end
   
-  def aply_adjust adjust
+  def apply_adjust adjust
     puts "\n\n\n\n\n ****************5 Aplicamos el ajuste a partir de la cuota #{self.number} \n"
     cuotas = Fee.where(["sale_id = ? and number > ?", self.sale_id, self.number ])
     cuotas.each do |cuota|
       "\n Ajustamos en la cuota #{cuota.number} q tenia de ajuste #{cuota.adjust.to_f} \n"
-      cuota.adjust += adjust
-      cuota.total_value = cuota.value + cuota.interest + cuota.adjust
-      cuota.owes += cuota.adjust
-      cuota.save
+      cuota.increase_adjust adjust
       "\n Update exitoso #{cuota.adjust.to_f}"
+    end
+  end
+
+  def apply_adjust_one_fee adjust
+    self.increase_adjust adjust
+  end
+
+  def apply_adjust_include_fee adjust
+    cuotas = Fee.where(["sale_id = ? and number >= ?", self.sale_id, self.number ])
+    cuotas.each do |cuota|
+      cuota.increase_adjust adjust
     end
   end
 

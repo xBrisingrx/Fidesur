@@ -1,12 +1,15 @@
-<%= form_with url: '', class: 'needs-validation g-brd-around g-brd-gray-light-v4 g-pa-10 g-mb-10' do |form| %>
-
+<%= form_with url: apply_adjust_path, id: 'form-apply-adjust', class: 'needs-validation g-brd-around g-brd-gray-light-v4 g-pa-10 g-mb-10' do |form| %>
+  <%=form.hidden_field :sale_id %>
   <div class="form-group">
-    <%= form.number_field :adjust, class: 'form-control col-6', placeholder: 'Ingrese el monto de ajuste a aplicar' %>
+    <%= form.number_field :adjust, 
+                          step:'0.0001', 
+                          class: 'form-control col-6', 
+                          placeholder: 'Ingrese el monto de ajuste a aplicar' %>
   </div>
 
   <div class="form-group">
     <label class="form-check-inline u-check g-pl-25">
-      <%= form.check_box :one_fee, class: 'g-hidden-xs-up g-pos-abs g-top-0 g-left-0' %>
+      <%= form.check_box :apply_to_one_fee, class: 'g-hidden-xs-up g-pos-abs g-top-0 g-left-0' %>
       <div class="u-check-icon-checkbox-v6 g-absolute-centered--y g-left-0">
         <i class="fa" data-check-icon="&#xf00c"></i>
       </div>

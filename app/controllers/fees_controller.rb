@@ -42,7 +42,7 @@ class FeesController < ApplicationController
 
       if params[:adjust].to_f > 0 # Si agregaron algo al ajuste 
         cuota.adjust += params[:adjust].to_f # sumamos a esta cuota 
-        cuota.aply_adjust(params[:adjust].to_f) # y las siguientes
+        cuota.apply_adjust(params[:adjust].to_f) # y las siguientes
       end
       cuota.comment_adjust = params[:comment_adjust]
       # Calculo el total que se deberia haber pagado
