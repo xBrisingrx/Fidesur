@@ -92,6 +92,12 @@ class SaleProductsController < ApplicationController
                   'cant_cuotas' => cant_cuotas}
   end
 
+  def modal_apply_adjust
+    @title_modal = "Aplicar ajuste"
+    @sale = Sale.find params[:sale_id]
+    @fees = @sale.fees.actives.no_cero.no_payed
+  end
+
   private
     def set_sale_product
       @sale_product = SaleProduct.find(params[:id])

@@ -72,6 +72,11 @@
     <strong class="ml-4 mr-1">Cuotas vencidas: </strong> <%= @cant_vencidas %>
   </div>
   <div class="col-auto">
+    <%= link_to "<i class='icon-finance-234 u-line-icon-pro'></i> Agregar ajuste".html_safe,
+                modal_apply_adjust_path(@sale.id),
+                remote: true,
+                data: {toggle: :modal},
+                class: 'btn u-btn-outline-cyan u-btn-hover-v1-2 g-font-weight-600 g-letter-spacing-0_5 g-brd-2 g-rounded-10 g-mr-10 g-mb-15' %>
     <a href="#"
       onclick="sale.modal_reset_payments(<%= @sale.id %>)" 
       class="btn u-btn-outline-pink u-btn-hover-v1-2 g-font-weight-600 g-letter-spacing-0_5 g-brd-2 g-rounded-10 g-mr-10 g-mb-15"> Eliminar pagos
