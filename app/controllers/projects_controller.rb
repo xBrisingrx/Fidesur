@@ -30,26 +30,17 @@ class ProjectsController < ApplicationController
   def create
     @user = User.find current_user.id
     ActiveRecord::Base.transaction do 
-      puts 'ingreso'
-
-      @project = Project.new
-      @project.number = params[:number].to_i
-      @project.name = params[:name]
-      @project.project_type_id = params[:project_type_id].to_i
-      @project.description = params[:description]
-      @project.price = params[:price].to_f
-      @project.final_price = params[:final_price].to_f
-      @project.user_created = @user
-      @project.user_updated = @user
-      @project.status = :proceso
-      puts "\n\n asigno"
-      puts @project
-      byebug
-      if @project.save!
-        puts @project.errors.messages
-      else
-        puts @project.errors.messages
-      end
+      @project = Project.create(
+        number: params[:number].to_i,
+        name: params[:name],
+        project_type_id: params[:project_type_id].to_i,
+        description: params[:description],
+        price: params[:price].to_f,
+        final_price: params[:final_price].to_f,
+        user_created: @user,
+        user_updated: @user,
+        status: :proceso
+      )
 
       if params[:cant_materials].to_i > 0
         materials = params[:cant_materials].to_i - 1
@@ -69,8 +60,8 @@ class ProjectsController < ApplicationController
         for i in 0..providers do 
           @coso = @project.project_providers.new(
             provider_id: params["provider_id_#{i}".to_sym].to_i,
-            provider_roles_id: params["provider_role_id_#{i}".to_sym].to_i,
-            payment_methods_id: params["payment_method_id_#{i}".to_sym].to_i,
+            provider_role_id: params["provider_role_id_#{i}".to_sym].to_i,
+            payment_method_id: params["payment_method_id_#{i}".to_sym].to_i,
             price: params["provider_price_#{i}".to_sym].to_i,
             iva: params["provider_iva_#{i}".to_sym].to_i,
             price_calculate: params["provider_price_calculate_#{i}".to_sym].to_i,
@@ -84,7 +75,7 @@ class ProjectsController < ApplicationController
           end
         end
       end
-      raise 'cantidades'
+      # raise 'cantidades'
       apple = Apple.find(params[:apple_id])
       apple.lands.each do |land|
         LandProject.create( land_id: land.id, project_id: @project.id, status: :pending )
@@ -94,6 +85,7 @@ class ProjectsController < ApplicationController
 
     rescue => e
       @response = e.message.split(':')
+      puts @response
       render json: {status: 'error', msg: 'No se pudo registrar el proyecto'}, status: 402
       byebug
   end

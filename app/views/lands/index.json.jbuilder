@@ -28,10 +28,20 @@ json.data @lands do |f|
 									<i class='hs-admin-trash' aria-hidden='true'></i></a>"
 	end 
 	if f.bought? 
-		json.actions "#{link_to '<i class="hs-admin-credit-card"></i>'.html_safe, sale_product_detail_path(product_type: 'Land', product_id:f.id), 
+		botones = "#{link_to '<i class="hs-admin-credit-card"></i>'.html_safe, sale_product_detail_path(product_type: 'Land', product_id:f.id), 
       							'class' => 'u-link-v5 g-color-gray-dark-v2 g-color-secondary--hover g-text-underline--none--hover g-ml-12', title: 'Ver cuotas'}
       						<a  onclick='sale.modal_destroy(#{f.sale_product.sale.id}, `#{f.apple.code}`, `#{f.code}`)' class='u-link-v5 g-color-gray-dark-v2 g-color-secondary--hover g-text-underline--none--hover g-ml-12'><i class='hs-admin-trash'></i></a>
       						"
+      	if f.land_projects.count > 0
+      		f.land_projects.each do |project|
+
+      			if project.status == 'pending'
+      				botones = botones + "#{link_to '<i class="fa fa-car"></i>'.html_safe, sale_product_detail_path(product_type: 'Land', product_id:f.id), 
+      							'class' => 'u-link-v5 g-color-gray-dark-v2 g-color-secondary--hover g-text-underline--none--hover g-ml-12', title: 'Financiar projecto'}"
+      			end
+      		end
+      	end
+    json.actions botones
 	end
 end
 

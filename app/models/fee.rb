@@ -40,6 +40,10 @@ class Fee < ApplicationRecord
   has_many :fee_payments, dependent: :destroy
 
   enum pay_status: [:pendiente, :pagado, :pago_parcial]
+
+  scope :actives, -> { where(active: true) }
+  scope :no_cero, -> { where( "number > 0" ) }
+  scope :no_payed, -> { where.not(pay_status: :pagado) }
   
   def expired?
     self.due_date.strftime("%F")  < Time.new.strftime("%F") 

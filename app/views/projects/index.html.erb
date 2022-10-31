@@ -17,9 +17,19 @@
       <tr>
         <td><%= project.number %></td>
         <td><%= project.name %></td>
-        <td><%= project.providers.first %></td>
-        <td><%= project.materials.first %></td>
-        <td>btn</td>
+        <td><% project.project_providers.each do |provider| %>
+              <%= provider.provider.name %> <%= provider.provider_role.name%>
+            <% end %>
+        </td>
+        <td><% project.project_materials.each do |material| %>
+            <%= material.material.name  %>
+            <ul>
+              <li>Cantidad: <%= material.units  %></li>
+              <li>Precio unidad: <%= material.price  %></li>
+            </ul>
+          <% end %>
+        </td>
+        <td></td>
       </tr>
     <% end %>
   </tbody>
