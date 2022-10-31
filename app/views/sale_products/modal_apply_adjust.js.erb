@@ -3,10 +3,12 @@ $("#modal-sale-product").html("<%= j (render 'modal_apply_adjust') %>")
 $("#modal-sale-product").modal('show')
 
 document.getElementById('one_fee').addEventListener('click', function(e){
+	let fee_input = document.getElementById('fee_number_label')
+	
 	if (e.target.checked) {
-		console.log('check')
+		fee_input.innerHTML = 'Aplicar ajuste a la cuota:'
 	} else {
-		console.info('no check')
+		fee_input.innerHTML = 'Aplicar ajuste a partir de la cuota:'
 	}
 })
 
