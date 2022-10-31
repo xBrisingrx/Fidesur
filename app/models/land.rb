@@ -41,6 +41,7 @@ class Land < ApplicationRecord
 	# has_one :field_sale
 	has_one :sale_product, as: :product # relacion entre venta y lote
 
+	has_many :land_projects
 	# Los lotes de una misma manzana no pueden llamarse igual
 	validates :code, 
 		presence: true,
