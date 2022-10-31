@@ -145,6 +145,7 @@ class SalesController < ApplicationController
   def reset_payments #reseteo las cuotas a como cuando fueron creadas y elimino todos los pagos
     sale = Sale.find params[:sale_id]
     if sale.reset_payments
+      sale.calculate_total_value!
       render json: {status: 'success', msg: 'Se eliminaron todos los pagos'}, status: :ok 
     else
       render json: {status: 'errors', msg: 'Ocurrio un error eliminando los pagos'}, status: :unprocessable_entity
