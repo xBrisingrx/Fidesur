@@ -1,0 +1,24 @@
+$("#modal-sale-product").html("<%= j (render 'modal_apply_adjust') %>")
+
+$("#modal-sale-product").modal('show')
+
+document.getElementById('one_fee').addEventListener('click', function(e){
+	if (e.target.checked) {
+		console.log('check')
+	} else {
+		console.info('no check')
+	}
+})
+
+$("#form-land").on("ajax:success", function(event) {
+    lands_table.ajax.reload(null,false)
+    let msg = JSON.parse(event.detail[2].response)
+    noty_alert(msg.status, msg.msg)
+    $("#modal-sale-product").modal('hide')
+  }).on("ajax:error", function(event) {
+	let msg = JSON.parse( event.detail[2].response )
+	$.each( msg, function( key, value ) {
+		$(`#form-land #land_${key}`).addClass('is-invalid')
+		$(`#form-land .land_${key}`).text( value ).show('slow')
+	})
+})

@@ -47,6 +47,12 @@
 Rails.application.routes.draw do
   
 
+  get 'land_projects/index'
+  get 'land_projects/financiar', to: 'land_projects#financiar', as: 'financiar'
+  get 'land_projects/new'
+  get 'land_projects/create'
+  get 'land_projects/edit'
+  get 'land_projects/update'
   resources :payment_methods
   resources :provider_roles
   resources :sessions, only: [:new, :create, :destroy]  
@@ -66,6 +72,7 @@ Rails.application.routes.draw do
   get 'detalle_venta_lote/:product_id', to: 'sale_products#index', as: 'show_land_sale'
   get 'get_totales_cuota/:product_type/:product_id', to: 'sale_products#get_totales_cuota', as: 'get_totales_cuota'
   get '/ver_todos_los_lotes', to: "sale_products#all_lands", as: 'ver_todos_los_lotes'
+  get 'sale_products/modal_apply_adjust/:sale_id', to: "sale_products#modal_apply_adjust", as: 'modal_apply_adjust'
   # resources :land_sale, only: [:index, :new, :create]
   # resources :land_fees do 
   #   get 'partial_payment/:land_fee_id', to: 'land_fee_payments#new', as: 'partial_payment'
