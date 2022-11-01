@@ -45,8 +45,23 @@
 
 // require_tree .
 
-function noty_alert(type, message) {
-  let icon = (type === 'success') ? 'hs-admin-check' : 'hs-admin-close'
+function noty_alert(type, message, time = 7000) {
+  let icon = ''
+  switch (type) {
+    case 'success':
+      icon = 'hs-admin-check' 
+      break 
+    case 'error':
+      icon = 'hs-admin-check' 
+    break 
+    case 'info':
+      icon = 'hs-admin-help-alt'
+    break
+    case 'warning':
+      icon = 'hs-admin-alert' 
+  }
+
+  // let icon = (type === 'success') ? 'hs-admin-check' : 'hs-admin-close'
   var newNoty = new Noty({
     "type": type,
     "layout": "topRight",
