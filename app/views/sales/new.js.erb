@@ -16,6 +16,10 @@ sale.entrega = 0;
 
 setInputDate("#sale_date")
 
+function fee_start_date_info(){
+	noty_alert('info', 'Si coloca una fecha las cuotas corren a partir de esa fecha. En caso de colocar día de vencimiento se tomara ese día de vencimiento. Si no coloca fecha se toma como referencia la fecha de venta', 10000)
+}
+
 document.getElementById('add-client').addEventListener('click', (event) => {
 	event.preventDefault()
 	let client = document.getElementById('client_id')
@@ -387,7 +391,7 @@ function set_form_sale() {
 	sale.form.append("apply_arrear", document.getElementById('apply_arrear').checked)
 	sale.form.append("arrear", document.getElementById('arrear').value)
 	sale.form.append("due_date", document.getElementById('due_date').value)
-	// sale.form.append("paid", parseFloat( document.getElementById('paid').value) )
+	sale.form.append("fee_start_date", document.getElementById('fee_start_date').value)
 	sale.form.append("total_cost", document.getElementById('total_cost').value)
 	sale.form.append("sale_date", document.getElementById('sale_date').value )
 	sale.form.append("number_of_payments", document.getElementById('number_of_payments').value )

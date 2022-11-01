@@ -49,9 +49,17 @@ class Sale < ApplicationRecord
 		self.update( total_cost: valor_venta )
 	end
 
-	def generar_cuotas number_cuota_increase, valor_cuota_aumentada, valor_cuota
+	def generar_cuotas number_cuota_increase, valor_cuota_aumentada, valor_cuota, fee_start_date
   	aumenta_cuota = ( number_cuota_increase > 0 ) && ( valor_cuota_aumentada > 0 )
-  	due_date = Time.new(self.sale_date.year, self.sale_date.month, self.due_date)
+
+  	if fee_start_date.empty?
+  		due_date = Time.new(self.sale_date.year, self.sale_date.month, self.due_date)
+  	else
+  		start_date = Date.parse fee_start_date
+  		due_date = Time.new(start_date.year, start_date.month, start_date.day)
+  		due_date -= 1.month
+  	end
+
 
     for i in 1..self.number_of_payments
       # genero mis cuotas
@@ -73,8 +81,15 @@ class Sale < ApplicationRecord
     end
 	end # generar cuota
 
-	def generar_cuotas_manual valores_cuotas
-		due_date = Time.new(self.sale_date.year, self.sale_date.month, self.due_date)
+	def generar_cuotas_manual valores_cuotas, fee_start_date
+		if fee_start_date.empty?
+  		due_date = Time.new(self.sale_date.year, self.sale_date.month, self.due_date)
+  	else
+  		start_date = Date.parse fee_start_date
+  		due_date = Time.new(start_date.year, start_date.month, start_date.day)
+  		due_date -= 1.month
+  	end
+
 		i = 0
 		myArray = valores_cuotas[0].split(',')
 		myArray.each do |valor|
@@ -110,9 +125,11 @@ class Sale < ApplicationRecord
 	end
 
 	def corregir_fecha_primer_pago
-		self.fees.where(number: 0).first.fee_payments.each do |payment|
-			if payment.pay_date.nil?
-				payment.update(pay_date: self.sale_date)
+		if self.fees.where(number: 0).count > 0 
+			self.fees.where(number: 0).first.fee_payments.each do |payment|
+				if payment.pay_date.nil?
+					payment.update(pay_date: self.sale_date)
+				end
 			end
 		end
 	end

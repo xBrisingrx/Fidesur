@@ -85,9 +85,9 @@ class SalesController < ApplicationController
         # Fecha de vencimiento si venciera ESTE mes, en base a eso saco las siguientes fechas de vencimiento
         due_date = Time.new(today.year, today.month, sale.due_date.to_i)
         if params[:setear_cuotas_manual] == "true"
-           sale.generar_cuotas_manual( params[:valores_cuota] )
+           sale.generar_cuotas_manual( params[:valores_cuota], params[:fee_start_date] )
         else
-          sale.generar_cuotas( params[:number_cuota_increase].to_i, params[:valor_cuota_aumentada].to_f, params[:valor_cuota].to_f )
+          sale.generar_cuotas( params[:number_cuota_increase].to_i, params[:valor_cuota_aumentada].to_f, params[:valor_cuota].to_f, params[:fee_start_date] )
         end
         
         sale.calculate_total_value!
