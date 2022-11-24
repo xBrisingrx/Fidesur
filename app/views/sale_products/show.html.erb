@@ -20,7 +20,7 @@
 </div>
 
 <div class="row mb-2">
-  <%= render(partial: 'card_pay', locals: { color: 'lightblue-v3', paid: @sale.get_primer_pago, detail: 'Primer entrega' })%>
+  <%# render(partial: 'card_pay', locals: { color: 'lightblue-v3', paid: @sale.get_primer_pago, detail: 'Primer entrega' })%>
   <%= render(partial: 'card_pay', locals: { color: 'teal-v2', paid: @total_pagado, detail: 'Pagado' })%>
   <%= render(partial: 'card_pay', locals: { color: 'lightred-v2', paid: @total_adeudado, detail: 'Adeuda' })%>
   <%= render(partial: 'card_pay', locals: { color: 'indigo', paid: @product_value, detail: 'Valor del lote' })%>
@@ -72,6 +72,11 @@
     <strong class="ml-4 mr-1">Cuotas vencidas: </strong> <%= @cant_vencidas %>
   </div>
   <div class="col-auto">
+    <%= link_to "<i class='icon-finance-260 u-line-icon-pro'></i> Listar pagos".html_safe,
+                modal_payment_summary_path(@sale.id),
+                remote: true,
+                data: {toggle: :modal},
+                class: 'btn u-btn-outline-indigo u-btn-hover-v1-2 g-font-weight-600 g-letter-spacing-0_5 g-brd-2 g-rounded-10 g-mr-10 g-mb-15' %>
     <%= link_to "<i class='icon-finance-234 u-line-icon-pro'></i> Agregar ajuste".html_safe,
                 modal_apply_adjust_path(@sale.id),
                 remote: true,

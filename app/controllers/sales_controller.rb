@@ -152,6 +152,10 @@ class SalesController < ApplicationController
     end
   end
 
+  def modal_payment_summary
+    @sale = Sale.find params[:sale_id]
+  end
+
   private
 
   def sale_params

@@ -1,0 +1,58 @@
+<div class="modal-dialog modal-xl" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Resumen de paogos</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <table class="table table-sm table-bordered table-striped" >
+        <thead>
+          <th>#</th>
+          <th>Valor cuota</th>
+          <th>Vencimiento</th>
+          <th>Fecha de pago</th>
+          <th>Metodo de pago</th>
+          <th>Ingreso</th>
+          <th>Tomado en</th>
+          <th>Total</th>
+          <th>Ajuste</th>
+          <th>Comentario</th>
+        </thead>
+        <tbody>
+          <% @sale.fees.where(payed: true).no_cero.each do |fee| %>
+            <tr>
+              <td rowspan="<%= fee.fee_payments.count %>"><%= fee.number %></td>
+              <td rowspan="<%= fee.fee_payments.count %>"><%= "$ #{format_currency(fee.total_value)}" %></td>
+              <td rowspan="<%= fee.fee_payments.count %>"><%= date_format(fee.due_date) %></td>
+              <td><%= "#{date_format(fee.fee_payments.first.pay_date)}" %></td>
+              <td><%= fee.fee_payments.first.currency.name %></td>
+              <td><%= format_currency(fee.fee_payments.first.payment) %></td>
+              <td><%= "$#{format_currency(fee.fee_payments.first.tomado_en)}" %></td>
+              <td><%= "$#{format_currency(fee.fee_payments.first.total)}" %></td>
+              <td rowspan="<%= fee.fee_payments.count %>"><%= "$ #{format_currency(fee.adjust)}" %></td>
+              <td rowspan="<%= fee.fee_payments.count %>"><%= fee.comment_adjust %></td>
+            </tr> 
+            <tr>
+              <% fee.fee_payments.each_with_index do |payment, i | %>
+                <% if i != 0 %>
+                  <td><%= "#{date_format(payment.pay_date)}" %></td>
+                  <td><%= payment.currency.name %></td>
+                  <td><%= format_currency(payment.payment) %></td>
+                  <td><%= "$#{format_currency(payment.tomado_en)}" %></td>
+                  <td><%= "$#{format_currency(payment.total)}" %></td>
+                <% end %>
+              <% end %>
+            </tr>
+
+          <% end %>
+        </tbody>
+      </table>
+
+      <div>
+        <button type="button" class="btn u-btn-outline-pink u-btn-hover-v2-2" data-dismiss="modal" aria-label="Close"> Cerrar </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -96,6 +96,7 @@ Rails.application.routes.draw do
   post 'sales/send_payments', to: 'sales#send_payments'
   get 'pay_sale/:data', to: 'sales#pay', as: 'pay_land'
   get 'start_field_sale/:field_id', to: 'sales#start_field_sale', as: 'start_field_sale'
+  get 'modal_payment_summary/:sale_id', to: 'sales#modal_payment_summary', as: 'modal_payment_summary'
   resources :sales, only: [:create, :destroy]
   
   get 'detalle_pago_cuota/:id', to: 'land_fees#detalle_pago_cuota', as: 'detalle_pago_cuota'
