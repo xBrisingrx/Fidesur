@@ -41,11 +41,13 @@ class SalesController < ApplicationController
         number_of_payments: params[:number_of_payments],
         total_cost: 0 )
       if sale.save! 
-        params[:clients].uniq # me aseguro de que no haya ningun id repetido
-        params[:clients].each do |client| # Generamos los registros de los clientes que hicieron la compra
-          sale.client_sales.create!(client_id: client)
+        # params[:clients].uniq # me aseguro de que no haya ningun id repetido
+        clients = params[:clients][0].split(',')
+        clients.each do |client| # Generamos los registros de los clientes que hicieron la compra
+          sale.client_sales.create!(client_id: client.to_i)
         end
 
+        byebug
         sale.sale_products.create!(product_type: params[:product_type].capitalize,product_id: params[:product_id]) # reg venta del producto
         
         if params[:num_pays].to_i > 0 # Se ingreso un primer pago
