@@ -46,8 +46,6 @@ class SalesController < ApplicationController
         clients.each do |client| # Generamos los registros de los clientes que hicieron la compra
           sale.client_sales.create!(client_id: client.to_i)
         end
-
-        byebug
         sale.sale_products.create!(product_type: params[:product_type].capitalize,product_id: params[:product_id]) # reg venta del producto
         
         if params[:num_pays].to_i > 0 # Se ingreso un primer pago
