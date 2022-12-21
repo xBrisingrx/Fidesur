@@ -7,7 +7,7 @@
       </button>
     </div>
     <div class="modal-body">
-      <table class="table table-sm table-bordered table-striped" >
+      <table class="table table-sm table-bordered">
         <thead>
           <th>#</th>
           <th>Valor cuota</th>
@@ -22,30 +22,33 @@
         </thead>
         <tbody>
           <% @sale.fees.where(payed: true).no_cero.each do |fee| %>
-            <tr>
-              <td rowspan="<%= fee.fee_payments.count %>"><%= fee.number %></td>
-              <td rowspan="<%= fee.fee_payments.count %>"><%= "$ #{format_currency(fee.total_value)}" %></td>
-              <td rowspan="<%= fee.fee_payments.count %>"><%= date_format(fee.due_date) %></td>
+            <% @row_color = ( @row_color == '' ) ? 'table-active' : '' %>
+            <% @cant_payments = fee.fee_payments.count %>
+            <tr class="<%= @row_color %>">
+              <td rowspan="<%= @cant_payments %>"><%= fee.number %></td>
+              <td rowspan="<%= @cant_payments %>"><%= "$ #{format_currency(fee.total_value)}" %></td>
+              <td rowspan="<%= @cant_payments %>"><%= date_format(fee.due_date) %></td>
               <td><%= "#{date_format(fee.fee_payments.first.pay_date)}" %></td>
               <td><%= fee.fee_payments.first.currency.name %></td>
               <td><%= format_currency(fee.fee_payments.first.payment) %></td>
               <td><%= "$#{format_currency(fee.fee_payments.first.tomado_en)}" %></td>
               <td><%= "$#{format_currency(fee.fee_payments.first.total)}" %></td>
-              <td rowspan="<%= fee.fee_payments.count %>"><%= "$ #{format_currency(fee.adjust)}" %></td>
-              <td rowspan="<%= fee.fee_payments.count %>"><%= fee.comment_adjust %></td>
+              <td rowspan="<%= @cant_payments %>"><%= "$ #{format_currency(fee.adjust)}" %></td>
+              <td rowspan="<%= @cant_payments %>"><%= fee.comment_adjust %></td>
             </tr> 
-            <tr>
+            <% if @cant_payments > 0 %>
               <% fee.fee_payments.each_with_index do |payment, i | %>
                 <% if i != 0 %>
-                  <td><%= "#{date_format(payment.pay_date)}" %></td>
-                  <td><%= payment.currency.name %></td>
-                  <td><%= format_currency(payment.payment) %></td>
-                  <td><%= "$#{format_currency(payment.tomado_en)}" %></td>
-                  <td><%= "$#{format_currency(payment.total)}" %></td>
+                  <tr class="<%= @row_color %>">
+                    <td><%= "#{date_format(payment.pay_date)}" %></td>
+                    <td><%= payment.currency.name %></td>
+                    <td><%= format_currency(payment.payment) %></td>
+                    <td><%= "$#{format_currency(payment.tomado_en)}" %></td>
+                    <td><%= "$#{format_currency(payment.total)}" %></td>
+                  </tr>
                 <% end %>
               <% end %>
-            </tr>
-
+            <% end %>
           <% end %>
         </tbody>
       </table>
