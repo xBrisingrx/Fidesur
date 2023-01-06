@@ -14,7 +14,6 @@ $(document).ready(function(){
     {'data': 'surface'},
     {'data': 'ubication'},
     {'data': 'price'},
-    {'data': 'is_green_space'},
     {'data': 'is_corner'},
     {'data': 'status'},
     {'data': 'bought_date'},
