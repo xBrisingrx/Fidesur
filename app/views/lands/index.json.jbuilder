@@ -28,7 +28,11 @@ json.data @lands do |f|
 									<i class='hs-admin-trash' aria-hidden='true'></i></a>"
 	end 
 	if f.bought? 
-		botones = "#{link_to '<i class="hs-admin-credit-card"></i>'.html_safe, sale_product_detail_path(product_type: 'Land', product_id:f.id), 
+		botones = "#{link_to '<i class="hs-admin-pencil"></i>'.html_safe, edit_apple_land_path(apple_id:f.apple_id, id: f.id), 
+  								 :remote => true, 'data-toggle' =>  'modal',
+      							'data-target' => '#modal-land', 
+      							'class' => 'u-link-v5 g-color-gray-dark-v2 g-color-secondary--hover g-text-underline--none--hover g-ml-12', title: 'Editar'}
+				#{link_to '<i class="hs-admin-credit-card"></i>'.html_safe, sale_product_detail_path(product_type: 'Land', product_id:f.id), 
       							'class' => 'u-link-v5 g-color-gray-dark-v2 g-color-secondary--hover g-text-underline--none--hover g-ml-12', title: 'Ver cuotas'}
       						<a  onclick='sale.modal_destroy(#{f.sale_product.sale.id}, `#{f.apple.code}`, `#{f.code}`)' class='u-link-v5 g-color-gray-dark-v2 g-color-secondary--hover g-text-underline--none--hover g-ml-12'><i class='hs-admin-trash'></i></a>
       						"

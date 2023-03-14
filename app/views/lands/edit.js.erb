@@ -1,5 +1,9 @@
 $("#modal-land").html("<%= j (render 'modal_edit') %>")
 
+if (<%= @land.bought? %>) {
+	document.getElementById('land_price').disabled = true
+}
+
 $("#modal-land").modal('show')
 
 $("#form-land").on("ajax:success", function(event) {
