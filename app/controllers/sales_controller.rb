@@ -154,6 +154,8 @@ class SalesController < ApplicationController
 
   def modal_payment_summary
     @sale = Sale.find params[:sale_id]
+    @row_color = 'table-active'
+    @cant_payments = 0
   end
 
   private

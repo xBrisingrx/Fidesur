@@ -3,7 +3,6 @@ json.data @lands do |f|
 	json.surface "#{f.surface} m²"
 	json.ubication f.ubication
 	json.price "$ #{format_currency(f.price) }"
-	json.is_green_space (f.is_green_space)? 'Si' : 'No'
 	json.is_corner (f.is_corner)? 'Si' : 'No'
 	json.status "#{@status[f.status]}"
 	json.bought_date ( f.bought? ) ? f.sale_product.sale.sale_date.strftime('%d-%m-%y') : ''
